@@ -54,6 +54,12 @@ dependencies {
             "jakarta.annotation:jakarta.annotation-api",
             "com.querydsl:querydsl-apt:${queryDslVersion}:jakarta")
 
+    // validation
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+
+    // h2
+    runtimeOnly 'com.h2database:h2'
+
 
     // jwt
     implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
@@ -62,8 +68,34 @@ dependencies {
 
     // dotenv
     implementation 'io.github.cdimascio:java-dotenv:5.1.1'
+
+    // thumbnailator <- 이거 이미지 크기 조절 및 썸네일 생성을 쉽게 할 수 있도록 지원하는 Java 라이브러리 래요.
+    implementation 'net.coobird:thumbnailator:0.4.19'
+
+    // aws s3
+    implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
 }
 
 tasks.named('test') {
     useJUnitPlatform()
+}
+// === ⭐ QueryDsl 빌드 옵션 (선택) ===
+def querydslDir = "$buildDir/generated/querydsl"
+
+sourceSets {
+    main.java.srcDirs += [ querydslDir ]
+}
+
+tasks.withType(JavaCompile) {
+    options.annotationProcessorGeneratedSourcesDirectory = file(querydslDir)
+}
+
+clean.doLast {
+    file(querydslDir).deleteDir()
+}
+
+
+// plain - jar 생략
+jar {
+    enabled = false
 }
