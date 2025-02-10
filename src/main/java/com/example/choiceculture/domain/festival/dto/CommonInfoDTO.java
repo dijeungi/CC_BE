@@ -1,5 +1,6 @@
 package com.example.choiceculture.domain.festival.dto;
 
+import com.example.choiceculture.domain.festival.enums.UseYn;
 import lombok.*;
 
 @NoArgsConstructor
@@ -8,7 +9,8 @@ import lombok.*;
 @Setter
 @Builder
 @ToString
-public class CategoryDTO {
+public class CommonInfoDTO {
     private String id;
     private String name;
+    private UseYn useYn;
 }

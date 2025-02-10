@@ -1,4 +1,4 @@
 package com.example.choiceculture.domain.festival.repository.querydsl;
 
-public interface CategoryRepositoryCustom {
+public interface CommonInfoRepositoryCustom {
 }

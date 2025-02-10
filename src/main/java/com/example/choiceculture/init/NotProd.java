@@ -44,7 +44,7 @@ public class NotProd {
                     .email("test@test.com")
                     .userName("test")
                     .userPassword(passwordEncoder.encode("1234"))
-                    .userPhone("010-1234-5678")
+                    .userPhone("01012345678")
                     .build();
 
             member.addRole(MemberRole.ADMIN);

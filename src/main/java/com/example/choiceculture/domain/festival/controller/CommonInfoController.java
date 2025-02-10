@@ -1,7 +1,7 @@
 package com.example.choiceculture.domain.festival.controller;
 
-import com.example.choiceculture.domain.festival.dto.CategoryDTO;
-import com.example.choiceculture.domain.festival.service.CategoryService;
+import com.example.choiceculture.domain.festival.dto.CommonInfoDTO;
+import com.example.choiceculture.domain.festival.service.CommonInfoService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -13,15 +13,15 @@ import java.util.List;
 
 @Slf4j
 @RequiredArgsConstructor
-@RequestMapping("/api/category")
+@RequestMapping("/api/common")
 @RestController
-public class CategoryController {
+public class CommonInfoController {
 
-    private final CategoryService categoryService;
+    private final CommonInfoService commonInfoService;
 
     @GetMapping("/list")
-    public ResponseEntity<List<CategoryDTO>> list() {
-        List<CategoryDTO> dtoList = categoryService.list();
+    public ResponseEntity<List<CommonInfoDTO>> list(String id) {
+        List<CommonInfoDTO> dtoList = commonInfoService.list(id);
         return ResponseEntity.ok().body(dtoList);
     }
 
