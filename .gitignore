@@ -35,3 +35,9 @@ out/
 
 ### VS Code ###
 .vscode/
+
+### env 파일 막기 ###
+.env
+.env.local
+.env.production
+.env.development
