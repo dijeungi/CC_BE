@@ -31,12 +31,22 @@ public class MemberController {
     private final JwtProps jwtProps;
 
 
-    // 회원가입
-    @PostMapping("/join")
-    public ResponseEntity<?> join(@Valid @RequestBody JoinRequestDTO request) {
+    // 회원가입 (멤버)
+    @PostMapping("/join/member")
+    public ResponseEntity<?> joinMember(@Valid @RequestBody JoinRequestDTO request) {
         log.info("join: {}", request);
         // 회원가입시, USER 권한을 부여
         request.setRole(MemberRole.USER);
+        memberService.join(request);
+        return ResponseEntity.ok().build();
+    }
+
+    // 회원가입 (팀)
+    @PostMapping("/join/team")
+    public ResponseEntity<?> joinTeam(@Valid @RequestBody JoinRequestDTO request) {
+        log.info("join: {}", request);
+        // 회원가입시, USER 권한을 부여
+        request.setRole(MemberRole.TEAM);
         memberService.join(request);
         return ResponseEntity.ok().build();
     }
