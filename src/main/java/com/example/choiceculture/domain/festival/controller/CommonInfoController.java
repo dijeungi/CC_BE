@@ -1,0 +1,27 @@
+package com.example.choiceculture.domain.festival.controller;
+
+import com.example.choiceculture.domain.festival.dto.CommonInfoDTO;
+import com.example.choiceculture.domain.festival.service.CommonInfoService;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
+
+@Slf4j
+@RequiredArgsConstructor
+@RequestMapping("/api/common")
+@RestController
+public class CommonInfoController {
+    private final CommonInfoService commonInfoService;
+
+    @GetMapping("/list")
+    public ResponseEntity<List<CommonInfoDTO>> list(String id) {
+        List<CommonInfoDTO> dtoList = commonInfoService.list(id);
+        return ResponseEntity.ok().body(dtoList);
+    }
+
+}

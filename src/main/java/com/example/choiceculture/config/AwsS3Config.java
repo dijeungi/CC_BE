@@ -11,7 +11,6 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 @RequiredArgsConstructor
-
 public class AwsS3Config {
     @Value("${app.props.aws.key.access-key}")
     private String accessKey;

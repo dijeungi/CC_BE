@@ -1,11 +1,10 @@
 package com.example.choiceculture.init;
 
+import com.example.choiceculture.domain.member.entity.Member;
 import com.example.choiceculture.domain.member.enums.MemberRole;
-import com.example.choiceculture.domain.member.service.MemberService;
+import com.example.choiceculture.domain.member.repository.MemberRepository;
 import com.example.choiceculture.domain.test.entity.Test;
 import com.example.choiceculture.domain.test.repository.TestRepository;
-import com.example.choiceculture.domain.member.entity.Member;
-import com.example.choiceculture.domain.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
@@ -44,7 +43,7 @@ public class NotProd {
                     .email("test@test.com")
                     .userName("test")
                     .userPassword(passwordEncoder.encode("1234"))
-                    .userPhone("010-1234-5678")
+                    .userPhone("01012345678")
                     .build();
 
             member.addRole(MemberRole.ADMIN);
