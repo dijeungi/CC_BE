@@ -8,7 +8,7 @@ import lombok.*;
 @Setter
 @Builder
 @ToString
-public class CommonInfoDTO {
-    private String id;
-    private String name;
+public class FestivalRequestDTO {
+    private String mdPick;
+    private String premier;
 }

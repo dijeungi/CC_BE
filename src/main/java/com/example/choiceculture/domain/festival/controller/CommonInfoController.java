@@ -16,7 +16,6 @@ import java.util.List;
 @RequestMapping("/api/common")
 @RestController
 public class CommonInfoController {
-
     private final CommonInfoService commonInfoService;
 
     @GetMapping("/list")
