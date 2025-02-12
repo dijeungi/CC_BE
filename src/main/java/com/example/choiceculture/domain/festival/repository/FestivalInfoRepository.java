@@ -15,4 +15,7 @@ public interface FestivalInfoRepository extends JpaRepository<FestivalInfo, Inte
     @Query("select f from FestivalInfo f where f.festivalName like concat('%', :searchKeyword, '%') " +
             "OR f.placeName like concat('%', :searchKeyword, '%') ")
     List<FestivalInfo> findBySearchKeyword(@Param("searchKeyword") String searchKeyword);
+
+    @Query(value = "select f from FestivalInfo f order by f.ranking")
+    List<FestivalInfo> findByRanking();
 }

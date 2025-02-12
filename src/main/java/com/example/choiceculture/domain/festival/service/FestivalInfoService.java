@@ -30,6 +30,8 @@ public interface FestivalInfoService {
      */
     SearchResponseDTO search(String searchKeyword);
 
+    List<FestivalInfoDTO> rankingList();
+
     /**
      * entity -> dto 변환
      * @param info FestivalInfo

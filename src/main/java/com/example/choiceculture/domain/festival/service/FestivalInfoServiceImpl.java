@@ -65,4 +65,10 @@ public class FestivalInfoServiceImpl implements FestivalInfoService {
         return new SearchResponseDTO(festivalDTOList, actorDTOList);
     }
 
+    @Override
+    public List<FestivalInfoDTO> rankingList() {
+        List<FestivalInfo> infoList = festivalInfoRepository.findByRanking();
+        return infoList.stream().map(this::entityToDTO).toList();
+    }
+
 }

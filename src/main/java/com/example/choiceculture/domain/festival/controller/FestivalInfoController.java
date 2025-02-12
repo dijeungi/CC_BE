@@ -52,4 +52,10 @@ public class FestivalInfoController {
         SearchResponseDTO dtoList = festivalInfoService.search(searchKeyword);
         return ResponseEntity.ok().body(dtoList);
     }
+
+    @GetMapping("/ranking")
+    public ResponseEntity<List<FestivalInfoDTO>> rankingList() {
+        List<FestivalInfoDTO> dtoList = festivalInfoService.rankingList();
+        return ResponseEntity.ok().body(dtoList);
+    }
 }
