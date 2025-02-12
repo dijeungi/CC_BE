@@ -21,8 +21,11 @@ import java.util.Set;
 @Entity
 @Table(name = "member")
 public class Member extends BaseEntity {
-
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
+
+    @Column(name = "email")
     private String email;
 
     @Size(max = 255)
