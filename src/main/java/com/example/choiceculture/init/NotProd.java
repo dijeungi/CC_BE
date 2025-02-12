@@ -41,6 +41,7 @@ public class NotProd {
             }
 
             Member member = Member.builder()
+                    .id("test@test.com")
                     .email("test@test.com")
                     .userName("test")
                     .userPassword(passwordEncoder.encode("1234"))

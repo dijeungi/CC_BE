@@ -9,11 +9,13 @@ import com.example.choiceculture.domain.member.service.MemberService;
 import com.example.choiceculture.props.JwtProps;
 import com.example.choiceculture.util.CookieUtil;
 import com.example.choiceculture.util.JWTUtil;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
@@ -123,6 +125,17 @@ public class MemberController {
         }
 
         return Map.of("newAccessToken", newAccessToken);
+    }
+
+    @GetMapping("/user-info")
+    public Map<String, Object> getUserInfo(@AuthenticationPrincipal OAuth2User oAuth2User) {
+        Map<String, Object> attributes = oAuth2User.getAttributes();
+
+        return Map.of(
+                "name", attributes.get("name"),
+                "email", attributes.get("email")
+//                "picture", attributes.get("picture")
+        );
     }
 
     // TEST용
