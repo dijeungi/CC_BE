@@ -4,6 +4,7 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
@@ -17,12 +18,16 @@ public class ActorInfo {
     @Column(name = "id", nullable = false)
     private Integer id;
 
-    @Size(max = 6)
-    @Column(name = "actor_name", length = 6)
-    private String actorName;
+    @NotNull
+    @Column(name = "festival_id", nullable = false)
+    private Integer festivalId;
 
-    @Size(max = 255)
-    @Column(name = "actor_img")
-    private String actorImg;
+    @Size(max = 50)
+    @Column(name = "actor_character", length = 50)
+    private String actorCharacter;
+
+    @Size(max = 10)
+    @Column(name = "actor_name", length = 10)
+    private String actorName;
 
 }

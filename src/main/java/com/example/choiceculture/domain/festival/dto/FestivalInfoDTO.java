@@ -1,12 +1,8 @@
 package com.example.choiceculture.domain.festival.dto;
 
-import com.example.choiceculture.domain.festival.entity.FestivalTime;
 import lombok.*;
 
-import java.time.Instant;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -26,8 +22,9 @@ public class FestivalInfoDTO {
     private Integer festivalPrice;
     private Integer salePrice;
     private Integer runningTime;
-    private Integer age;
-    private String postImage;
     private String mdPick;
     private String premier;
+    private Integer age;
+    private Integer ranking;
+    private String postImage;
 }

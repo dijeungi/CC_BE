@@ -21,10 +21,18 @@ public class FestivalInfoRepositoryImpl implements FestivalInfoRepositoryCustom 
         return jpaQueryFactory
                 .selectFrom(festivalInfo)
                 .where(
+                        eqCategoryId(requestDTO.getCategoryId()),
                         eqMdPick(requestDTO.getMdPick()),
                         eqPremier(requestDTO.getPremier())
                 )
                 .fetch();
+    }
+
+    private BooleanExpression eqCategoryId(String categoryId) {
+        if (categoryId == null) {
+            return null;
+        }
+        return festivalInfo.categoryId.eq(categoryId);
     }
 
     private BooleanExpression eqPremier(String premier) {
