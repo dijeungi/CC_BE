@@ -22,8 +22,7 @@ import java.util.Set;
 @Table(name = "member")
 public class Member extends BaseEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private String id;
 
     @Column(name = "email")
     private String email;
@@ -66,7 +65,7 @@ public class Member extends BaseEntity {
     private Set<Token> tokens = new LinkedHashSet<>();
 
     @ElementCollection(fetch = FetchType.LAZY)
-    @CollectionTable(name = "member_role_list", joinColumns = @JoinColumn(name = "email"))
+    @CollectionTable(name = "member_role_list", joinColumns = @JoinColumn(name = "id"))
     @Column(name = "role") // 해당 memberRoleList 를 저장할 컬럼명을 지정
     @Builder.Default
     private List<MemberRole> memberRoleList = new ArrayList<>();
