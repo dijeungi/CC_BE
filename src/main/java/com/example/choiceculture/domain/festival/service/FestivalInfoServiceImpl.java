@@ -35,6 +35,13 @@ public class FestivalInfoServiceImpl implements FestivalInfoService {
     }
 
     @Override
+    public FestivalInfoDTO getOne(Integer festivalId) {
+        FestivalInfo info = festivalInfoRepository.findById(festivalId)
+                .orElseThrow(() -> new EntityNotFoundException("해당 엔티티가 없습니다."));
+        return entityToDTO(info);
+    }
+
+    @Override
     public List<FestivalInfoDTO> list(FestivalRequestDTO requestDTO) {
         List<FestivalInfo> infoList = festivalInfoRepository.findByDTO(requestDTO);
         if (infoList.isEmpty()) {

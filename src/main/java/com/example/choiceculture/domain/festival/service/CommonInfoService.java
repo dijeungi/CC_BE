@@ -6,23 +6,22 @@ import com.example.choiceculture.domain.festival.entity.CommonInfo;
 import java.util.List;
 
 public interface CommonInfoService {
-
     /**
-     * CT, HD, PL 중 하나를 입력하면 관련 리스트 조회
-     * @param id
-     * @return List<CommonInfoDTO>
+     * CT, HD, PL 중 하나를 입력하면 관련 카테고리 조회
+     * @param id 카테고리ID 앞 두글자
+     * @return 카테고리 목록
      */
     List<CommonInfoDTO> list(String id);
 
     /**
      * entity -> dto 변환
-     * @param commonInfo
+     * @param info CommonInfo
      * @return CommonInfoDTO
      */
-    default CommonInfoDTO entityToDTO(CommonInfo commonInfo) {
+    default CommonInfoDTO entityToDTO(CommonInfo info) {
         return CommonInfoDTO.builder()
-                .id(commonInfo.getId())
-                .name(commonInfo.getName())
+                .id(info.getId())
+                .name(info.getName())
                 .build();
     }
 
