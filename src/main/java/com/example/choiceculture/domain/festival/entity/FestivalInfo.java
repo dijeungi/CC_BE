@@ -3,7 +3,8 @@ package com.example.choiceculture.domain.festival.entity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import lombok.*;
+import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.annotations.ColumnDefault;
 
 import java.time.Instant;
@@ -11,16 +12,12 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-@Builder
-@AllArgsConstructor
-@NoArgsConstructor
 @Getter
 @Setter
 @Entity
 @Table(name = "festival_info")
 public class FestivalInfo {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Integer id;
 
@@ -65,6 +62,9 @@ public class FestivalInfo {
     @Column(name = "age")
     private Integer age;
 
+    @Column(name = "ranking")
+    private Integer ranking;
+
     @Size(max = 255)
     @Column(name = "post_image")
     private String postImage;
@@ -82,6 +82,7 @@ public class FestivalInfo {
     @Lob
     @Column(name = "premier")
     private String premier;
+
 
     @OneToMany(mappedBy = "festivalInfo", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<FestivalTime> festivalTimes = new ArrayList<>();

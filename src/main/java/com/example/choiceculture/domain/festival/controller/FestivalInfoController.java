@@ -1,8 +1,10 @@
 package com.example.choiceculture.domain.festival.controller;
 
+import com.example.choiceculture.domain.festival.dto.ActorInfoDTO;
 import com.example.choiceculture.domain.festival.dto.FestivalInfoDTO;
 import com.example.choiceculture.domain.festival.dto.FestivalRequestDTO;
 import com.example.choiceculture.domain.festival.dto.SearchResponseDTO;
+import com.example.choiceculture.domain.festival.service.ActorInfoService;
 import com.example.choiceculture.domain.festival.service.FestivalInfoService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,10 +21,23 @@ import java.util.List;
 @RestController
 public class FestivalInfoController {
     private final FestivalInfoService festivalInfoService;
+    private final ActorInfoService actorInfoService;
 
     @GetMapping("/ticket-open")
     public ResponseEntity<List<FestivalInfoDTO>> openTicket() {
         List<FestivalInfoDTO> dtoList = festivalInfoService.openTicket();
+        return ResponseEntity.ok().body(dtoList);
+    }
+
+    @GetMapping("/detail")
+    public ResponseEntity<FestivalInfoDTO> getOne(Integer festivalId) {
+        FestivalInfoDTO dto = festivalInfoService.getOne(festivalId);
+        return ResponseEntity.ok().body(dto);
+    }
+
+    @GetMapping("/casting-list")
+    public ResponseEntity<List<ActorInfoDTO>> castingList(Integer festivalId) {
+        List<ActorInfoDTO> dtoList = actorInfoService.castingList(festivalId);
         return ResponseEntity.ok().body(dtoList);
     }
 

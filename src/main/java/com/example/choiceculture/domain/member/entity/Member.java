@@ -21,8 +21,10 @@ import java.util.Set;
 @Entity
 @Table(name = "member")
 public class Member extends BaseEntity {
-
     @Id
+    private String id;
+
+    @Column(name = "email")
     private String email;
 
     @Size(max = 255)
@@ -63,7 +65,7 @@ public class Member extends BaseEntity {
     private Set<Token> tokens = new LinkedHashSet<>();
 
     @ElementCollection(fetch = FetchType.LAZY)
-    @CollectionTable(name = "member_role_list", joinColumns = @JoinColumn(name = "email"))
+    @CollectionTable(name = "member_role_list", joinColumns = @JoinColumn(name = "id"))
     @Column(name = "role") // 해당 memberRoleList 를 저장할 컬럼명을 지정
     @Builder.Default
     private List<MemberRole> memberRoleList = new ArrayList<>();
