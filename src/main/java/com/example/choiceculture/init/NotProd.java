@@ -46,10 +46,10 @@ public class NotProd {
                     .userPassword(passwordEncoder.encode("1234"))
                     .userPhone("01012345678")
                     .build();
-
+            Member savedMember = memberRepository.save(member);
             member.addRole(MemberRole.ADMIN);
 
-            Member savedMember = memberRepository.save(member);
+//            Member savedMember = memberRepository.save(member);
 
 
             testRepository.saveAll(List.of(

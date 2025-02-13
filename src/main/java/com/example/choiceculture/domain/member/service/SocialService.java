@@ -28,7 +28,7 @@ import java.util.Optional;
 public class SocialService {
 
     private final RestTemplate restTemplate;
-    private String kakao_id;
+    private String userId;
     // @Value 어노테이션을 사용하면 final 키워드를 사용할 수 없다.
     // 생성자 주입방식 말고 필드 주입방식으로 객체주입
 
@@ -215,7 +215,7 @@ public class SocialService {
 
 
     private String getEmailFromKakaoAccessToken(String accessToken) {
-
+        userId = "";
         log.info("getEmailFromKakaoAccessToken start...");
         String kakaoGetUserURL = socialProps.getKakao().getUserInfoUri();
 
@@ -234,7 +234,7 @@ public class SocialService {
 
         ResponseEntity<LinkedHashMap> response
                 = restTemplate.exchange(uriBuilder.toString(), HttpMethod.GET, entity, LinkedHashMap.class);
-        kakao_id = response.getBody().get("id").toString();
+        userId = response.getBody().get("id").toString();
 
         log.info("response: {}", response);
 
@@ -249,6 +249,8 @@ public class SocialService {
 
     private String getEmailFromGoogleAccessToken(String accessToken) {
         log.info("getEmailFromGoogleAccessToken start...");
+        userId = "";
+
         // 리소스 uri
         String googleGetUserURL = socialProps.getGoogle().getUserInfoUri();
 
@@ -267,7 +269,7 @@ public class SocialService {
 
         ResponseEntity<LinkedHashMap> response
                 = restTemplate.exchange(uriBuilder.toString(), HttpMethod.GET, entity, LinkedHashMap.class);
-
+        userId = response.getBody().get("sub").toString();
         log.info("response: {}", response);
 
         LinkedHashMap<String, String> bodyMap = response.getBody();
@@ -280,7 +282,7 @@ public class SocialService {
 
     private String getEmailFromNaverAccessToken(String accessToken) {
         log.info("getEmailFromNaverAccessToken start...");
-
+        userId = "";
         String naverGetUserURL = socialProps.getNaver().getUserInfoUri();
 
         if (accessToken == null) {
@@ -300,7 +302,15 @@ public class SocialService {
                 restTemplate.exchange(uriBuilder.toString(), HttpMethod.GET, entity, LinkedHashMap.class);
 
         log.info("response: {}", response);
-
+        LinkedHashMap<String, Object> body = response.getBody();
+        if (body != null && body.containsKey("response")) {
+            LinkedHashMap<String, Object> responseData = (LinkedHashMap<String, Object>) body.get("response");
+            userId = responseData.get("id").toString();
+            System.out.println("User ID: " + userId);
+        } else {
+            throw new RuntimeException("네이버 API 응답에서 'response' 객체를 찾을 수 없습니다.");
+        }
+//        userId = response.getBody("response").get("id").toString();
         LinkedHashMap<String, LinkedHashMap> bodyMap = response.getBody();
 
         log.info("bodyMap: {}", bodyMap);
@@ -314,7 +324,7 @@ public class SocialService {
         String tempPassword = memberService.makeTempPassword();
 
         Member member = Member.builder()
-                .id(kakao_id)
+                .id(userId)
                 .email(email)
                 .userPassword(passwordEncoder.encode(tempPassword))
                 .userName("소셜회원")
