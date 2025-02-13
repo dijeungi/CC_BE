@@ -22,7 +22,7 @@ public class ActorInfoServiceImpl implements ActorInfoService {
     public List<ActorInfoDTO> castingList(Integer festivalId) {
         List<ActorInfo> infoList = actorInfoRepository.findByFestivalId(festivalId);
         if (infoList.isEmpty()) {
-            throw new EntityNotFoundException("해당 엔티티가 없습니다.");
+            throw new EntityNotFoundException("해당 등장인물이 존재하지 않습니다. festivalId: " + festivalId);
         }
         return infoList.stream().map(this::entityToDTO).toList();
     }

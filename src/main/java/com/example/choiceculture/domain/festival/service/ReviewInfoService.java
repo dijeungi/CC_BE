@@ -12,11 +12,7 @@ public interface ReviewInfoService {
      */
     List<ReviewInfoDTO> list();
 
-    /**
-     * entity -> dto 변환
-     * @param info ReviewInfo
-     * @return ReviewInfoDTO
-     */
+    // entity -> dto 변환
     default ReviewInfoDTO entityToDTO(ReviewInfo info) {
         return ReviewInfoDTO.builder()
                 .id(info.getId())

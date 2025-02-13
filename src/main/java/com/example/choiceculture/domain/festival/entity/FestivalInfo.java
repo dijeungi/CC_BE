@@ -1,5 +1,6 @@
 package com.example.choiceculture.domain.festival.entity;
 
+import com.example.choiceculture.entity.BaseEntity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -16,7 +17,7 @@ import java.util.List;
 @Setter
 @Entity
 @Table(name = "festival_info")
-public class FestivalInfo {
+public class FestivalInfo extends BaseEntity {
     @Id
     @Column(name = "id", nullable = false)
     private Integer id;
@@ -68,12 +69,6 @@ public class FestivalInfo {
     @Size(max = 255)
     @Column(name = "post_image")
     private String postImage;
-
-    @Column(name = "reg_date")
-    private Instant regDate;
-
-    @Column(name = "up_date")
-    private Instant upDate;
 
     @Lob
     @Column(name = "md_pick")

@@ -13,11 +13,7 @@ public interface ActorInfoService {
      */
     List<ActorInfoDTO> castingList(Integer festivalId);
 
-    /**
-     * entitiy -> dto 변환
-     * @param info ActorInfo
-     * @return ActorInfoDTO
-     */
+    // entity -> dto 변환
     default ActorInfoDTO entityToDTO(ActorInfo info) {
         return ActorInfoDTO.builder()
                 .id(info.getId())

@@ -1,9 +1,6 @@
 package com.example.choiceculture.domain.festival.controller;
 
-import com.example.choiceculture.domain.festival.dto.ActorInfoDTO;
-import com.example.choiceculture.domain.festival.dto.FestivalInfoDTO;
-import com.example.choiceculture.domain.festival.dto.FestivalRequestDTO;
-import com.example.choiceculture.domain.festival.dto.SearchResponseDTO;
+import com.example.choiceculture.domain.festival.dto.*;
 import com.example.choiceculture.domain.festival.service.ActorInfoService;
 import com.example.choiceculture.domain.festival.service.FestivalInfoService;
 import lombok.RequiredArgsConstructor;
@@ -56,6 +53,12 @@ public class FestivalInfoController {
     @GetMapping("/ranking")
     public ResponseEntity<List<FestivalInfoDTO>> rankingList() {
         List<FestivalInfoDTO> dtoList = festivalInfoService.rankingList();
+        return ResponseEntity.ok().body(dtoList);
+    }
+
+    @GetMapping("/favorite-ranking")
+    public ResponseEntity<RankingResponseDTO> favoriteRanking(String userId) {
+        RankingResponseDTO dtoList = festivalInfoService.favoriteRanking(userId);
         return ResponseEntity.ok().body(dtoList);
     }
 }

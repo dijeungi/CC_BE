@@ -2,6 +2,7 @@ package com.example.choiceculture.domain.festival.service;
 
 import com.example.choiceculture.domain.festival.dto.FestivalInfoDTO;
 import com.example.choiceculture.domain.festival.dto.FestivalRequestDTO;
+import com.example.choiceculture.domain.festival.dto.RankingResponseDTO;
 import com.example.choiceculture.domain.festival.dto.SearchResponseDTO;
 import com.example.choiceculture.domain.festival.entity.FestivalInfo;
 
@@ -30,13 +31,20 @@ public interface FestivalInfoService {
      */
     SearchResponseDTO search(String searchKeyword);
 
+    /**
+     * 전체 공연 랭킹 조회
+     * @return 전체 공연 랭킹 목록
+     */
     List<FestivalInfoDTO> rankingList();
 
     /**
-     * entity -> dto 변환
-     * @param info FestivalInfo
-     * @return FestivalInfoDTO
+     * 사용자가 1순위로 좋아하는 장르의 공연 랭킹 조회
+     * @param userId 사용자ID
+     * @return 사용자가 좋아하는 장르의 공연 랭킹 목록
      */
+    RankingResponseDTO favoriteRanking(String userId);
+
+    // entity -> dto 변환
     default FestivalInfoDTO entityToDTO(FestivalInfo info) {
         return FestivalInfoDTO.builder()
                 .id(info.getId())

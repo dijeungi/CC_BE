@@ -23,7 +23,7 @@ public class CommonInfoServiceImpl implements CommonInfoService {
     public List<CommonInfoDTO> list(String id) {
         List<CommonInfo> infoList = commonInfoRepository.list(id);
         if (infoList.isEmpty()) {
-            throw new EntityNotFoundException("해당 엔티티가 없습니다.");
+            throw new EntityNotFoundException("현재 사용중인 코드가 없습니다. 카테고리ID: " + id);
         }
         return infoList.stream().map(this::entityToDTO).toList();
     }

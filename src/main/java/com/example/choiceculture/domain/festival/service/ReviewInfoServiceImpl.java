@@ -22,7 +22,7 @@ public class ReviewInfoServiceImpl implements ReviewInfoService {
     public List<ReviewInfoDTO> list() {
         List<ReviewInfo> infoList = reviewInfoRepository.findAll();
         if (infoList.isEmpty()) {
-            throw new EntityNotFoundException("해당 엔티티가 없습니다.");
+            throw new EntityNotFoundException("등록된 관람후기가 없습니다.");
         }
         return infoList.stream().map(this::entityToDTO).toList();
     }

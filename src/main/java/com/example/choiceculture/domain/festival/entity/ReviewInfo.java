@@ -1,17 +1,12 @@
 package com.example.choiceculture.domain.festival.entity;
 
 import com.example.choiceculture.entity.BaseEntity;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.ColumnDefault;
-
-import java.time.Instant;
 
 @Getter
 @Setter
@@ -43,5 +38,9 @@ public class ReviewInfo extends BaseEntity {
 
     @Column(name = "rating")
     private Integer rating;
+
+    @Lob
+    @Column(name = "type")
+    private String type;
 
 }
