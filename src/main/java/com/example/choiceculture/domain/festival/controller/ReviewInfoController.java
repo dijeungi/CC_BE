@@ -23,4 +23,10 @@ public class ReviewInfoController {
         List<ReviewInfoDTO> dtoList = reviewInfoService.list(type);
         return ResponseEntity.ok().body(dtoList);
     }
+
+    @GetMapping("/my-list")
+    public ResponseEntity<List<ReviewInfoDTO>> myList(String userId, String type) {
+        List<ReviewInfoDTO> dtoList = reviewInfoService.myList(userId, type);
+        return ResponseEntity.ok().body(dtoList);
+    }
 }

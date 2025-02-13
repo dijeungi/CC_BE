@@ -4,6 +4,8 @@ import com.example.choiceculture.domain.festival.dto.ReviewInfoDTO;
 import com.example.choiceculture.domain.festival.entity.ReviewInfo;
 import com.example.choiceculture.domain.festival.enums.ReviewType;
 import com.example.choiceculture.domain.festival.repository.ReviewInfoRepository;
+import com.example.choiceculture.domain.member.entity.Member;
+import com.example.choiceculture.domain.member.repository.MemberRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -18,6 +20,7 @@ import java.util.List;
 @Service
 public class ReviewInfoServiceImpl implements ReviewInfoService {
     private final ReviewInfoRepository reviewInfoRepository;
+    private final MemberRepository memberRepository;
 
     @Override
     public List<ReviewInfoDTO> list(String type) {
@@ -26,6 +29,22 @@ public class ReviewInfoServiceImpl implements ReviewInfoService {
         }
 
         List<ReviewInfo> infoList = reviewInfoRepository.findByType(ReviewType.valueOf(type));
+        if (infoList.isEmpty()) {
+            throw new EntityNotFoundException("해당 정보가 없습니다. type: " + type);
+        }
+        return infoList.stream().map(this::entityToDTO).toList();
+    }
+
+    @Override
+    public List<ReviewInfoDTO> myList(String userId, String type) {
+        Member member = memberRepository.findById(userId)
+                .orElseThrow(() -> new EntityNotFoundException("존재하지 않는 회원입니다."));
+
+        if (!type.equals("REVIEW") && !type.equals("HOPE") && !type.equals("QA")) {
+            throw new IllegalArgumentException("잘못된 값입니다: " + type);
+        }
+
+        List<ReviewInfo> infoList = reviewInfoRepository.findTypeByMemberId(member.getId(), ReviewType.valueOf(type.toUpperCase()));
         if (infoList.isEmpty()) {
             throw new EntityNotFoundException("해당 정보가 없습니다. type: " + type);
         }

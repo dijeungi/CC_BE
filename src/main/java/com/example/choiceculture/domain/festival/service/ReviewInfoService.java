@@ -2,17 +2,24 @@ package com.example.choiceculture.domain.festival.service;
 
 import com.example.choiceculture.domain.festival.dto.ReviewInfoDTO;
 import com.example.choiceculture.domain.festival.entity.ReviewInfo;
-import com.example.choiceculture.domain.festival.enums.ReviewType;
 
 import java.util.List;
 
 public interface ReviewInfoService {
     /**
-     * 전체 리뷰 조회
-     *
-     * @return 전체 리뷰 목록
+     * 타입별 리뷰 조회
+     * @param type (REVIEW, HOPE, QA)
+     * @return 타입별 리뷰 목록
      */
     List<ReviewInfoDTO> list(String type);
+
+    /**
+     *
+     * @param userId 사용자ID
+     * @param type (REVIEW, HOPE, QA)
+     * @return
+     */
+    List<ReviewInfoDTO> myList(String userId, String type);
 
     // entity -> dto 변환
     default ReviewInfoDTO entityToDTO(ReviewInfo info) {
@@ -26,4 +33,5 @@ public interface ReviewInfoService {
                 .type(info.getType())
                 .build();
     }
+
 }
