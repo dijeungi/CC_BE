@@ -1,5 +1,6 @@
 package com.example.choiceculture.domain.festival.entity;
 
+import com.example.choiceculture.domain.festival.enums.ReviewType;
 import com.example.choiceculture.entity.BaseEntity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
@@ -39,8 +40,7 @@ public class ReviewInfo extends BaseEntity {
     @Column(name = "rating")
     private Integer rating;
 
-    @Lob
-    @Column(name = "type")
-    private String type;
+    @Enumerated(EnumType.STRING)
+    private ReviewType type;
 
 }

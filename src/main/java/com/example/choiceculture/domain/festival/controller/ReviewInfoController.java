@@ -19,8 +19,8 @@ public class ReviewInfoController {
     private final ReviewInfoService reviewInfoService;
 
     @GetMapping("/list")
-    public ResponseEntity<List<ReviewInfoDTO>> list() {
-        List<ReviewInfoDTO> dtoList = reviewInfoService.list();
+    public ResponseEntity<List<ReviewInfoDTO>> list(String type) {
+        List<ReviewInfoDTO> dtoList = reviewInfoService.list(type);
         return ResponseEntity.ok().body(dtoList);
     }
 }
