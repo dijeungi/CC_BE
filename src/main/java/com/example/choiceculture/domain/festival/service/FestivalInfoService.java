@@ -44,6 +44,8 @@ public interface FestivalInfoService {
      */
     RankingResponseDTO favoriteRanking(String userId);
 
+    List<FestivalInfoDTO> favoriteLimit(String userId);
+
     // entity -> dto 변환
     default FestivalInfoDTO entityToDTO(FestivalInfo info) {
         return FestivalInfoDTO.builder()

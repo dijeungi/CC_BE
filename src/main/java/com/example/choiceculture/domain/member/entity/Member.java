@@ -17,6 +17,7 @@ import java.util.Set;
 @SuperBuilder
 @AllArgsConstructor
 @Getter
+@Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 @Table(name = "member")
@@ -80,4 +81,6 @@ public class Member extends BaseEntity {
     public void addRole(MemberRole memberRole) {
         memberRoleList.add(memberRole);
     }
+
+
 }
