@@ -7,17 +7,17 @@ import java.util.List;
 
 public interface ReviewInfoService {
     /**
-     * 전체 리뷰 조회
-     *
-     * @return 전체 리뷰 목록
+     * 타입별 리뷰 조회
+     * @param type (REVIEW, HOPE, QA)
+     * @return 타입별 리뷰 목록
      */
     List<ReviewInfoDTO> list(String type);
 
     /**
-     * 
+     *
      * @param userId 사용자ID
      * @param type (REVIEW, HOPE, QA)
-     * @return type이 일치하는 리뷰 목록
+     * @return
      */
     List<ReviewInfoDTO> myList(String userId, String type);
 
