@@ -3,19 +3,20 @@ package com.example.choiceculture.domain.member.controller;
 
 import com.example.choiceculture.domain.member.dto.JoinRequestDTO;
 import com.example.choiceculture.domain.member.dto.LoginDTO;
+import com.example.choiceculture.domain.member.dto.MemberRequestDTO;
 import com.example.choiceculture.domain.member.dto.MemberTestDTO;
 import com.example.choiceculture.domain.member.enums.MemberRole;
 import com.example.choiceculture.domain.member.service.MemberService;
 import com.example.choiceculture.props.JwtProps;
 import com.example.choiceculture.util.CookieUtil;
 import com.example.choiceculture.util.JWTUtil;
-import org.springframework.security.oauth2.core.user.OAuth2User;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
@@ -138,6 +139,18 @@ public class MemberController {
         );
     }
 
+    @PutMapping("/update")
+    public ResponseEntity<String> update(MemberRequestDTO requestDTO) {
+        memberService.update(requestDTO);
+        return ResponseEntity.ok().body("회원정보 수정이 완료되었습니다.");
+    }
+
+    @DeleteMapping("/delete")
+    public ResponseEntity<String> delete(String userId) {
+        memberService.delete(userId);
+        return ResponseEntity.ok().body("회원탈퇴가 완료되었습니다.");
+    }
+
     // TEST용
     @GetMapping("/api/user")
     public MemberTestDTO user(@RequestParam String email) {
@@ -161,4 +174,5 @@ public class MemberController {
         long leftMin = gap / (1000 * 60);
         return leftMin < 60;
     }
+
 }

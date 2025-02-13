@@ -2,14 +2,16 @@ package com.example.choiceculture.domain.member.service;
 
 
 //import com.example.choiceculture.domain.heart.service.HeartService;
+
 import com.example.choiceculture.domain.member.dto.JoinRequestDTO;
+import com.example.choiceculture.domain.member.dto.MemberRequestDTO;
 import com.example.choiceculture.domain.member.dto.MemberTestDTO;
 import com.example.choiceculture.domain.member.entity.Member;
 import com.example.choiceculture.domain.member.repository.MemberRepository;
-//import com.example.choiceculture.domain.product.dto.ProductDTO;
 import com.example.choiceculture.props.JwtProps;
 import com.example.choiceculture.security.MemberDTO;
 import com.example.choiceculture.util.JWTUtil;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
@@ -18,7 +20,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 import java.util.Map;
 
 @Slf4j
@@ -83,6 +84,22 @@ public class MemberServiceImpl implements MemberService {
         return claims;
     }
 
+    @Override
+    public void update(MemberRequestDTO requestDTO) {
+        Member member = memberRepository.findById(requestDTO.getUserId())
+                .orElseThrow(() -> new EntityNotFoundException("존재하지 않는 회원입니다."));
+
+        member.setUserName(requestDTO.getUserName());
+        member.setUserPhone(requestDTO.getUserPhone());
+        member.setEmail(requestDTO.getEmail());
+        memberRepository.save(member);
+    }
+
+    @Override
+    public void delete(String userId) {
+        memberRepository.deleteById(userId);
+    }
+
 
     @Override
     public String makeTempPassword() {
@@ -96,6 +113,7 @@ public class MemberServiceImpl implements MemberService {
 
     /**
      * Social Login 성공시 JWT 토큰 발급
+     *
      * @param memberDTO Social Login 성공한 회원 정보
      * @return JWT 토큰 정보가 같이 있는 유저정보 Map
      */
@@ -115,6 +133,7 @@ public class MemberServiceImpl implements MemberService {
 
     /**
      * email로 회원을 찾는다.
+     *
      * @param email 이메일
      * @return 회원
      */
