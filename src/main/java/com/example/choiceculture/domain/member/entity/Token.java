@@ -26,7 +26,7 @@ public class Token {
     private String refreshToken;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "email")
+    @JoinColumn(name = "member_id")
     private Member member;
 
     @Column(name = "created_at", columnDefinition = "TIMESTAMP")

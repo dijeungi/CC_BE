@@ -9,11 +9,13 @@ import com.example.choiceculture.domain.member.service.MemberService;
 import com.example.choiceculture.props.JwtProps;
 import com.example.choiceculture.util.CookieUtil;
 import com.example.choiceculture.util.JWTUtil;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
@@ -31,12 +33,22 @@ public class MemberController {
     private final JwtProps jwtProps;
 
 
-    // 회원가입
-    @PostMapping("/join")
-    public ResponseEntity<?> join(@Valid @RequestBody JoinRequestDTO request) {
+    // 회원가입 (멤버)
+    @PostMapping("/join/member")
+    public ResponseEntity<?> joinMember(@Valid @RequestBody JoinRequestDTO request) {
         log.info("join: {}", request);
         // 회원가입시, USER 권한을 부여
         request.setRole(MemberRole.USER);
+        memberService.join(request);
+        return ResponseEntity.ok().build();
+    }
+
+    // 회원가입 (팀)
+    @PostMapping("/join/team")
+    public ResponseEntity<?> joinTeam(@Valid @RequestBody JoinRequestDTO request) {
+        log.info("join: {}", request);
+        // 회원가입시, USER 권한을 부여
+        request.setRole(MemberRole.TEAM);
         memberService.join(request);
         return ResponseEntity.ok().build();
     }
@@ -56,7 +68,7 @@ public class MemberController {
     @PostMapping("/login")
     public ResponseEntity<LoginResponseDTO> login(@Valid @RequestBody LoginDTO loginDTO, HttpServletResponse response) {
         log.info("login: {}", loginDTO);
-        Map<String, Object> loginClaims = memberService.login(loginDTO.getEmail(), loginDTO.getPassword());
+        Map<String, Object> loginClaims = memberService.login(loginDTO.getId(), loginDTO.getPassword());
 
         // 로그인 성공시 accessToken, refreshToken 생성
         String refreshToken = jwtUtil.generateToken(loginClaims, jwtProps.getRefreshTokenExpirationPeriod());
@@ -113,6 +125,17 @@ public class MemberController {
         }
 
         return Map.of("newAccessToken", newAccessToken);
+    }
+
+    @GetMapping("/user-info")
+    public Map<String, Object> getUserInfo(@AuthenticationPrincipal OAuth2User oAuth2User) {
+        Map<String, Object> attributes = oAuth2User.getAttributes();
+
+        return Map.of(
+                "name", attributes.get("name"),
+                "email", attributes.get("email")
+//                "picture", attributes.get("picture")
+        );
     }
 
     // TEST용
