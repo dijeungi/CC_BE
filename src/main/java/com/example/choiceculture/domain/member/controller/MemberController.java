@@ -68,7 +68,7 @@ public class MemberController {
     @PostMapping("/login")
     public ResponseEntity<LoginResponseDTO> login(@Valid @RequestBody LoginDTO loginDTO, HttpServletResponse response) {
         log.info("login: {}", loginDTO);
-        Map<String, Object> loginClaims = memberService.login(loginDTO.getEmail(), loginDTO.getPassword());
+        Map<String, Object> loginClaims = memberService.login(loginDTO.getId(), loginDTO.getPassword());
 
         // 로그인 성공시 accessToken, refreshToken 생성
         String refreshToken = jwtUtil.generateToken(loginClaims, jwtProps.getRefreshTokenExpirationPeriod());

@@ -22,6 +22,7 @@ import java.util.Set;
 @Table(name = "member")
 public class Member extends BaseEntity {
     @Id
+    @Size(max=50)
     private String id;
 
     @Column(name = "email")

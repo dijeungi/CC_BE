@@ -28,7 +28,7 @@ import java.util.Optional;
 public class SocialService {
 
     private final RestTemplate restTemplate;
-
+    private String kakao_id;
     // @Value 어노테이션을 사용하면 final 키워드를 사용할 수 없다.
     // 생성자 주입방식 말고 필드 주입방식으로 객체주입
 
@@ -59,7 +59,7 @@ public class SocialService {
         UriComponents uriBuilder = UriComponentsBuilder.fromHttpUrl(kakaoTokenURL)
                 .queryParam("grant_type", "authorization_code")
                 .queryParam("client_id", clientID)
-                .queryParam("client_secret", clientSecret)
+//                .queryParam("client_secret", clientSecret)
                 .queryParam("redirect_uri", redirectURI)
                 .queryParam("code", code)
                 .build();
@@ -81,6 +81,7 @@ public class SocialService {
     public MemberDTO getKakaoMember(String accessToken) {
         log.info("getKakaoMember start...");
         String email = this.getEmailFromKakaoAccessToken(accessToken);
+
         log.info("getKakaoMember email: {}", email);
 
         Optional<Member> result = memberRepository.findById(email);
@@ -233,6 +234,7 @@ public class SocialService {
 
         ResponseEntity<LinkedHashMap> response
                 = restTemplate.exchange(uriBuilder.toString(), HttpMethod.GET, entity, LinkedHashMap.class);
+        kakao_id = response.getBody().get("id").toString();
 
         log.info("response: {}", response);
 
@@ -312,6 +314,7 @@ public class SocialService {
         String tempPassword = memberService.makeTempPassword();
 
         Member member = Member.builder()
+                .id(kakao_id)
                 .email(email)
                 .userPassword(passwordEncoder.encode(tempPassword))
                 .userName("소셜회원")
@@ -320,4 +323,3 @@ public class SocialService {
         return member;
     }
 }
-

@@ -26,7 +26,7 @@ public class Test extends BaseEntity {
     private String title;
 
     @ManyToOne(fetch = FetchType.LAZY) // jpa
-    @JoinColumn(name = "email")  // fk
+    @JoinColumn(name = "member_id")  // fk
     private Member member;
 
     @Enumerated(EnumType.STRING)
