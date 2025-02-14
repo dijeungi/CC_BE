@@ -1,10 +1,7 @@
 package com.example.choiceculture.domain.member.controller;
 
 
-import com.example.choiceculture.domain.member.dto.JoinRequestDTO;
-import com.example.choiceculture.domain.member.dto.LoginDTO;
-import com.example.choiceculture.domain.member.dto.MemberRequestDTO;
-import com.example.choiceculture.domain.member.dto.MemberTestDTO;
+import com.example.choiceculture.domain.member.dto.*;
 import com.example.choiceculture.domain.member.enums.MemberRole;
 import com.example.choiceculture.domain.member.service.MemberService;
 import com.example.choiceculture.props.JwtProps;
@@ -137,6 +134,12 @@ public class MemberController {
                 "email", attributes.get("email")
 //                "picture", attributes.get("picture")
         );
+    }
+
+    @PutMapping("/change-password")
+    public ResponseEntity<String> update(PasswordRequestDTO requestDTO) {
+        memberService.changePassword(requestDTO);
+        return ResponseEntity.ok().body("비밀번호 변경이 완료되었습니다.");
     }
 
     @PutMapping("/update")

@@ -10,7 +10,6 @@ import lombok.NoArgsConstructor;
 @Data
 @Builder
 public class FestivalRequestDTO {
-    private Integer festivalId;
     private String categoryId;
     private String mdPick;
     private String premier;
