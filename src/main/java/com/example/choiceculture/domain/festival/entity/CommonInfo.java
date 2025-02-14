@@ -1,5 +1,7 @@
 package com.example.choiceculture.domain.festival.entity;
 
+import com.example.choiceculture.domain.festival.enums.ReviewType;
+import com.example.choiceculture.domain.festival.enums.UseYn;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
 import lombok.*;
@@ -21,8 +23,8 @@ public class CommonInfo {
     @Column(name = "name", length = 50)
     private String name;
 
-    @Lob
+    @Enumerated(EnumType.STRING)
     @Column(name = "use_yn")
-    private String useYn;
+    private UseYn useYn;
 
 }

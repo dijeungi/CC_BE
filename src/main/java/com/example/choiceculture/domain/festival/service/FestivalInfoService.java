@@ -56,6 +56,8 @@ public interface FestivalInfoService {
                 .fromDate(info.getFromDate())
                 .toDate(info.getToDate())
                 .festivalState(info.getFestivalState())
+                .salePercent(info.getSalePercent())
+                .festivalPrice(info.getFestivalPrice())
                 .salePrice(info.getSalePrice())
                 .runningTime(info.getRunningTime())
                 .mdPick(info.getMdPick())
