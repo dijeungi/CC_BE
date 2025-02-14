@@ -27,6 +27,12 @@ public interface MemberService {
 
     void delete(String userId);
 
+    Member getMemberByPhoneNumber(String phoneNumber);
+
+    Member getMemberById(String id);
+
+
+
     /**
      * 회원 임시 비밀번호 발급
      *
@@ -44,8 +50,11 @@ public interface MemberService {
     // user -> dto
     default MemberTestDTO entityToDto(Member member) {
         return MemberTestDTO.builder()
+                .id(member.getId())
                 .email(member.getEmail())
                 .name(member.getUserName())
+                .userPhone(member.getUserPhone())
+                .userBirth(member.getUserBirth())
                 .tests(member.getTestList().stream().map(test ->
                         TestResDTO.builder()
                                 .id(test.getId())

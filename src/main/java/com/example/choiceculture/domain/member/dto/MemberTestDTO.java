@@ -15,9 +15,12 @@ import java.util.List;
 @Getter
 public class MemberTestDTO {
 
+    private String id;
     private String email;
     private String name;
-    @Builder.Default
-    private List<TestResDTO> tests = new ArrayList<>(); // Eager로딩(select * from user + select * from tset * N = 1+N 문제) JPA 프록시 객체 lazy loading getter로 가져오지 않는 한 sql 호출x
+    private String userPhone;
+    private String userBirth;
 
+    @Builder.Default
+    private List<TestResDTO> tests = new ArrayList<>();
 }

@@ -158,4 +158,19 @@ public class MemberServiceImpl implements MemberService {
         return memberRepository.findByEmail(email)
                 .orElseThrow(() -> new UsernameNotFoundException("해당 사용자를 찾을 수 없습니다."));
     }
+
+    @Transactional(readOnly = true)
+    public Member getMemberByPhoneNumber(String phoneNumber) {
+        return memberRepository.findByUserPhone(phoneNumber)
+                .orElseThrow(() -> new EntityNotFoundException("해당 전화번호로 가입된 사용자가 없습니다."));
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public Member getMemberById(String id) {
+        return memberRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("해당 ID로 가입된 사용자가 없습니다."));
+    }
+
+
 }
