@@ -3,6 +3,7 @@ package com.example.choiceculture.domain.member.service;
 import com.example.choiceculture.domain.member.dto.JoinRequestDTO;
 import com.example.choiceculture.domain.member.dto.MemberRequestDTO;
 import com.example.choiceculture.domain.member.dto.MemberTestDTO;
+import com.example.choiceculture.domain.member.dto.PasswordRequestDTO;
 import com.example.choiceculture.domain.member.entity.Member;
 import com.example.choiceculture.domain.test.dto.TestResDTO;
 import com.example.choiceculture.security.MemberDTO;
@@ -19,6 +20,8 @@ public interface MemberService {
     void join(JoinRequestDTO request);
 
     Map<String, Object> login(String email, String password);
+
+    void changePassword(PasswordRequestDTO requestDTO);
 
     void update(MemberRequestDTO requestDTO);
 

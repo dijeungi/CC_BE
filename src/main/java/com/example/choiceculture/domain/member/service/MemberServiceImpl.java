@@ -6,6 +6,7 @@ package com.example.choiceculture.domain.member.service;
 import com.example.choiceculture.domain.member.dto.JoinRequestDTO;
 import com.example.choiceculture.domain.member.dto.MemberRequestDTO;
 import com.example.choiceculture.domain.member.dto.MemberTestDTO;
+import com.example.choiceculture.domain.member.dto.PasswordRequestDTO;
 import com.example.choiceculture.domain.member.entity.Member;
 import com.example.choiceculture.domain.member.repository.MemberRepository;
 import com.example.choiceculture.props.JwtProps;
@@ -82,6 +83,20 @@ public class MemberServiceImpl implements MemberService {
         claims.put("refreshToken", refreshToken);
 
         return claims;
+    }
+
+    @Override
+    public void changePassword(PasswordRequestDTO requestDTO) {
+        Member member = memberRepository.findById(requestDTO.getUserId())
+                .orElseThrow(() -> new EntityNotFoundException("존재하지 않는 회원입니다."));
+
+        if (passwordEncoder.matches(requestDTO.getPassword(), member.getUserPassword())) {
+            throw new IllegalArgumentException("이전에 사용했던 비밀번호입니다.");
+        }
+
+        member.setUserPassword(passwordEncoder.encode(requestDTO.getPassword()));
+        memberRepository.save(member);
+
     }
 
     @Override
