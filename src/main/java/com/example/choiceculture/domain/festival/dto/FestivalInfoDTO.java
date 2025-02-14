@@ -15,6 +15,7 @@ public class FestivalInfoDTO {
     private String festivalName;
     private String placeName;
     private String categoryId;
+    private String categoryName;
     private LocalDate fromDate;
     private LocalDate toDate;
     private String festivalState;
