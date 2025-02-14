@@ -21,6 +21,8 @@ public interface ReviewInfoService {
      */
     List<ReviewInfoDTO> myList(String userId, String type);
 
+    double totalStar(Integer festivalId);
+
     // entity -> dto 변환
     default ReviewInfoDTO entityToDTO(ReviewInfo info) {
         return ReviewInfoDTO.builder()

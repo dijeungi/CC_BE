@@ -3,6 +3,7 @@ package com.example.choiceculture.domain.festival.service;
 import com.example.choiceculture.domain.festival.dto.ReviewInfoDTO;
 import com.example.choiceculture.domain.festival.entity.ReviewInfo;
 import com.example.choiceculture.domain.festival.enums.ReviewType;
+import com.example.choiceculture.domain.festival.repository.FestivalInfoRepository;
 import com.example.choiceculture.domain.festival.repository.ReviewInfoRepository;
 import com.example.choiceculture.domain.member.entity.Member;
 import com.example.choiceculture.domain.member.repository.MemberRepository;
@@ -21,6 +22,7 @@ import java.util.List;
 public class ReviewInfoServiceImpl implements ReviewInfoService {
     private final ReviewInfoRepository reviewInfoRepository;
     private final MemberRepository memberRepository;
+    private final FestivalInfoRepository festivalInfoRepository;
 
     @Override
     public List<ReviewInfoDTO> list(String type) {
@@ -50,4 +52,14 @@ public class ReviewInfoServiceImpl implements ReviewInfoService {
         }
         return infoList.stream().map(this::entityToDTO).toList();
     }
+
+    @Override
+    public double totalStar(Integer festivalId) {
+        Double averageRating = reviewInfoRepository.findAverageRating(festivalId);
+        if (averageRating == null) {
+            return 0.0;
+        }
+        return Math.round(averageRating * 10) / 10.0;
+    }
+
 }
