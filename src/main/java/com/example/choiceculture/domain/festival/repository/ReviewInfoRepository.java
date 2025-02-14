@@ -13,4 +13,8 @@ public interface ReviewInfoRepository extends JpaRepository<ReviewInfo, String> 
 
     @Query(value = "select r from ReviewInfo r where r.memberId=:userId and r.type=:type")
     List<ReviewInfo> findTypeByMemberId(@Param("userId") String userId, @Param("type") ReviewType type);
+
+    @Query("select avg(r.rating) from ReviewInfo r where r.festivalId = :festivalId")
+    Double findAverageRating(@Param("festivalId") Integer festivalId);
+
 }
