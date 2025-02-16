@@ -16,6 +16,11 @@ public interface MemberRepository extends JpaRepository<Member, String>
         // leftjoin + fetch join (한번에 조회 ) Pagination OOM ->
     Optional<Member> findByEmail(@Param("email") String email);
 
+    @Query("select u from Member u where u.id = :id")
+        // leftjoin + fetch join (한번에 조회 ) Pagination OOM ->
+    Optional<Member> findById(@Param("id") String id);
+
+
     @Query("select u from Member u where u.userPhone = :phoneNumber")
     Optional<Member> findByUserPhone(@Param("phoneNumber") String phoneNumber);
 
