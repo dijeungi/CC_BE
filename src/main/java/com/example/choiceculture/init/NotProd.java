@@ -46,20 +46,20 @@ public class NotProd {
                     .userPassword(passwordEncoder.encode("1234"))
                     .userPhone("01012345678")
                     .build();
-            Member savedMember = memberRepository.save(member);
+      //      Member savedMember = memberRepository.save(member);
             member.addRole(MemberRole.ADMIN);
 
-//            Member savedMember = memberRepository.save(member);
+            Member savedMember = memberRepository.save(member);
 
-
-            testRepository.saveAll(List.of(
-                    Test.builder().title("AAA").member(savedMember).build(),
-                    Test.builder().title("BBB").member(savedMember).build(),
-                    Test.builder().title("CCC").member(savedMember).build(),
-                    Test.builder().title("DDD").member(savedMember).build(),
-                    Test.builder().title("EEE").member(savedMember).build()
-
-            ));
+//
+//            testRepository.saveAll(List.of(
+//                    Test.builder().title("AAA").member(savedMember).build(),
+//                    Test.builder().title("BBB").member(savedMember).build(),
+//                    Test.builder().title("CCC").member(savedMember).build(),
+//                    Test.builder().title("DDD").member(savedMember).build(),
+//                    Test.builder().title("EEE").member(savedMember).build()
+//
+//            ));
 
 //            List<Test> testList = testRepository.findAll();
 //            log.info("testList: {}", testList);

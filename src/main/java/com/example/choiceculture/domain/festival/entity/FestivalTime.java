@@ -3,14 +3,16 @@ package com.example.choiceculture.domain.festival.entity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.intellij.lang.annotations.Identifier;
 
 @Setter
 @Getter
 @Entity
 @Table(name = "festival_time")
 public class FestivalTime {
-    @EmbeddedId
-    private FestivalTimeId id; // 복합 키
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id; // 복합 키
 
     @Column(name = "holiday_type", length = 4)
     private String holidayType;

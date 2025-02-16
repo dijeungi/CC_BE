@@ -43,16 +43,18 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public void join(JoinRequestDTO request) {
-        memberRepository.findByEmail(request.getEmail())
+        memberRepository.findById(request.getId())
                 .ifPresent(member -> {
                     throw new IllegalArgumentException("이미 존재하는 회원입니다!");
                 });
 
         Member member = Member.builder()
+                .id(request.getId())
                 .email(request.getEmail())
                 .userName(request.getName())
                 .userPassword(passwordEncoder.encode(request.getPassword()))
                 .userPhone(request.getPhone())
+                .userEmailAlarm(request.getMailYn())
                 .build();
 
         member.addRole(request.getRole()); // 회원가입시, USER 권한을 부여
@@ -62,14 +64,14 @@ public class MemberServiceImpl implements MemberService {
 
 
     @Override
-    public Map<String, Object> login(String email, String password) {
-        Member member = getMember(email);
+    public Map<String, Object> login(String id, String password) {
+        Member member = getMember(id);
 
         if (!passwordEncoder.matches(password, member.getUserPassword())) {
             throw new IllegalArgumentException("password not found");
         }
 
-        MemberDTO memberDTO = new MemberDTO(member.getEmail(), member.getUserPassword(), member.getUserName(),
+        MemberDTO memberDTO = new MemberDTO(member.getId(), member.getEmail(), member.getUserPassword(), member.getUserName(),
                 member.getMemberRoleList().stream().map(Enum::name).toList());
 
         log.info("memberService login memberDTO: {}", memberDTO);
@@ -149,13 +151,29 @@ public class MemberServiceImpl implements MemberService {
     /**
      * email로 회원을 찾는다.
      *
-     * @param email 이메일
+     * @param id 이메일
      * @return 회원
      */
     @Transactional(readOnly = true)
     @Override
-    public Member getMember(String email) {
-        return memberRepository.findByEmail(email)
+    public Member getMember(String id) {
+        return memberRepository.findById(id)
                 .orElseThrow(() -> new UsernameNotFoundException("해당 사용자를 찾을 수 없습니다."));
     }
+
+
+    @Transactional(readOnly = true)
+    public Member getMemberByPhoneNumber(String phoneNumber) {
+        return memberRepository.findByUserPhone(phoneNumber)
+                .orElseThrow(() -> new EntityNotFoundException("해당 전화번호로 가입된 사용자가 없습니다."));
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public Member getMemberById(String id) {
+        return memberRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("해당 ID로 가입된 사용자가 없습니다."));
+    }
+
+
 }

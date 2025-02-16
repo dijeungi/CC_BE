@@ -17,15 +17,22 @@ public interface MemberService {
 
     Member getMember(String email);
 
+
     void join(JoinRequestDTO request);
 
-    Map<String, Object> login(String email, String password);
+    Map<String, Object> login(String id, String password);
 
     void changePassword(PasswordRequestDTO requestDTO);
 
     void update(MemberRequestDTO requestDTO);
 
     void delete(String userId);
+
+    Member getMemberByPhoneNumber(String phoneNumber);
+
+    Member getMemberById(String id);
+
+
 
     /**
      * 회원 임시 비밀번호 발급
@@ -44,8 +51,11 @@ public interface MemberService {
     // user -> dto
     default MemberTestDTO entityToDto(Member member) {
         return MemberTestDTO.builder()
+                .id(member.getId())
                 .email(member.getEmail())
                 .name(member.getUserName())
+                .userPhone(member.getUserPhone())
+                .userBirth(member.getUserBirth())
                 .tests(member.getTestList().stream().map(test ->
                         TestResDTO.builder()
                                 .id(test.getId())
@@ -66,6 +76,7 @@ public interface MemberService {
     default MemberDTO entityToDTO(Member member) {
 
         return new MemberDTO(
+                member.getId(),
                 member.getEmail(),
                 member.getUserPassword(),
                 member.getUserName(),

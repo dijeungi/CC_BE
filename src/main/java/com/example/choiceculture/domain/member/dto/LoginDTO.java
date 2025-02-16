@@ -9,7 +9,7 @@ import lombok.Data;
 public class LoginDTO {
 
     @NotBlank(message = "아이디는 필수 입력 값입니다.")
-    @Pattern(regexp = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,6}$", message = "이메일 형식이 올바르지 않습니다.")
+//    @Pattern(regexp = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,6}$", message = "이메일 형식이 올바르지 않습니다.")
     private String id;
 
     @NotBlank(message = "비밀번호는 필수 입력 값입니다.")

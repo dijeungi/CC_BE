@@ -2,6 +2,7 @@ package com.example.choiceculture.domain.member.controller;
 
 
 import com.example.choiceculture.domain.member.dto.*;
+import com.example.choiceculture.domain.member.entity.Member;
 import com.example.choiceculture.domain.member.enums.MemberRole;
 import com.example.choiceculture.domain.member.service.MemberService;
 import com.example.choiceculture.props.JwtProps;
@@ -56,7 +57,7 @@ public class MemberController {
     @NoArgsConstructor
     @Data
     static class LoginResponseDTO {
-        private String email;
+        private String id;
         private String name;
         private List<String> roles;
         private String accessToken;
@@ -77,7 +78,7 @@ public class MemberController {
         CookieUtil.setTokenCookie(response, "refreshToken", refreshToken, jwtProps.getRefreshTokenExpirationPeriod()); // 1day
 
         LoginResponseDTO loginResponseDTO = LoginResponseDTO.builder()
-                .email(loginClaims.get("email").toString())
+                .id(loginClaims.get("id").toString())
                 .name(loginClaims.get("name").toString())
                 .roles((List<String>) loginClaims.get("roleNames"))
                 .accessToken(accessToken)
@@ -176,6 +177,18 @@ public class MemberController {
         // 분단위 계산
         long leftMin = gap / (1000 * 60);
         return leftMin < 60;
+    }
+
+    @PostMapping("/by-phone")
+    public ResponseEntity<MemberTestDTO> getMemberByPhone(@RequestParam String phoneNumber) {
+        Member member = memberService.getMemberByPhoneNumber(phoneNumber);
+        return ResponseEntity.ok(memberService.entityToDto(member)); // DTO로 변환하여 반환
+    }
+
+    @PostMapping("/by-id")
+    public ResponseEntity<MemberTestDTO> getMemberById(@RequestParam String id) {
+        Member member = memberService.getMemberById(id); // ID로 조회
+        return ResponseEntity.ok(memberService.entityToDto(member));
     }
 
 }

@@ -46,7 +46,7 @@ public class SocialController {
         CookieUtil.setTokenCookie(response, "refreshToken", (String) loginClaims.get("refreshToken"), jwtProps.getRefreshTokenExpirationPeriod());
 
         MemberController.LoginResponseDTO loginResponseDTO = MemberController.LoginResponseDTO.builder()
-                .email(loginClaims.get("email").toString())
+                .id(loginClaims.get("id").toString())
                 .name(loginClaims.get("name").toString())
                 .roles((List<String>) loginClaims.get("roleNames"))
                 .accessToken(accessToken)
@@ -78,7 +78,7 @@ public class SocialController {
         CookieUtil.setTokenCookie(response, "refreshToken", (String) loginClaims.get("refreshToken"), jwtProps.getRefreshTokenExpirationPeriod());
 
         MemberController.LoginResponseDTO loginResponseDTO = MemberController.LoginResponseDTO.builder()
-                .email(loginClaims.get("email").toString())
+                .id(loginClaims.get("id").toString())
                 .name(loginClaims.get("name").toString())
                 .roles((List<String>) loginClaims.get("roleNames"))
                 .accessToken(accessToken)
@@ -113,7 +113,7 @@ public class SocialController {
         CookieUtil.setTokenCookie(response, "refreshToken", (String) loginClaims.get("refreshToken"), jwtProps.getRefreshTokenExpirationPeriod());
 
         MemberController.LoginResponseDTO loginResponseDTO = MemberController.LoginResponseDTO.builder()
-                .email(loginClaims.get("email").toString())
+                .id(loginClaims.get("id").toString())
                 .name(loginClaims.get("name").toString())
                 .roles((List<String>) loginClaims.get("roleNames"))
                 .accessToken(accessToken)
