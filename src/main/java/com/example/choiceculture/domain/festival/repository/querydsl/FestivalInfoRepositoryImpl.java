@@ -3,6 +3,7 @@ package com.example.choiceculture.domain.festival.repository.querydsl;
 import com.example.choiceculture.domain.festival.dto.FestivalInfoDTO;
 import com.example.choiceculture.domain.festival.dto.FestivalRequestDTO;
 import com.example.choiceculture.domain.festival.entity.FestivalInfo;
+import com.example.choiceculture.domain.festival.enums.Premier;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -69,13 +70,13 @@ public class FestivalInfoRepositoryImpl implements FestivalInfoRepositoryCustom 
         if (premier == null) {
             return null;
         }
-        return festivalInfo.premier.eq(premier);
+        return festivalInfo.premier.stringValue().eq(premier);
     }
 
     private BooleanExpression eqMdPick(String mdPick) {
         if (mdPick == null) {
             return null;
         }
-        return festivalInfo.mdPick.eq(mdPick);
+        return festivalInfo.mdPick.stringValue().eq(mdPick);
     }
 }

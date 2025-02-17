@@ -39,8 +39,8 @@ public class LikeInfoController {
     }
 
     @DeleteMapping("/delete")
-    public ResponseEntity<String> deleteLike(Integer likeId) {
-        likeInfoService.deleteLike(likeId);
+    public ResponseEntity<String> deleteLike(LikeInfoDTO infoDTO) {
+        likeInfoService.deleteLike(infoDTO);
         return ResponseEntity.ok().body("좋아요 삭제완료");
     }
 

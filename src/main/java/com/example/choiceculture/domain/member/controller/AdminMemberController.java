@@ -49,7 +49,7 @@ public class AdminMemberController {
     @NoArgsConstructor
     @Data
     static class LoginResponseDTO {
-        private String email;
+        private String id;
         private String name;
         private List<String> roles;
         private String accessToken;
@@ -70,7 +70,7 @@ public class AdminMemberController {
         CookieUtil.setTokenCookie(response, "refreshToken", refreshToken, jwtProps.getRefreshTokenExpirationPeriod()); // 1day
 
         LoginResponseDTO loginResponseDTO = LoginResponseDTO.builder()
-                .email(loginClaims.get("email").toString())
+                .id(loginClaims.get("id").toString())
                 .name(loginClaims.get("name").toString())
                 .roles((List<String>) loginClaims.get("roleNames"))
                 .accessToken(accessToken)

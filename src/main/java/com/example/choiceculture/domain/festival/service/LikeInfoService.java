@@ -30,7 +30,7 @@ public interface LikeInfoService {
     /**
      * 좋아요 삭제
      *
-     * @param likeId 좋아요ID
+     * @param infoDTO (사용자ID, 공연ID)
      */
-    void deleteLike(Integer likeId);
+    void deleteLike(LikeInfoDTO infoDTO);
 }
