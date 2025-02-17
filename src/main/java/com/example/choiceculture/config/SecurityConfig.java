@@ -53,6 +53,7 @@ public class SecurityConfig {
                         .requestMatchers(new AntPathRequestMatcher("/api/member/**")).permitAll()
                         .requestMatchers(new AntPathRequestMatcher("/api/firebase/**")).permitAll()
                         .requestMatchers(new AntPathRequestMatcher("/api/festival/**")).permitAll()
+                        .requestMatchers(new AntPathRequestMatcher("/api/time/**")).permitAll()
                         .requestMatchers(new AntPathRequestMatcher("/api/common/**")).permitAll()
                         .requestMatchers(new AntPathRequestMatcher("/api/review/**")).permitAll()
                         .requestMatchers(new AntPathRequestMatcher("/api/like/**")).permitAll()
