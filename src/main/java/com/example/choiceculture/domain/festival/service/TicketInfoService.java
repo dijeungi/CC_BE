@@ -14,8 +14,16 @@ public interface TicketInfoService {
      */
     List<String> seatList(TicketSeatDTO seatDTO);
 
+    /**
+     *  선택한 좌석 추가
+     * @param infoDTO (공연ID, 사용자ID, 시간ID, 좌석코드)
+     */
     void add(TicketInfoDTO infoDTO);
 
+    /**
+     * 좌석선택 취소(삭제)
+     * @param ticketId 티켓ID
+     */
     void delete(Integer ticketId);
 
     // entity -> dto 변환
