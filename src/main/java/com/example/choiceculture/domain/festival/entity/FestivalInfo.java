@@ -19,6 +19,7 @@ import java.util.List;
 @Table(name = "festival_info")
 public class FestivalInfo extends BaseEntity {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Integer id;
 

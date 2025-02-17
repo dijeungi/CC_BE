@@ -3,14 +3,17 @@ package com.example.choiceculture.domain.festival.entity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
 
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 @Getter
 @Setter
 @Entity
-@Table(name = "actor_info")
-public class ActorInfo {
+@Table(name = "ticket_info")
+public class TicketInfo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
@@ -21,11 +24,16 @@ public class ActorInfo {
     private Integer festivalId;
 
     @Size(max = 50)
-    @Column(name = "actor_character", length = 50)
-    private String actorCharacter;
+    @NotNull
+    @ColumnDefault("''")
+    @Column(name = "member_id", nullable = false, length = 50)
+    private String memberId;
 
-    @Size(max = 10)
-    @Column(name = "actor_name", length = 10)
-    private String actorName;
+    @Column(name = "date_id")
+    private Integer dateId;
+
+    @Size(max = 5)
+    @Column(name = "location_num", length = 5)
+    private String locationNum;
 
 }
