@@ -6,6 +6,11 @@ import com.example.choiceculture.domain.festival.entity.FestivalTime;
 import java.util.List;
 
 public interface FestivalTimeService {
+    /**
+     * 공연 상연 목록 조회
+     * @param festivalId 공연ID
+     * @return 상연 목록
+     */
     List<FestivalTimeDTO> list(Integer festivalId);
 
     // entity -> dto 변환
