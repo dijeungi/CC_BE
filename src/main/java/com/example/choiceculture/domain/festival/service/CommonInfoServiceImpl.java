@@ -1,6 +1,7 @@
 package com.example.choiceculture.domain.festival.service;
 
 import com.example.choiceculture.domain.festival.dto.CommonInfoDTO;
+import com.example.choiceculture.domain.festival.dto.CommonRequestDTO;
 import com.example.choiceculture.domain.festival.entity.CommonInfo;
 import com.example.choiceculture.domain.festival.repository.CommonInfoRepository;
 import jakarta.persistence.EntityNotFoundException;
@@ -20,7 +21,7 @@ public class CommonInfoServiceImpl implements CommonInfoService {
     private final CommonInfoRepository commonInfoRepository;
 
     @Override
-    public List<CommonInfoDTO> list(String id) {
+    public List<CommonRequestDTO> list(String id) {
         List<CommonInfo> infoList = commonInfoRepository.list(id);
         if (infoList.isEmpty()) {
             throw new EntityNotFoundException("현재 사용중인 코드가 없습니다. 카테고리ID: " + id);
