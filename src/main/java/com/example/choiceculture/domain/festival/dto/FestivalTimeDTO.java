@@ -14,7 +14,7 @@ import java.time.LocalTime;
 @Data
 @Builder
 public class FestivalTimeDTO {
-    private int id;
+    private Integer id;
     private String holidayType;
     private LocalDate date;
     private LocalTime time;
