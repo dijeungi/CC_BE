@@ -12,4 +12,7 @@ public interface CommonInfoRepository extends JpaRepository<CommonInfo, String> 
     @Query(value = "select c from CommonInfo c where c.id like CONCAT(:id, '%') and c.useYn='Y'")
     List<CommonInfo> list(@Param("id") String id);
 
+    @Query(value = "select count(c) from CommonInfo c where c.id like CONCAT(:id, '%')")
+    Integer countById(@Param("id") String id);
+
 }
