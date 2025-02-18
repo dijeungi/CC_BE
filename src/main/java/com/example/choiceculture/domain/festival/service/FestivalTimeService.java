@@ -1,6 +1,7 @@
 package com.example.choiceculture.domain.festival.service;
 
 import com.example.choiceculture.domain.festival.dto.FestivalTimeDTO;
+import com.example.choiceculture.domain.festival.dto.TimeRequestDTO;
 import com.example.choiceculture.domain.festival.entity.FestivalTime;
 
 import java.util.List;
@@ -12,6 +13,8 @@ public interface FestivalTimeService {
      * @return 상연 목록
      */
     List<FestivalTimeDTO> list(Integer festivalId);
+
+    List<FestivalTimeDTO> time(TimeRequestDTO requestDTO);
 
     // entity -> dto 변환
     default FestivalTimeDTO entityToDTO(FestivalTime info) {
