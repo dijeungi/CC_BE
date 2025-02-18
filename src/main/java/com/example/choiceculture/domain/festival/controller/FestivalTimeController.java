@@ -1,6 +1,7 @@
 package com.example.choiceculture.domain.festival.controller;
 
 import com.example.choiceculture.domain.festival.dto.FestivalTimeDTO;
+import com.example.choiceculture.domain.festival.dto.TimeRequestDTO;
 import com.example.choiceculture.domain.festival.service.FestivalTimeService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -21,6 +22,12 @@ public class FestivalTimeController {
     @GetMapping("/list")
     public ResponseEntity<List<FestivalTimeDTO>> list(Integer festivalId) {
         List<FestivalTimeDTO> dtoList = festivalTimeService.list(festivalId);
+        return ResponseEntity.ok().body(dtoList);
+    }
+
+    @GetMapping("/detail/date")
+    public ResponseEntity<List<FestivalTimeDTO>> time(TimeRequestDTO requestDTO) {
+        List<FestivalTimeDTO> dtoList = festivalTimeService.time(requestDTO);
         return ResponseEntity.ok().body(dtoList);
     }
 
