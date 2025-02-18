@@ -6,10 +6,8 @@ import java.time.LocalDate;
 
 @NoArgsConstructor
 @AllArgsConstructor
-@Getter
-@Setter
+@Data
 @Builder
-@ToString
 public class FestivalInfoDTO {
     private Integer id;
     private String festivalName;

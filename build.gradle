@@ -77,7 +77,9 @@ dependencies {
     implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
 
     // firebase
-    implementation 'com.google.firebase:firebase-admin:9.2.0'
+    implementation('com.google.firebase:firebase-admin:9.2.0') {
+        exclude group: 'commons-logging', module: 'commons-logging'
+    }
 }
 
 tasks.named('test') {

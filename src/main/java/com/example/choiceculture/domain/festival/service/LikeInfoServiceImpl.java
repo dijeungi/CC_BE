@@ -56,7 +56,13 @@ public class LikeInfoServiceImpl implements LikeInfoService {
     }
 
     @Override
-    public void deleteLike(Integer likeId) {
-        likeInfoRepository.deleteById(likeId);
+    public void deleteLike(LikeInfoDTO infoDTO) {
+        Member member = memberRepository.findById(infoDTO.getUserId())
+                .orElseThrow(() -> new EntityNotFoundException("존재하지 않는 회원입니다."));
+
+        Optional<LikeInfo> like
+                = likeInfoRepository.findByDTO(member.getId(), infoDTO.getFestivalId());
+        LikeInfo info = like.get();
+        likeInfoRepository.deleteById(info.getId());
     }
 }

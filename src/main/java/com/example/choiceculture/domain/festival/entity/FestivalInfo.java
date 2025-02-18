@@ -1,5 +1,8 @@
 package com.example.choiceculture.domain.festival.entity;
 
+import com.example.choiceculture.domain.festival.enums.FestivalState;
+import com.example.choiceculture.domain.festival.enums.MdPick;
+import com.example.choiceculture.domain.festival.enums.Premier;
 import com.example.choiceculture.entity.BaseEntity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
@@ -19,6 +22,7 @@ import java.util.List;
 @Table(name = "festival_info")
 public class FestivalInfo extends BaseEntity {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Integer id;
 
@@ -42,9 +46,9 @@ public class FestivalInfo extends BaseEntity {
     @Column(name = "to_date")
     private LocalDate toDate;
 
-    @Lob
+    @Enumerated(EnumType.STRING)
     @Column(name = "festival_state")
-    private String festivalState;
+    private FestivalState festivalState;
 
     @ColumnDefault("0")
     @Column(name = "sale_percent")
@@ -70,13 +74,13 @@ public class FestivalInfo extends BaseEntity {
     @Column(name = "post_image")
     private String postImage;
 
-    @Lob
+    @Enumerated(EnumType.STRING)
     @Column(name = "md_pick")
-    private String mdPick;
+    private MdPick mdPick;
 
-    @Lob
+    @Enumerated(EnumType.STRING)
     @Column(name = "premier")
-    private String premier;
+    private Premier premier;
 
 
     @OneToMany(mappedBy = "festivalInfo", cascade = CascadeType.ALL, orphanRemoval = true)
