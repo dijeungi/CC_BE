@@ -1,14 +1,15 @@
 package com.example.choiceculture.domain.festival.dto;
 
-import com.example.choiceculture.domain.festival.enums.UseYn;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
 @Builder
-public class CommonInfoDTO {
+public class CommonRequestDTO {
     private String id;
     private String name;
-    private UseYn useYn;
 }

@@ -1,6 +1,7 @@
 package com.example.choiceculture.domain.festival.controller;
 
 import com.example.choiceculture.domain.festival.dto.CommonInfoDTO;
+import com.example.choiceculture.domain.festival.dto.CommonRequestDTO;
 import com.example.choiceculture.domain.festival.service.CommonInfoService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,8 +20,8 @@ public class CommonInfoController {
     private final CommonInfoService commonInfoService;
 
     @GetMapping("/list")
-    public ResponseEntity<List<CommonInfoDTO>> list(String id) {
-        List<CommonInfoDTO> dtoList = commonInfoService.list(id);
+    public ResponseEntity<List<CommonRequestDTO>> list(String id) {
+        List<CommonRequestDTO> dtoList = commonInfoService.list(id);
         return ResponseEntity.ok().body(dtoList);
     }
 
