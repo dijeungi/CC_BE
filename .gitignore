@@ -44,3 +44,6 @@ out/
 
 # mac
 .DS_Store
+
+# serviceAccountKey
+src/main/resources/serviceAccountKey.json
