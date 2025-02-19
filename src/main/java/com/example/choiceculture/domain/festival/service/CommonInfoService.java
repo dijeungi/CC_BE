@@ -13,6 +13,8 @@ public interface CommonInfoService {
      */
     List<CommonInfoDTO> list(String id);
 
+    List<CommonInfoDTO> listCategory(String id);
+
     // entity -> dto 변환
     default CommonInfoDTO entityToDTO(CommonInfo info) {
         return CommonInfoDTO.builder()

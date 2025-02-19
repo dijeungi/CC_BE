@@ -27,4 +27,14 @@ public class CommonInfoServiceImpl implements CommonInfoService {
         }
         return infoList.stream().map(this::entityToDTO).toList();
     }
+
+    @Override
+    public List<CommonInfoDTO> listCategory(String id) {
+        List<CommonInfo> infoList = commonInfoRepository.listCategory(id);
+        if (infoList.isEmpty()) {
+            throw new EntityNotFoundException("현재 사용중인 코드가 없습니다. 카테고리ID: " + id);
+        }
+        return infoList.stream().map(this::entityToDTO).toList();
+    }
+
 }
