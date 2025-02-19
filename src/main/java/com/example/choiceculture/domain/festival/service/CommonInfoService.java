@@ -1,6 +1,5 @@
 package com.example.choiceculture.domain.festival.service;
 
-import com.example.choiceculture.domain.festival.dto.CommonInfoDTO;
 import com.example.choiceculture.domain.festival.dto.CommonRequestDTO;
 import com.example.choiceculture.domain.festival.entity.CommonInfo;
 
@@ -14,7 +13,7 @@ public interface CommonInfoService {
      */
     List<CommonRequestDTO> list(String id);
 
-    List<CommonInfoDTO> listCategory(String id);
+    List<CommonRequestDTO> listCategory(String id);
 
     // entity -> dto 변환
     default CommonRequestDTO entityToDTO(CommonInfo info) {
