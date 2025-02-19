@@ -5,13 +5,13 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDate;
+import java.util.List;
 
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
 @Builder
-public class TimeRequestDTO {
+public class TimeResponseDTO {
     private Integer festivalId;
-    private LocalDate date;
+    private List<FestivalTimeDTO> timeDTOS;
 }
