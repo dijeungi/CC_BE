@@ -25,8 +25,8 @@ public class CommonInfoController {
         return ResponseEntity.ok().body(dtoList);
     }
     @GetMapping("/list/category")
-    public ResponseEntity<List<CommonInfoDTO>> listCategory(String id) {
-        List<CommonInfoDTO> dtoList = commonInfoService.listCategory(id);
+    public ResponseEntity<List<CommonRequestDTO>> listCategory(String id) {
+        List<CommonRequestDTO> dtoList = commonInfoService.listCategory(id);
         return ResponseEntity.ok().body(dtoList);
     }
 
