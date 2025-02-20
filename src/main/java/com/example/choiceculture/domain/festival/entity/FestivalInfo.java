@@ -85,6 +85,8 @@ public class FestivalInfo extends BaseEntity {
     private Premier premier;
 
 
+
+
     @OneToMany(mappedBy = "festivalInfo", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<FestivalTime> festivalTimes = new ArrayList<>();
 

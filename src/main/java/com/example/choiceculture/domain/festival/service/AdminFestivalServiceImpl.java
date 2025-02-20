@@ -1,13 +1,13 @@
 package com.example.choiceculture.domain.festival.service;
 
-import com.example.choiceculture.domain.festival.dto.CommonInfoDTO;
 import com.example.choiceculture.domain.festival.dto.FestivalInfoDTO;
-import com.example.choiceculture.domain.festival.entity.CommonInfo;
+import com.example.choiceculture.domain.festival.dto.FestivalResponseDTO;
 import com.example.choiceculture.domain.festival.entity.FestivalInfo;
 import com.example.choiceculture.domain.festival.enums.FestivalState;
 import com.example.choiceculture.domain.festival.repository.ActorInfoRepository;
 import com.example.choiceculture.domain.festival.repository.CommonInfoRepository;
 import com.example.choiceculture.domain.festival.repository.FestivalInfoRepository;
+import com.example.choiceculture.domain.member.repository.MemberRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -15,8 +15,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 @Slf4j
 @Transactional
@@ -27,65 +29,16 @@ public class AdminFestivalServiceImpl implements AdminFestivalService {
     private final CommonInfoRepository commonInfoRepository;
     private final FestivalInfoRepository festivalInfoRepository;
     private final ActorInfoRepository actorInfoRepository;
+    private final ActorInfoService actorInfoService;
+    private final MemberRepository memberRepository;
 
 
-    @Override
-    public List<CommonInfoDTO> getCommon() {
-        List<CommonInfo> infoList = commonInfoRepository.findAll();
-        return infoList.stream().map(info -> {
-            return CommonInfoDTO.builder()
-                    .id(info.getId())
-                    .name(info.getName())
-                    .useYn(info.getUseYn())
-                    .build();
-        }).toList();
-    }
-
-    @Override
-    public void addCommon(CommonInfoDTO infoDTO) {
-        int commonCnt = commonInfoRepository.countById(infoDTO.getId());
-        int nextCnt = commonCnt + 1;
-        String commonId = infoDTO.getId() + (nextCnt < 10 ? "0" + nextCnt : nextCnt);
-
-        CommonInfo info = CommonInfo.builder()
-                .id(commonId)
-                .name(infoDTO.getName())
-                .useYn(infoDTO.getUseYn())
-                .build();
-        commonInfoRepository.save(info);
-    }
-
-    @Override
-    public void editcommon(CommonInfoDTO infoDTO) {
-        CommonInfo info = commonInfoRepository.findById(infoDTO.getId())
-                .orElseThrow(() -> new EntityNotFoundException("존재하지 않는 카테고리입니다."));
-
-        info.setName(infoDTO.getName());
-        info.setUseYn(infoDTO.getUseYn());
-        commonInfoRepository.save(info);
-    }
-
-    @Override
-    public void deleteCommon(String commonId) {
-        commonInfoRepository.deleteById(commonId);
-    }
-
-    @Override
-    public List<FestivalInfoDTO> getProducts() {
-        List<FestivalInfoDTO> infoList = festivalInfoRepository.findAll()
-                .stream().map(festivalInfoService::entityToDTO).toList();
-        if (infoList.isEmpty()) {
-            throw new EntityNotFoundException("공연이 없습니다.");
-        }
-        return infoList;
-    }
-
-    static FestivalState nowState(LocalDate fromDate) {
+    static FestivalState nowState(LocalDate fromDate, LocalDate toDate) {
         FestivalState state;
 
         LocalDate today = LocalDate.now();
 
-        if (fromDate.isBefore(today)) {
+        if (toDate.isBefore(today)) {
             state = FestivalState.END;
         } else if (fromDate.isAfter(today)) {
             state = FestivalState.YET;
@@ -98,8 +51,27 @@ public class AdminFestivalServiceImpl implements AdminFestivalService {
 
     @Override
     public void addProduct(FestivalInfoDTO infoDTO) {
-        FestivalInfo info = festivalInfoService.dtoToEntity(infoDTO);
-        FestivalState state = nowState(info.getFromDate());
+        FestivalInfo info = FestivalInfo.builder()
+                .festivalName(infoDTO.getFestivalName())
+                .placeName(infoDTO.getPlaceName())
+                .categoryId(infoDTO.getCategoryId())
+                .fromDate(infoDTO.getFromDate())
+                .toDate(infoDTO.getToDate())
+                .festivalState(infoDTO.getFestivalState())
+                .salePercent(infoDTO.getSalePercent())
+                .festivalPrice(infoDTO.getFestivalPrice())
+                .salePrice(Math.max(0, Math.round(infoDTO.getFestivalPrice() * (1 - (float) (infoDTO.getSalePercent() != null ? infoDTO.getSalePercent() : 0) / 100))))
+                .runningTime(infoDTO.getRunningTime())
+                .mdPick(infoDTO.getMdPick())
+                .premier(infoDTO.getPremier())
+                .age(infoDTO.getAge())
+                .ranking(Optional.ofNullable(infoDTO.getRanking()).orElse(0))
+                .postImage(infoDTO.getPostImage())
+                .regDate(LocalDateTime.now())
+                .build();
+
+
+        FestivalState state = nowState(info.getFromDate(), info.getToDate());
         info.setFestivalState(state);
         festivalInfoRepository.save(info);
     }
@@ -122,7 +94,7 @@ public class AdminFestivalServiceImpl implements AdminFestivalService {
         info.setCategoryId(Objects.requireNonNullElse(infoDTO.getCategoryId(), info.getCategoryId()));
         info.setPlaceName(Objects.requireNonNullElse(infoDTO.getPlaceName(), info.getPlaceName()));
 
-        FestivalState state = nowState(Objects.requireNonNullElse(infoDTO.getFromDate(), info.getFromDate()));
+        FestivalState state = nowState(infoDTO.getFromDate(), info.getToDate());
         info.setFestivalState(state);
 
         festivalInfoRepository.save(info);
@@ -132,6 +104,29 @@ public class AdminFestivalServiceImpl implements AdminFestivalService {
     @Override
     public void deleteProduct(Integer festivalId) {
         festivalInfoRepository.deleteById(festivalId);
+    }
+
+    @Override
+    public List<FestivalResponseDTO> getIdList() {
+        return festivalInfoRepository.getIdList().stream()
+                .map(projection -> new FestivalResponseDTO(projection.getFestivalId(), projection.getFestivalName()))
+                .toList();
+    }
+
+    @Override
+    public List<FestivalInfoDTO> findProducts(String keyword) {
+        List<FestivalInfo> infoList = festivalInfoRepository.findByFestivalKeyword(keyword);
+        return infoList.stream().map(festivalInfoService::entityToDTO).toList();
+    }
+
+    @Override
+    public List<FestivalInfoDTO> getProducts() {
+        List<FestivalInfoDTO> infoList = festivalInfoRepository.findAll()
+                .stream().map(festivalInfoService::entityToDTO).toList();
+        if (infoList.isEmpty()) {
+            throw new EntityNotFoundException("공연이 없습니다.");
+        }
+        return infoList;
     }
 
 }

@@ -37,6 +37,10 @@ public class AdminMemberServiceImpl implements AdminMemberService {
         return entityToDTO(getMember(email));
     }
 
+    @Override
+    public void deleteMember(String memberId) {
+        memberRepository.deleteById(memberId);
+    }
 
     /**
      * member 찾기
