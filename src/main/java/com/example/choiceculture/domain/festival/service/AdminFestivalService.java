@@ -1,18 +1,10 @@
 package com.example.choiceculture.domain.festival.service;
 
-import com.example.choiceculture.domain.festival.dto.CommonInfoDTO;
-import com.example.choiceculture.domain.festival.dto.FestivalInfoDTO;
+import com.example.choiceculture.domain.festival.dto.*;
 
 import java.util.List;
 
 public interface AdminFestivalService {
-    List<CommonInfoDTO> getCommon();
-
-    void addCommon(CommonInfoDTO infoDTO);
-
-    void editcommon(CommonInfoDTO infoDTO);
-
-    void deleteCommon(String commonId);
 
     List<FestivalInfoDTO> getProducts();
 
@@ -21,4 +13,9 @@ public interface AdminFestivalService {
     void editProduct(FestivalInfoDTO infoDTO);
 
     void deleteProduct(Integer festivalId);
+
+    List<FestivalResponseDTO> getIdList();
+
+    List<FestivalInfoDTO> findProducts(String keyword);
+
 }

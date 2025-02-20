@@ -11,9 +11,12 @@ public interface AdminMemberService {
 
     MemberResDTO getOne(String email);
 
+    void deleteMember(String memberId);
+
     default MemberResDTO entityToDTO(Member member){
 
         return MemberResDTO.builder()
+                .Id(member.getId())
                 .email(member.getEmail())
                 .name(member.getUserName())
                 .phone(member.getUserPhone())

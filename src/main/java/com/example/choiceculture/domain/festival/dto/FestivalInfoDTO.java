@@ -20,6 +20,7 @@ public class FestivalInfoDTO {
     private LocalDate fromDate;
     private LocalDate toDate;
     private FestivalState festivalState;
+    private String festivalStateName;
     private Integer salePercent;
     private Integer festivalPrice;
     private Integer salePrice;

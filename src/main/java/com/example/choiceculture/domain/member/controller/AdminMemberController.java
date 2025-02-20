@@ -133,6 +133,12 @@ public class AdminMemberController {
         return ResponseEntity.ok(dto);
     }
 
+    @DeleteMapping("/delete")
+    public ResponseEntity<String> deleteMember(String memberId) {
+        adminMemberService.deleteMember(memberId);
+        return ResponseEntity.ok().body("회원 삭제완료되었습니다.");
+    }
+
     /**
      * 시간이 1시간 미만으로 남았는지 체크
      *
