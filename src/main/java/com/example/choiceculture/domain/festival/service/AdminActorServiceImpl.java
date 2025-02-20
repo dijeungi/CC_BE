@@ -3,7 +3,6 @@ package com.example.choiceculture.domain.festival.service;
 import com.example.choiceculture.domain.festival.dto.ActorInfoDTO;
 import com.example.choiceculture.domain.festival.dto.ActorResponseDTO;
 import com.example.choiceculture.domain.festival.entity.ActorInfo;
-import com.example.choiceculture.domain.festival.entity.FestivalInfo;
 import com.example.choiceculture.domain.festival.repository.ActorInfoRepository;
 import com.example.choiceculture.domain.festival.repository.FestivalInfoRepository;
 import jakarta.persistence.EntityNotFoundException;

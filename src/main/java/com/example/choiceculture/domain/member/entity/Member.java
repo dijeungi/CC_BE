@@ -1,6 +1,7 @@
 package com.example.choiceculture.domain.member.entity;
 
 import com.example.choiceculture.domain.member.enums.MemberRole;
+import com.example.choiceculture.domain.member.enums.UserEmailAlarm;
 import com.example.choiceculture.domain.test.entity.Test;
 import com.example.choiceculture.entity.BaseEntity;
 import jakarta.persistence.*;
@@ -45,9 +46,9 @@ public class Member extends BaseEntity {
     @Column(name = "user_birth", length = 8)
     private String userBirth;
 
-    @Lob
+    @Enumerated(EnumType.STRING)
     @Column(name = "user_email_alarm")
-    private String userEmailAlarm;
+    private UserEmailAlarm userEmailAlarm;
 
     @Size(max = 4)
     @Column(name = "user_favorite_1", length = 4)

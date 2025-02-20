@@ -1,10 +1,8 @@
 package com.example.choiceculture.domain.festival.service;
 
 import com.example.choiceculture.domain.festival.dto.CommonInfoDTO;
-import com.example.choiceculture.domain.festival.dto.FestivalInfoDTO;
 import com.example.choiceculture.domain.festival.entity.CommonInfo;
 import com.example.choiceculture.domain.festival.repository.CommonInfoRepository;
-import com.example.choiceculture.domain.festival.repository.FestivalInfoRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,8 +17,6 @@ import java.util.List;
 @Service
 public class AdminCommonServiceImpl implements AdminCommonService{
     private final CommonInfoRepository commonInfoRepository;
-    private final FestivalInfoRepository festivalInfoRepository;
-    private final FestivalInfoService festivalInfoService;
 
     @Override
     public List<CommonInfoDTO> getCommon() {

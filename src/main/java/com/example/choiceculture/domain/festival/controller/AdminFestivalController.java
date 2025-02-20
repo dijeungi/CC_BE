@@ -22,17 +22,17 @@ public class AdminFestivalController {
         return ResponseEntity.ok().body(dtoList);
     }
 
-    @PostMapping("/add")
-    public ResponseEntity<String> addProduct(FestivalInfoDTO infoDTO) {
-        adminFestivalService.addProduct(infoDTO);
-        return ResponseEntity.ok().body("공연 추가완료되었습니다.");
-    }
-
-    @PutMapping("/edit")
-    public ResponseEntity<String> editProduct(FestivalInfoDTO infoDTO) {
-        adminFestivalService.editProduct(infoDTO);
-        return ResponseEntity.ok().body("공연 수정완료되었습니다.");
-    }
+//    @PostMapping("/add")
+//    public ResponseEntity<String> addProduct(FestivalInfoDTO infoDTO) {
+//        adminFestivalService.addProduct(infoDTO);
+//        return ResponseEntity.ok().body("공연 추가완료되었습니다.");
+//    }
+//
+//    @PutMapping("/edit")
+//    public ResponseEntity<String> editProduct(FestivalInfoDTO infoDTO) {
+//        adminFestivalService.editProduct(infoDTO);
+//        return ResponseEntity.ok().body("공연 수정완료되었습니다.");
+//    }
 
     @DeleteMapping("/delete")
     public ResponseEntity<String> deleteProduct(Integer festivalId) {
