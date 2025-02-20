@@ -1,5 +1,6 @@
 package com.example.choiceculture.domain.festival.entity;
 
+import com.example.choiceculture.domain.festival.enums.AccessState;
 import com.example.choiceculture.domain.festival.enums.FestivalState;
 import com.example.choiceculture.domain.festival.enums.MdPick;
 import com.example.choiceculture.domain.festival.enums.Premier;
@@ -41,6 +42,10 @@ public class FestivalInfo extends BaseEntity {
     @NotNull
     @Column(name = "category_id", nullable = false, length = 4)
     private String categoryId;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "access_state")
+    private AccessState accessState;
 
     @Column(name = "from_date")
     private LocalDate fromDate;

@@ -8,9 +8,9 @@ public interface AdminFestivalService {
 
     List<FestivalInfoDTO> getProducts();
 
-    void addProduct(FestivalInfoDTO infoDTO);
-
-    void editProduct(FestivalInfoDTO infoDTO);
+//    void addProduct(FestivalInfoDTO infoDTO);
+//
+//    void editProduct(FestivalInfoDTO infoDTO);
 
     void deleteProduct(Integer festivalId);
 

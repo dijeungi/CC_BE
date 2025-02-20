@@ -3,7 +3,7 @@ package com.example.choiceculture.domain.festival.repository.querydsl;
 import com.example.choiceculture.domain.festival.dto.FestivalInfoDTO;
 import com.example.choiceculture.domain.festival.dto.FestivalRequestDTO;
 import com.example.choiceculture.domain.festival.entity.FestivalInfo;
-import com.example.choiceculture.domain.festival.enums.Premier;
+import com.example.choiceculture.domain.festival.enums.AccessState;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -54,7 +54,8 @@ public class FestivalInfoRepositoryImpl implements FestivalInfoRepositoryCustom 
                 .where(
                         eqCategoryId(requestDTO.getCategoryId()),
                         eqMdPick(requestDTO.getMdPick()),
-                        eqPremier(requestDTO.getPremier())
+                        eqPremier(requestDTO.getPremier()),
+                        festivalInfo.accessState.eq(AccessState.Y)
                 )
                 .fetch();
     }

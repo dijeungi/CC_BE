@@ -15,9 +15,9 @@ import org.hibernate.annotations.ColumnDefault;
 @Table(name = "ticket_info")
 public class TicketInfo {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false)
-    private Integer id;
+    @NotNull
+    @Column(name = "order_id", nullable = false, length = 50)
+    private String id;
 
     @NotNull
     @Column(name = "festival_id", nullable = false)
