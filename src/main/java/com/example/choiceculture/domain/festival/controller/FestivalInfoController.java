@@ -55,8 +55,8 @@ public class FestivalInfoController {
     }
 
     @GetMapping("/favorite-ranking")
-    public ResponseEntity<RankingResponseDTO> favoriteRanking(String userId) {
-        RankingResponseDTO dtoList = festivalInfoService.favoriteRanking(userId);
+    public ResponseEntity<List<FestivalInfoDTO>> favoriteRanking(String userId) {
+        List<FestivalInfoDTO> dtoList = festivalInfoService.favoriteRanking(userId);
         return ResponseEntity.ok().body(dtoList);
     }
 

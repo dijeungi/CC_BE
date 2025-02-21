@@ -16,7 +16,7 @@ public class ReviewInfoDTO {
     private String memberId;
     private String title;
     private String content;
-    private Integer rating; // 평점(별점)
+    private Integer rating;
     private ReviewType type;
 
 }
