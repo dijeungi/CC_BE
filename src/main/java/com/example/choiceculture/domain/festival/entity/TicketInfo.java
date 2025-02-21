@@ -1,13 +1,17 @@
 package com.example.choiceculture.domain.festival.entity;
 
+import com.example.choiceculture.domain.festival.enums.ReFundState;
+import com.example.choiceculture.domain.member.entity.Member;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 
-@AllArgsConstructor
+import java.time.LocalDate;
+
 @NoArgsConstructor
+@AllArgsConstructor
 @Builder
 @Getter
 @Setter
@@ -15,25 +19,39 @@ import org.hibernate.annotations.ColumnDefault;
 @Table(name = "ticket_info")
 public class TicketInfo {
     @Id
-    @NotNull
+    @Size(max = 50)
     @Column(name = "order_id", nullable = false, length = 50)
-    private String id;
+    private String orderId;
 
     @NotNull
     @Column(name = "festival_id", nullable = false)
     private Integer festivalId;
 
-    @Size(max = 50)
     @NotNull
-    @ColumnDefault("''")
-    @Column(name = "member_id", nullable = false, length = 50)
-    private String memberId;
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "member_id", nullable = false)
+    private Member member;
 
     @Column(name = "date_id")
     private Integer dateId;
 
+    @Column(name = "payment_date")
+    private LocalDate paymentDate;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "refund_state")
+    private ReFundState refundState;
+
     @Size(max = 5)
     @Column(name = "location_num", length = 5)
     private String locationNum;
+
+    @PreUpdate
+    @PrePersist
+    public void prePersist() {
+        if (this.refundState == null) {
+            this.refundState = ReFundState.YET;
+        }
+    }
 
 }

@@ -25,7 +25,7 @@ public class TicketInfoController {
     }
 
     @PostMapping("/add")
-    public ResponseEntity<String> add(TicketInfoDTO infoDTO) {
+    public ResponseEntity<String> add(@RequestBody TicketInfoDTO infoDTO) {
         ticketInfoService.add(infoDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body("좌석선택이 완료되었습니다.");
     }

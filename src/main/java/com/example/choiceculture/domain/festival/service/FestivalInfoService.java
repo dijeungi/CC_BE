@@ -44,7 +44,7 @@ public interface FestivalInfoService {
      * @param userId 사용자ID
      * @return 사용자가 좋아하는 장르의 공연 랭킹 목록
      */
-    RankingResponseDTO favoriteRanking(String userId);
+    List<FestivalInfoDTO> favoriteRanking(String userId);
 
     List<FestivalInfoDTO> favoriteLimit(String userId);
 
