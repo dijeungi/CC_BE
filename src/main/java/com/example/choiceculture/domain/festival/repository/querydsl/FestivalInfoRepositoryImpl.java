@@ -14,6 +14,7 @@ import java.util.List;
 
 import static com.example.choiceculture.domain.festival.entity.QCommonInfo.commonInfo;
 import static com.example.choiceculture.domain.festival.entity.QFestivalInfo.festivalInfo;
+import static com.example.choiceculture.domain.festival.entity.QPlaceInfo.placeInfo;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -27,6 +28,8 @@ public class FestivalInfoRepositoryImpl implements FestivalInfoRepositoryCustom 
                         festivalInfo.id,
                         festivalInfo.festivalName,
                         festivalInfo.placeName,
+                        placeInfo.placeName.as("placeDetailName"),
+                        placeInfo.placeLocation,
                         festivalInfo.categoryId,
                         commonInfo.name.as("categoryName"),
                         festivalInfo.fromDate,
@@ -43,6 +46,7 @@ public class FestivalInfoRepositoryImpl implements FestivalInfoRepositoryCustom 
                         festivalInfo.postImage))
                 .from(festivalInfo)
                 .leftJoin(commonInfo).on(festivalInfo.categoryId.eq(commonInfo.id))
+                .leftJoin(placeInfo).on(festivalInfo.id.eq(placeInfo.festival.id))
                 .where(festivalInfo.id.eq(festivalId))
                 .fetchOne();
     }
