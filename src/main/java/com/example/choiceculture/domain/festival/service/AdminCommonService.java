@@ -1,15 +1,15 @@
 package com.example.choiceculture.domain.festival.service;
 
 import com.example.choiceculture.domain.festival.dto.CommonInfoDTO;
-
-import java.util.List;
+import com.example.choiceculture.dto.PageRequestDTO;
+import com.example.choiceculture.dto.PageResponseDTO;
 
 public interface AdminCommonService {
-    List<CommonInfoDTO> getCommon();
+    PageResponseDTO<CommonInfoDTO> getCommon(PageRequestDTO requestDTO);
 
     void addCommon(CommonInfoDTO infoDTO);
 
-    void editcommon(CommonInfoDTO infoDTO);
+    void editCommon(CommonInfoDTO infoDTO);
 
     void deleteCommon(String commonId);
 }

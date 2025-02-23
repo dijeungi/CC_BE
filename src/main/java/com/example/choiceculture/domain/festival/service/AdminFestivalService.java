@@ -1,21 +1,28 @@
 package com.example.choiceculture.domain.festival.service;
 
-import com.example.choiceculture.domain.festival.dto.*;
+import com.example.choiceculture.domain.festival.dto.FestivalInfoAccessDTO;
+import com.example.choiceculture.domain.festival.dto.FestivalInfoDTO;
+import com.example.choiceculture.domain.festival.dto.FestivalResponseDTO;
+import com.example.choiceculture.domain.festival.dto.TicketResponseDTO;
+import com.example.choiceculture.dto.PageRequestDTO;
+import com.example.choiceculture.dto.PageResponseDTO;
 
 import java.util.List;
 
 public interface AdminFestivalService {
 
-    List<FestivalInfoDTO> getProducts();
+    PageResponseDTO<FestivalInfoDTO> getFestivals(PageRequestDTO requestDTO);
 
-//    void addProduct(FestivalInfoDTO infoDTO);
-//
-//    void editProduct(FestivalInfoDTO infoDTO);
-
-    void deleteProduct(Integer festivalId);
+    void deleteFestival(Integer festivalId);
 
     List<FestivalResponseDTO> getIdList();
 
-    List<FestivalInfoDTO> findProducts(String keyword);
+    List<FestivalInfoDTO> findFestivals(String keyword);
+
+    PageResponseDTO<FestivalInfoAccessDTO> applyList(PageRequestDTO requestDTO);
+
+    void register(Integer accessId, Integer festivalId);
+
+    void refusal(Integer festivalId);
 
 }

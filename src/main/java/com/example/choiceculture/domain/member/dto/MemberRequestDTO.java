@@ -21,5 +21,4 @@ public class MemberRequestDTO {
     private String userFavorite2;
     private String userFavorite3;
 
-
 }

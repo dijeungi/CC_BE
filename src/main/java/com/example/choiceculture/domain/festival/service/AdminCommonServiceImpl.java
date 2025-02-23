@@ -3,9 +3,15 @@ package com.example.choiceculture.domain.festival.service;
 import com.example.choiceculture.domain.festival.dto.CommonInfoDTO;
 import com.example.choiceculture.domain.festival.entity.CommonInfo;
 import com.example.choiceculture.domain.festival.repository.CommonInfoRepository;
+import com.example.choiceculture.dto.PageRequestDTO;
+import com.example.choiceculture.dto.PageResponseDTO;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,19 +21,30 @@ import java.util.List;
 @Transactional
 @RequiredArgsConstructor
 @Service
-public class AdminCommonServiceImpl implements AdminCommonService{
+public class AdminCommonServiceImpl implements AdminCommonService {
     private final CommonInfoRepository commonInfoRepository;
 
     @Override
-    public List<CommonInfoDTO> getCommon() {
-        List<CommonInfo> infoList = commonInfoRepository.findAll();
-        return infoList.stream().map(info -> {
-            return CommonInfoDTO.builder()
-                    .id(info.getId())
-                    .name(info.getName())
-                    .useYn(info.getUseYn())
-                    .build();
-        }).toList();
+    public PageResponseDTO<CommonInfoDTO> getCommon(PageRequestDTO requestDTO) {
+        Pageable pageable = PageRequest.of(
+                requestDTO.getPage() - 1,
+                requestDTO.getSize(),
+                Sort.by("id").ascending()
+        );
+
+        Page<CommonInfo> commonPage = commonInfoRepository.findAll(pageable);
+
+        List<CommonInfoDTO> dtoList = commonPage.stream().map(info -> CommonInfoDTO.builder()
+                .id(info.getId())
+                .name(info.getName())
+                .useYn(info.getUseYn())
+                .build()).toList();
+
+        return PageResponseDTO.<CommonInfoDTO>withAll()
+                .dtoList(dtoList)
+                .totalCount(commonPage.getTotalElements())
+                .pageRequestDTO(requestDTO)
+                .build();
     }
 
     @Override
@@ -45,7 +62,7 @@ public class AdminCommonServiceImpl implements AdminCommonService{
     }
 
     @Override
-    public void editcommon(CommonInfoDTO infoDTO) {
+    public void editCommon(CommonInfoDTO infoDTO) {
         CommonInfo info = commonInfoRepository.findById(infoDTO.getId())
                 .orElseThrow(() -> new EntityNotFoundException("존재하지 않는 카테고리입니다."));
 
