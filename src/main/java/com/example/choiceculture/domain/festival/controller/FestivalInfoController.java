@@ -53,6 +53,11 @@ public class FestivalInfoController {
         List<FestivalInfoDTO> dtoList = festivalInfoService.rankingList();
         return ResponseEntity.ok().body(dtoList);
     }
+    @GetMapping("/ranking/limit")
+    public ResponseEntity<List<FestivalInfoDTO>> rankingLimitList() {
+        List<FestivalInfoDTO> dtoList = festivalInfoService.LimitRanking();
+        return ResponseEntity.ok().body(dtoList);
+    }
 
     @GetMapping("/favorite-ranking")
     public ResponseEntity<List<FestivalInfoDTO>> favoriteRanking(String userId) {

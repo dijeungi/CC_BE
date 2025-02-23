@@ -96,6 +96,18 @@ public class FestivalInfoServiceImpl implements FestivalInfoService {
         return dtoList;
     }
 
+    @Transactional(readOnly = true)
+    @Override
+    public List<FestivalInfoDTO> LimitRanking() {
+        List<FestivalInfo> infoList = festivalInfoRepository.findRankingLimit();
+        if (infoList.isEmpty()) {
+            throw new EntityNotFoundException("해당 장르에 대한 공연이 없습니다.");
+        }
+
+        List<FestivalInfoDTO> dtoList = infoList.stream().map(this::entityToDTO).toList();
+        return dtoList;
+    }
+
     @Override
     public List<FestivalInfoDTO> favoriteLimit(String userId) {
         Member member = memberRepository.findById(userId)
