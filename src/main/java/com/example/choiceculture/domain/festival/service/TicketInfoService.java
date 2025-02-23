@@ -23,29 +23,6 @@ public interface TicketInfoService {
      * 좌석선택 취소(삭제)
      * @param ticketId 티켓ID
      */
-    void delete(Integer ticketId);
-
-    // entity -> dto 변환
-//    default TicketInfoDTO entityToDTO(TicketInfo info) {
-//        return TicketInfoDTO.builder()
-//                .orderId(info.getOrderId())
-//                .festivalId(info.getFestivalId())
-//                .memberId(info.getMember().getId())
-//                .dateId(info.getDateId())
-//                .reFundStateName(info.getRefundState().getDescription())
-//                .locationNum(info.getLocationNum())
-//                .build();
-//    }
-
-//    // entity -> dto 변환
-//    default TicketInfo dtoToEntity(TicketInfoDTO infoDTO) {
-//        return TicketInfo.builder()
-//                .or
-//                .festivalId(infoDTO.getFestivalId())
-//                .memberId(infoDTO.getMemberId())
-//                .dateId(infoDTO.getDateId())
-//                .locationNum(infoDTO.getLocationNum())
-//                .build();
-//    }
+    void delete(String ticketId);
 
 }

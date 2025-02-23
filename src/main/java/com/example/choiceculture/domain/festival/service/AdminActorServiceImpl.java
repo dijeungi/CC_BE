@@ -5,9 +5,12 @@ import com.example.choiceculture.domain.festival.dto.ActorResponseDTO;
 import com.example.choiceculture.domain.festival.entity.ActorInfo;
 import com.example.choiceculture.domain.festival.repository.ActorInfoRepository;
 import com.example.choiceculture.domain.festival.repository.FestivalInfoRepository;
+import com.example.choiceculture.dto.PageRequestDTO;
+import com.example.choiceculture.dto.PageResponseDTO;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,10 +24,15 @@ public class AdminActorServiceImpl implements AdminActorService {
     private final ActorInfoService actorInfoService;
     private final FestivalInfoRepository festivalInfoRepository;
     private final ActorInfoRepository actorInfoRepository;
-
     @Override
-    public List<ActorResponseDTO> getActors() {
-        return actorInfoRepository.getActors();
+    public PageResponseDTO<ActorResponseDTO> getActors(PageRequestDTO requestDTO) {
+        Page<ActorResponseDTO> pageResult = actorInfoRepository.getActors(requestDTO);
+
+        return PageResponseDTO.<ActorResponseDTO>withAll()
+                .dtoList(pageResult.getContent())
+                .totalCount(pageResult.getTotalElements())
+                .pageRequestDTO(requestDTO)
+                .build();
     }
 
     @Override

@@ -31,8 +31,9 @@ public class TicketInfoController {
     }
 
     @DeleteMapping("/delete")
-    public ResponseEntity<String> delete(Integer ticketId) {
+    public ResponseEntity<String> delete(String ticketId) {
         ticketInfoService.delete(ticketId);
         return ResponseEntity.ok().body("좌석선택이 취소되었습니다.");
     }
+
 }
