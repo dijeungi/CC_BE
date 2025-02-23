@@ -53,7 +53,7 @@ public class TicketInfoServiceImpl implements TicketInfoService {
     }
 
     @Override
-    public void delete(Integer ticketId) {
+    public void delete(String ticketId) {
         ticketInfoRepository.deleteById(ticketId);
     }
 }

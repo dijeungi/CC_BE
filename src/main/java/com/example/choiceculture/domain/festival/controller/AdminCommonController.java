@@ -2,12 +2,12 @@ package com.example.choiceculture.domain.festival.controller;
 
 import com.example.choiceculture.domain.festival.dto.CommonInfoDTO;
 import com.example.choiceculture.domain.festival.service.AdminCommonService;
+import com.example.choiceculture.dto.PageRequestDTO;
+import com.example.choiceculture.dto.PageResponseDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -17,8 +17,8 @@ public class AdminCommonController {
     private final AdminCommonService adminCommonService;
 
     @GetMapping("/list")
-    public ResponseEntity<List<CommonInfoDTO>> getCommon() {
-        List<CommonInfoDTO> dtoList = adminCommonService.getCommon();
+    public ResponseEntity<PageResponseDTO<CommonInfoDTO>> getCommon(PageRequestDTO requestDTO) {
+        PageResponseDTO<CommonInfoDTO> dtoList = adminCommonService.getCommon(requestDTO);
         return ResponseEntity.ok().body(dtoList);
     }
 
@@ -30,7 +30,7 @@ public class AdminCommonController {
 
     @PutMapping("/edit")
     public ResponseEntity<String> editCommon(CommonInfoDTO infoDTO) {
-        adminCommonService.editcommon(infoDTO);
+        adminCommonService.editCommon(infoDTO);
         return ResponseEntity.ok().body("카테고리 수정완료되었습니다.");
     }
 
