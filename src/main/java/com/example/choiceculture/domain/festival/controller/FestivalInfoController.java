@@ -59,12 +59,11 @@ public class FestivalInfoController {
         List<FestivalInfoDTO> dtoList = festivalInfoService.rankingList();
         return ResponseEntity.ok().body(dtoList);
     }
-
-//    @GetMapping("/ranking/limit")
-//    public ResponseEntity<List<FestivalInfoDTO>> rankingLimitList() {
-//        List<FestivalInfoDTO> dtoList = festivalInfoService.LimitRanking();
-//        return ResponseEntity.ok().body(dtoList);
-//    }
+    @GetMapping("/ranking/limit")
+    public ResponseEntity<List<FestivalInfoDTO>> rankingLimitList(int limit) {
+        List<FestivalInfoDTO> dtoList = festivalInfoService.LimitRanking(limit);
+        return ResponseEntity.ok().body(dtoList);
+    }
 
     @GetMapping("/favorite-ranking")
     public ResponseEntity<List<FestivalInfoDTO>> favoriteRanking(String userId) {
@@ -72,11 +71,11 @@ public class FestivalInfoController {
         return ResponseEntity.ok().body(dtoList);
     }
 
-//    @GetMapping("/favorite/ranking-limit")
-//    public ResponseEntity<List<FestivalInfoDTO>> favoriteLimit(String userId) {
-//        List<FestivalInfoDTO> dtoList = festivalInfoService.favoriteLimit(userId);
-//        return ResponseEntity.ok().body(dtoList);
-//    }
+    @GetMapping("/favorite/ranking-limit")
+    public ResponseEntity<List<FestivalInfoDTO>> favoriteLimit(String userId) {
+        List<FestivalInfoDTO> dtoList = festivalInfoService.favoriteLimit(userId);
+        return ResponseEntity.ok().body(dtoList);
+    }
 
     @PostMapping("/add")
     public ResponseEntity<String> addProduct(@RequestBody FestivalAddDTO infoDTO) {

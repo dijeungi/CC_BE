@@ -54,9 +54,9 @@ public interface FestivalInfoService {
      */
     List<FestivalInfoDTO> favoriteRanking(String userId);
 
-//    List<FestivalInfoDTO> LimitRanking();
+    List<FestivalInfoDTO> LimitRanking(int limit);
 
-//    List<FestivalInfoDTO> favoriteLimit(String userId);
+    List<FestivalInfoDTO> favoriteLimit(String userId);
 
     void addProduct(FestivalAddDTO infoDTO);
 

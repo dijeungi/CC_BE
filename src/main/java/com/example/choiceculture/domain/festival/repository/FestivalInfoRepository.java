@@ -1,5 +1,6 @@
 package com.example.choiceculture.domain.festival.repository;
 
+import com.example.choiceculture.domain.festival.dto.FestivalInfoDTO;
 import com.example.choiceculture.domain.festival.dto.FestivalProjection;
 import com.example.choiceculture.domain.festival.entity.FestivalInfo;
 import com.example.choiceculture.domain.festival.repository.querydsl.FestivalInfoRepositoryCustom;
@@ -19,8 +20,16 @@ public interface FestivalInfoRepository extends JpaRepository<FestivalInfo, Inte
             "OR f.placeName like concat('%', :searchKeyword, '%') ")
     List<FestivalInfo> findBySearchKeyword(@Param("searchKeyword") String searchKeyword);
 
+//    @Query(value = "select f from FestivalInfo f where f.accessState='Y' order by f.ranking")
+//    List<FestivalInfo> findByRanking();
+
+    @Query(value = "select f from FestivalInfo f where f.accessState='Y' order by f.ranking limit :limit")
+    List<FestivalInfo> findRankingLimit(@Param("limit") int limit);
+
     @Query(value = "select f from FestivalInfo f where f.categoryId=:userFavorite1 and f.accessState='Y' order by f.ranking")
     List<FestivalInfo> findRankingByUserId(@Param("userFavorite1") String userFavorite1);
+
+
 
     @Query(value = "select f from FestivalInfo f where f.categoryId=:userFavorite1 and f.accessState='Y' order by f.ranking limit 10")
     List<FestivalInfo> findByFavorite(@Param("userFavorite1") String userFavorite1);
