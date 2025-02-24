@@ -6,4 +6,5 @@ import org.springframework.data.domain.Page;
 
 public interface TicketInfoRepositoryCustom {
     Page<TicketResponseDTO> getTickets(PageRequestDTO requestDTO);
+
 }

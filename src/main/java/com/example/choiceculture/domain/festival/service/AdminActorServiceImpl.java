@@ -49,9 +49,9 @@ public class AdminActorServiceImpl implements AdminActorService {
         actorInfoRepository.deleteById(actorId);
     }
 
-    @Override
-    public List<ActorInfoDTO> findActors(String keyword) {
-        List<ActorInfo> infoList = actorInfoRepository.findByActorKeyword(keyword);
-        return infoList.stream().map(actorInfoService::entityToDTO).toList();
-    }
+//    @Override
+//    public List<ActorInfoDTO> findActors(String keyword) {
+//        List<ActorInfo> infoList = actorInfoRepository.findByActorKeyword(keyword);
+//        return infoList.stream().map(actorInfoService::entityToDTO).toList();
+//    }
 }

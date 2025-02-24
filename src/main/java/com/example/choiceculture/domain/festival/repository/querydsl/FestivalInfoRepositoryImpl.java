@@ -70,7 +70,27 @@ public class FestivalInfoRepositoryImpl implements FestivalInfoRepositoryCustom 
                 .fetch();
     }
 
-    @Override
+    public List<FestivalInfoDTO> findByRanking() {
+        return jpaQueryFactory.select(Projections.fields(FestivalInfoDTO.class,
+                        festivalInfo.id,
+                        festivalInfo.festivalName,
+                        festivalInfo.placeName,
+                        placeInfo.placeName.as("placeDetailName"),
+                        festivalInfo.categoryId,
+                        festivalInfo.fromDate,
+                        festivalInfo.toDate,
+                        festivalInfo.festivalState,
+                        festivalInfo.runningTime,
+                        festivalInfo.premier,
+                        festivalInfo.ranking,
+                        festivalInfo.postImage))
+                .from(festivalInfo)
+                .leftJoin(placeInfo).on(festivalInfo.id.eq(placeInfo.festival.id))
+                .where(festivalInfo.accessState.eq(AccessState.Y))
+                .orderBy(festivalInfo.ranking.intValue().asc())
+                .fetch();
+    }
+      
     public List<FestivalInfo> findByDTOCategory(FestivalRequestDTO requestDTO) {
         return jpaQueryFactory
                 .selectFrom(festivalInfo)
