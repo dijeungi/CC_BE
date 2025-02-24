@@ -42,6 +42,12 @@ public class FestivalInfoController {
         return ResponseEntity.ok().body(dtoList);
     }
 
+    @GetMapping("/list/category")
+    public ResponseEntity<List<FestivalInfoDTO>> listCategory(FestivalRequestDTO requestDTO) {
+        List<FestivalInfoDTO> dtoList = festivalInfoService.listCategory(requestDTO);
+        return ResponseEntity.ok().body(dtoList);
+    }
+
     @GetMapping("/search")
     public ResponseEntity<SearchResponseDTO> search(String searchKeyword) {
         SearchResponseDTO dtoList = festivalInfoService.search(searchKeyword);
@@ -51,6 +57,11 @@ public class FestivalInfoController {
     @GetMapping("/ranking")
     public ResponseEntity<List<FestivalInfoDTO>> rankingList() {
         List<FestivalInfoDTO> dtoList = festivalInfoService.rankingList();
+        return ResponseEntity.ok().body(dtoList);
+    }
+    @GetMapping("/ranking/limit")
+    public ResponseEntity<List<FestivalInfoDTO>> rankingLimitList() {
+        List<FestivalInfoDTO> dtoList = festivalInfoService.LimitRanking();
         return ResponseEntity.ok().body(dtoList);
     }
 

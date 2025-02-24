@@ -59,6 +59,15 @@ public class FestivalInfoServiceImpl implements FestivalInfoService {
         return infoList.stream().map(this::entityToDTO).toList();
     }
 
+    @Override
+    public List<FestivalInfoDTO> listCategory(FestivalRequestDTO requestDTO) {
+        List<FestivalInfo> infoList = festivalInfoRepository.findByDTOCategory(requestDTO);
+        if (infoList.isEmpty()) {
+            throw new EntityNotFoundException("해당 공연 목록이 없습니다.");
+        }
+        return infoList.stream().map(this::entityToDTO).toList();
+    }
+
     @Transactional(readOnly = true)
     @Override
     public SearchResponseDTO search(String searchKeyword) {
@@ -91,6 +100,18 @@ public class FestivalInfoServiceImpl implements FestivalInfoService {
                 .orElseThrow(() -> new EntityNotFoundException("존재하지 않는 회원입니다."));
 
         List<FestivalInfo> infoList = festivalInfoRepository.findRankingByUserId(member.getUserFavorite1());
+        if (infoList.isEmpty()) {
+            throw new EntityNotFoundException("해당 장르에 대한 공연이 없습니다.");
+        }
+
+        List<FestivalInfoDTO> dtoList = infoList.stream().map(this::entityToDTO).toList();
+        return dtoList;
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public List<FestivalInfoDTO> LimitRanking() {
+        List<FestivalInfo> infoList = festivalInfoRepository.findRankingLimit();
         if (infoList.isEmpty()) {
             throw new EntityNotFoundException("해당 장르에 대한 공연이 없습니다.");
         }
