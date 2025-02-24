@@ -31,4 +31,9 @@ public class FestivalAddDTO {
     private String postImage;
 
     private List<FestivalTimeDTO> timeDTOS;
+
+    private String imgSrc1;
+    private String imgSrc2;
+    private String imgSrc3;
+
 }

@@ -165,6 +165,7 @@ public class FestivalInfoServiceImpl implements FestivalInfoService {
                 ? festivalInfoRepository.findById(addDTO.getFestivalId()).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 공연입니다."))
                 : FestivalInfo.builder()
                 .regDate(LocalDateTime.now())
+                .ranking(festivalInfoRepository.festivalCount())
                 .build();
 
         log.info("addDTO: {}", addDTO);
@@ -188,7 +189,6 @@ public class FestivalInfoServiceImpl implements FestivalInfoService {
         festivalInfoRepository.save(info);
 
         time(info.getId());
-
 
         addDTO.getTimeDTOS().forEach(time -> {
             LocalDate startDate = info.getFromDate();
@@ -226,6 +226,8 @@ public class FestivalInfoServiceImpl implements FestivalInfoService {
                 currentDate = currentDate.plusDays(1);
             }
         });
+
+
 
     }
 
