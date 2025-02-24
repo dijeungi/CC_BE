@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -17,7 +18,9 @@ import java.util.List;
 public class FestivalAddDTO {
     private Integer festivalId;
     private String festivalName;
+    private String placeId;
     private String placeName;
+    private String placeLocation;
     private String categoryId;
     private LocalDate fromDate;
     private LocalDate toDate;
@@ -28,7 +31,13 @@ public class FestivalAddDTO {
     private Premier premier;
     private Integer age;
     private Integer ranking;
-    private String postImage;
+    private MultipartFile postImage;
 
     private List<FestivalTimeDTO> timeDTOS;
+
+    private MultipartFile  imgSrc1;
+    private MultipartFile  imgSrc2;
+    private MultipartFile  imgSrc3;
+    private String mediaLink;
+
 }

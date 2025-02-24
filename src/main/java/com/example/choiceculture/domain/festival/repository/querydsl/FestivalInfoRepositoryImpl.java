@@ -4,9 +4,11 @@ import com.example.choiceculture.domain.festival.dto.FestivalInfoDTO;
 import com.example.choiceculture.domain.festival.dto.FestivalRequestDTO;
 import com.example.choiceculture.domain.festival.entity.FestivalInfo;
 import com.example.choiceculture.domain.festival.enums.AccessState;
+import com.example.choiceculture.util.file.AwsS3Util;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -21,12 +23,13 @@ import static com.example.choiceculture.domain.festival.entity.QPlaceInfo.placeI
 @RequiredArgsConstructor
 public class FestivalInfoRepositoryImpl implements FestivalInfoRepositoryCustom {
     private final JPAQueryFactory jpaQueryFactory;
+    private final AwsS3Util awsS3Util;
 
     @Override
     public FestivalInfoDTO findByFestivalId(Integer festivalId) {
-        return jpaQueryFactory
+        FestivalInfoDTO dto = jpaQueryFactory
                 .select(Projections.fields(FestivalInfoDTO.class,
-                        festivalInfo.id,
+                        festivalInfo.id.as("festivalId"),
                         festivalInfo.festivalName,
                         festivalInfo.placeName,
                         placeInfo.placeName.as("placeDetailName"),
@@ -55,6 +58,25 @@ public class FestivalInfoRepositoryImpl implements FestivalInfoRepositoryCustom 
                 .fetchJoin()
                 .where(festivalInfo.id.eq(festivalId))
                 .fetchOne();
+
+        if (dto == null) {
+            throw new EntityNotFoundException("해당 공연이 없습니다.");
+        }
+
+        // S3 Presigned URL 생성 및 설정
+        String postImageUrl = awsS3Util.getPresignedUrl(dto.getPostImage());
+        dto.setPostImageUrl(postImageUrl != null ? postImageUrl : dto.getPostImage());
+
+        String imgSrc1Url = awsS3Util.getPresignedUrl(dto.getImgSrc1());
+        dto.setImgSrc1Url(imgSrc1Url != null ? imgSrc1Url : dto.getImgSrc1());
+
+        String imgSrc2Url = awsS3Util.getPresignedUrl(dto.getImgSrc2());
+        dto.setImgSrc2Url(imgSrc2Url != null ? imgSrc2Url : dto.getImgSrc2());
+
+        String imgSrc3Url = awsS3Util.getPresignedUrl(dto.getImgSrc3());
+        dto.setImgSrc3Url(imgSrc3Url != null ? imgSrc3Url : dto.getImgSrc3());
+
+        return dto;
     }
 
     @Override
@@ -90,12 +112,12 @@ public class FestivalInfoRepositoryImpl implements FestivalInfoRepositoryCustom 
                 .orderBy(festivalInfo.ranking.intValue().asc())
                 .fetch();
     }
-      
+
     public List<FestivalInfo> findByDTOCategory(FestivalRequestDTO requestDTO) {
         return jpaQueryFactory
                 .selectFrom(festivalInfo)
                 .where(
-                        festivalInfo.categoryId.like(requestDTO.getCategoryId()+"%"),
+                        festivalInfo.categoryId.like(requestDTO.getCategoryId() + "%"),
                         eqMdPick(requestDTO.getMdPick()),
                         eqPremier(requestDTO.getPremier()),
                         festivalInfo.accessState.eq(AccessState.Y)

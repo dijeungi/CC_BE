@@ -1,7 +1,10 @@
 package com.example.choiceculture.domain.festival.controller;
 
+import com.example.choiceculture.domain.festival.dto.FestivalInfoDTO;
 import com.example.choiceculture.domain.festival.dto.LikeInfoDTO;
 import com.example.choiceculture.domain.festival.service.LikeInfoService;
+import com.example.choiceculture.dto.PageRequestDTO;
+import com.example.choiceculture.dto.PageResponseDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -9,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Slf4j
@@ -42,6 +46,12 @@ public class LikeInfoController {
     public ResponseEntity<String> deleteLike(LikeInfoDTO infoDTO) {
         likeInfoService.deleteLike(infoDTO);
         return ResponseEntity.ok().body("좋아요 삭제완료");
+    }
+
+    @GetMapping("/user")
+    public ResponseEntity<PageResponseDTO<FestivalInfoDTO>> list(PageRequestDTO requestDTO) {
+        PageResponseDTO<FestivalInfoDTO> dtoList = likeInfoService.list(requestDTO);
+        return ResponseEntity.ok().body(dtoList);
     }
 
 }

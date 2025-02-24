@@ -1,6 +1,8 @@
 package com.example.choiceculture.util.file;
 
+import com.amazonaws.HttpMethod;
 import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.model.GeneratePresignedUrlRequest;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -20,6 +22,7 @@ import java.net.URLConnection;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -35,6 +38,33 @@ public class AwsS3Util {
     private String region;
 
     private final AmazonS3 s3Client;
+
+    public String getPresignedUrl(String fileName) {
+        if (fileName == null || fileName.isEmpty()) {
+            return null;
+        }
+
+        try {
+            // 만료 시간 (예: 1시간 후 만료)
+            Date expiration = new Date();
+            long expTimeMillis = expiration.getTime();
+            expTimeMillis += 3600000; // 1시간 (60분 * 60초 * 1000ms)
+            expiration.setTime(expTimeMillis);
+
+            // Presigned URL 생성
+            GeneratePresignedUrlRequest generatePresignedUrlRequest =
+                    new GeneratePresignedUrlRequest(bucketName, fileName)
+                            .withMethod(HttpMethod.GET)
+                            .withExpiration(expiration);
+
+            URL url = s3Client.generatePresignedUrl(generatePresignedUrlRequest);
+            return url.toString();
+
+        } catch (Exception e) {
+            log.error("Failed to generate presigned URL for file: {}", fileName, e);
+            return null;
+        }
+    }
 
     /**
      * S3에 파일 업로드

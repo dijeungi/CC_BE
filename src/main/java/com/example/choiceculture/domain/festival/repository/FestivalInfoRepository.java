@@ -41,4 +41,7 @@ public interface FestivalInfoRepository extends JpaRepository<FestivalInfo, Inte
     List<FestivalInfo> findByFestivalKeyword(@Param("keyword") String keyword);
 
     Page<FestivalInfo> findByFestivalNameContainingIgnoreCase(String searchTerm, Pageable pageable);
+
+    @Query("select count(f) from FestivalInfo f where f.accessState='Y'")
+    Integer festivalCount();
 }

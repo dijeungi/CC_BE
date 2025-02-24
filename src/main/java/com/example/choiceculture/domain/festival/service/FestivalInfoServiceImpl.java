@@ -1,15 +1,13 @@
 package com.example.choiceculture.domain.festival.service;
 
 import com.example.choiceculture.domain.festival.dto.*;
-import com.example.choiceculture.domain.festival.entity.ActorInfo;
-import com.example.choiceculture.domain.festival.entity.FestivalInfo;
-import com.example.choiceculture.domain.festival.entity.FestivalTime;
+import com.example.choiceculture.domain.festival.entity.*;
+import com.example.choiceculture.domain.festival.enums.AccessState;
 import com.example.choiceculture.domain.festival.enums.FestivalState;
-import com.example.choiceculture.domain.festival.repository.ActorInfoRepository;
-import com.example.choiceculture.domain.festival.repository.FestivalInfoRepository;
-import com.example.choiceculture.domain.festival.repository.FestivalTimeRepository;
+import com.example.choiceculture.domain.festival.repository.*;
 import com.example.choiceculture.domain.member.entity.Member;
 import com.example.choiceculture.domain.member.repository.MemberRepository;
+import com.example.choiceculture.util.file.AwsS3Util;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -31,6 +29,10 @@ public class FestivalInfoServiceImpl implements FestivalInfoService {
     private final ActorInfoService actorInfoService;
     private final MemberRepository memberRepository;
     private final FestivalTimeRepository festivalTimeRepository;
+    private final FestivalImageRepository festivalImageRepository;
+    private final PlaceInfoRepository placeInfoRepository;
+    private final FestivalInfoAccessRepository festivalInfoAccessRepository;
+    private final AwsS3Util awsS3Util;
 
     @Override
     public List<FestivalInfoDTO> openTicket() {
@@ -43,11 +45,11 @@ public class FestivalInfoServiceImpl implements FestivalInfoService {
 
     @Override
     public FestivalInfoDTO getOne(Integer festivalId) {
-        FestivalInfoDTO dtoList = festivalInfoRepository.findByFestivalId(festivalId);
-        if (dtoList == null) {
+        FestivalInfoDTO dto  = festivalInfoRepository.findByFestivalId(festivalId);
+        if (dto  == null) {
             throw new EntityNotFoundException("해당 공연이 없습니다.");
         }
-        return dtoList;
+        return dto ;
     }
 
     @Override
@@ -157,17 +159,18 @@ public class FestivalInfoServiceImpl implements FestivalInfoService {
 
     @Transactional
     @Override
-    public void addProduct(FestivalAddDTO addDTO) {
+    public void addFestival(FestivalAddDTO addDTO) {
         FestivalInfo info = (addDTO.getFestivalId() != null)
                 ? festivalInfoRepository.findById(addDTO.getFestivalId()).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 공연입니다."))
                 : FestivalInfo.builder()
                 .regDate(LocalDateTime.now())
+                .ranking(festivalInfoRepository.festivalCount() + 1)
                 .build();
 
         log.info("addDTO: {}", addDTO);
 
         info.setFestivalName(addDTO.getFestivalName());
-        info.setPlaceName(addDTO.getPlaceName());
+        info.setPlaceName(addDTO.getPlaceId());
         info.setCategoryId(addDTO.getCategoryId());
         info.setFromDate(addDTO.getFromDate());
         info.setToDate(addDTO.getToDate());
@@ -176,20 +179,23 @@ public class FestivalInfoServiceImpl implements FestivalInfoService {
         info.setSalePrice(Math.max(0, Math.round(addDTO.getFestivalPrice() * (1 - (float) (addDTO.getSalePercent() != null ? addDTO.getSalePercent() : 0) / 100))));
         info.setRunningTime(addDTO.getRunningTime());
         info.setAge(addDTO.getAge());
-        info.setPostImage(addDTO.getPostImage());
         info.setUpDate(LocalDateTime.now());
+
+        if (addDTO.getPostImage() != null && !addDTO.getPostImage().isEmpty()) {
+            String s3PostImageUrl = awsS3Util.uploadFile(addDTO.getPostImage());
+            info.setPostImage(s3PostImageUrl);
+        }
 
         FestivalState state = nowState(info.getFromDate(), info.getToDate());
         info.setFestivalState(state);
 
-        festivalInfoRepository.save(info);
+        FestivalInfo saved = festivalInfoRepository.save(info);
 
         time(info.getId());
 
-
         addDTO.getTimeDTOS().forEach(time -> {
-            LocalDate startDate = info.getFromDate();
-            LocalDate endDate = info.getToDate();
+            LocalDate startDate = saved.getFromDate();
+            LocalDate endDate = saved.getToDate();
             LocalDate maxEndDate = startDate.plusMonths(1).minusDays(1);
 
             if (endDate.isAfter(maxEndDate)) {
@@ -214,7 +220,7 @@ public class FestivalInfoServiceImpl implements FestivalInfoService {
                             .holidayType(time.getHolidayType())
                             .date(currentDate)
                             .time(time.getTime())
-                            .festivalInfo(info)
+                            .festivalInfo(saved)
                             .build();
 
                     festivalTimeRepository.save(festivalTime);
@@ -223,6 +229,47 @@ public class FestivalInfoServiceImpl implements FestivalInfoService {
                 currentDate = currentDate.plusDays(1);
             }
         });
+
+        FestivalImage imgByFestivalId = festivalImageRepository.findByFestivalId(saved.getId());
+        if (imgByFestivalId != null) {
+            festivalImageRepository.deleteById(imgByFestivalId.getId());
+        }
+
+        FestivalImage.FestivalImageBuilder imgBuilder = FestivalImage.builder().festival(info);
+
+        if (addDTO.getImgSrc1() != null && !addDTO.getImgSrc1().isEmpty()) {
+            imgBuilder.imgSrc1(awsS3Util.uploadFile(addDTO.getImgSrc1()));
+        }
+        if (addDTO.getImgSrc2() != null && !addDTO.getImgSrc2().isEmpty()) {
+            imgBuilder.imgSrc2(awsS3Util.uploadFile(addDTO.getImgSrc2()));
+        }
+        if (addDTO.getImgSrc3() != null && !addDTO.getImgSrc3().isEmpty()) {
+            imgBuilder.imgSrc3(awsS3Util.uploadFile(addDTO.getImgSrc3()));
+        }
+
+        festivalImageRepository.save(imgBuilder.build());
+
+        PlaceInfo placeByFestivalId = placeInfoRepository.findByFestivalId(saved.getId());
+        if (placeByFestivalId != null) {
+            placeInfoRepository.deleteById(placeByFestivalId.getId());
+        }
+
+        PlaceInfo place = PlaceInfo.builder()
+                .festival(saved)
+                .placeName(addDTO.getPlaceName())
+                .placeLocation(addDTO.getPlaceLocation())
+                .build();
+
+        placeInfoRepository.save(place);
+
+        FestivalInfoAccess infoAccess = festivalInfoAccessRepository.findByFestivalId(saved.getId());
+
+        if (saved.getAccessState().equals(AccessState.N) && infoAccess == null) {
+            FestivalInfoAccess access = FestivalInfoAccess.builder()
+                    .festivalMediaLink(addDTO.getMediaLink())
+                    .festival(saved)
+                    .build();
+        }
 
     }
 
