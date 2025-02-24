@@ -26,6 +26,8 @@ public class PageRequestDTO {
 
     private String refundState;
 
+    private String userId;
+
 //    private String best;
 
 //    private Long categoryId;

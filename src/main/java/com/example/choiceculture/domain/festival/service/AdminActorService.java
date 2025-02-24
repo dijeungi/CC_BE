@@ -15,5 +15,5 @@ public interface AdminActorService {
 
     void deleteActor(Integer actorId);
 
-    List<ActorInfoDTO> findActors(String keyword);
+//    List<ActorInfoDTO> findActors(String keyword);
 }

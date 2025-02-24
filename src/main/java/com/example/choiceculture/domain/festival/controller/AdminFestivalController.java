@@ -38,11 +38,11 @@ public class AdminFestivalController {
         return ResponseEntity.ok().body(dtoList);
     }
 
-    @GetMapping("/festival/search")
-    public ResponseEntity<List<FestivalInfoDTO>> findFestivals(String keyword) {
-        List<FestivalInfoDTO> dtoList = adminFestivalService.findFestivals(keyword);
-        return ResponseEntity.ok().body(dtoList);
-    }
+//    @GetMapping("/festival/search")
+//    public ResponseEntity<List<FestivalInfoDTO>> findFestivals(String keyword) {
+//        List<FestivalInfoDTO> dtoList = adminFestivalService.findFestivals(keyword);
+//        return ResponseEntity.ok().body(dtoList);
+//    }
 
     @GetMapping("/access/list")
     public ResponseEntity<PageResponseDTO<FestivalInfoAccessDTO>> applyList(PageRequestDTO requestDTO) {

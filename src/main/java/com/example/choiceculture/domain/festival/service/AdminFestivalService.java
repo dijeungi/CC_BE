@@ -17,7 +17,7 @@ public interface AdminFestivalService {
 
     List<FestivalResponseDTO> getIdList();
 
-    List<FestivalInfoDTO> findFestivals(String keyword);
+//    List<FestivalInfoDTO> findFestivals(String keyword);
 
     PageResponseDTO<FestivalInfoAccessDTO> applyList(PageRequestDTO requestDTO);
 
