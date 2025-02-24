@@ -39,6 +39,7 @@ public class TicketInfoRepositoryImpl implements TicketInfoRepositoryCustom {
                 .select(Projections.fields(TicketResponseDTO.class,
                         orderIdPrefix.as("orderId"),
                         ticketInfo.member.userName,
+                        festivalInfo.postImage,
                         festivalInfo.festivalName,
                         sumDate().as("date"),
                         sumLocationNum().as("locationNum"),

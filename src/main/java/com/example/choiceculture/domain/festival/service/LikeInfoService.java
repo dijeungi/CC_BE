@@ -1,6 +1,9 @@
 package com.example.choiceculture.domain.festival.service;
 
+import com.example.choiceculture.domain.festival.dto.FestivalInfoDTO;
 import com.example.choiceculture.domain.festival.dto.LikeInfoDTO;
+import com.example.choiceculture.dto.PageRequestDTO;
+import com.example.choiceculture.dto.PageResponseDTO;
 
 public interface LikeInfoService {
     /**
@@ -33,4 +36,6 @@ public interface LikeInfoService {
      * @param infoDTO (사용자ID, 공연ID)
      */
     void deleteLike(LikeInfoDTO infoDTO);
+
+    PageResponseDTO<FestivalInfoDTO> list(PageRequestDTO requestDTO);
 }

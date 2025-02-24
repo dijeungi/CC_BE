@@ -11,4 +11,5 @@ public interface FestivalInfoAccessRepository extends JpaRepository<FestivalInfo
     @Query("select a from FestivalInfoAccess a where a.festival.festivalName like concat('%', :searchTerm, '%') ")
     Page<FestivalInfoAccess> findByFestivalNameContainingIgnoreCase(@Param("searchTerm") String searchTerm, Pageable pageable);
 
+    FestivalInfoAccess findByFestivalId(Integer id);
 }

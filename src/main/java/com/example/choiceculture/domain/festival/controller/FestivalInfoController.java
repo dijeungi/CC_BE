@@ -77,9 +77,9 @@ public class FestivalInfoController {
         return ResponseEntity.ok().body(dtoList);
     }
 
-    @PostMapping("/add")
-    public ResponseEntity<String> addProduct(@RequestBody FestivalAddDTO infoDTO) {
-        festivalInfoService.addProduct(infoDTO);
+    @PostMapping(value = "/add", consumes = "multipart/form-data")
+    public ResponseEntity<String> addFestival(FestivalAddDTO infoDTO) {
+        festivalInfoService.addFestival(infoDTO);
         return ResponseEntity.ok().body("공연 추가완료되었습니다.");
     }
 }

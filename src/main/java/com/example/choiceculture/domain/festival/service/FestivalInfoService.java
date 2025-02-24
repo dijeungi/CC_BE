@@ -58,7 +58,7 @@ public interface FestivalInfoService {
 
     List<FestivalInfoDTO> favoriteLimit(String userId);
 
-    void addProduct(FestivalAddDTO infoDTO);
+    void addFestival(FestivalAddDTO infoDTO);
 
     // entity -> dto 변환
     default FestivalInfoDTO entityToDTO(FestivalInfo info) {
