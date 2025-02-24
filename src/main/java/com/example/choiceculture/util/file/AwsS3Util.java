@@ -45,6 +45,11 @@ public class AwsS3Util {
         }
 
         try {
+            if (!s3Client.doesObjectExist(bucketName, fileName)) {
+                log.warn("File does not exist in S3: {}", fileName);
+                return null; // 파일이 존재하지 않으면 null 반환
+            }
+
             // 만료 시간 (예: 1시간 후 만료)
             Date expiration = new Date();
             long expTimeMillis = expiration.getTime();
@@ -68,6 +73,7 @@ public class AwsS3Util {
 
     /**
      * S3에 파일 업로드
+     *
      * @param files 파일 리스트
      * @return 업로드된 파일 URL 리스트
      */
@@ -160,6 +166,7 @@ public class AwsS3Util {
 
     /**
      * S3에 파일 삭제
+     *
      * @param fileNames 파일 이름 리스트
      */
     public void deleteFiles(List<String> fileNames) {
@@ -175,7 +182,8 @@ public class AwsS3Util {
 
     /**
      * S3에 파일 삭제
-     * @param fileName  파일 이름
+     *
+     * @param fileName 파일 이름
      */
     public void deleteFile(String fileName) {
         s3Client.deleteObject(bucketName, fileName);
@@ -183,6 +191,7 @@ public class AwsS3Util {
 
     /**
      * S3에 있는 파일 URL 가져오기
+     *
      * @param fileName 파일 이름
      * @return 파일 URL
      */

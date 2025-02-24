@@ -125,7 +125,7 @@ public class TicketInfoRepositoryImpl implements TicketInfoRepositoryCustom {
     }
 
     private BooleanExpression eqRefundState(String refundState) {
-        if (Objects.equals(refundState, "ALL") || refundState.isBlank()) {
+        if (refundState == null || refundState.isBlank() || Objects.equals(refundState, "ALL")) {
             return null;
         }
         return ticketInfo.refundState.eq(ReFundState.valueOf(refundState));
