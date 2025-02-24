@@ -1,8 +1,11 @@
 package com.example.choiceculture.domain.festival.controller;
 
 import com.example.choiceculture.domain.festival.dto.TicketInfoDTO;
+import com.example.choiceculture.domain.festival.dto.TicketResponseDTO;
 import com.example.choiceculture.domain.festival.dto.TicketSeatDTO;
 import com.example.choiceculture.domain.festival.service.TicketInfoService;
+import com.example.choiceculture.dto.PageRequestDTO;
+import com.example.choiceculture.dto.PageResponseDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -34,6 +37,20 @@ public class TicketInfoController {
     public ResponseEntity<String> delete(String ticketId) {
         ticketInfoService.delete(ticketId);
         return ResponseEntity.ok().body("좌석선택이 취소되었습니다.");
+    }
+
+    @GetMapping("/list")
+    public ResponseEntity<PageResponseDTO<TicketResponseDTO>> myTickets(PageRequestDTO requestDTO) {
+        PageResponseDTO<TicketResponseDTO> dtoList = ticketInfoService.myTickets(requestDTO);
+        log.info("dtoList: {}", dtoList);
+        return ResponseEntity.ok().body(dtoList);
+    }
+
+    @PutMapping("/refund")
+    public ResponseEntity<String> myRefund(@RequestParam String userId, @RequestParam String orderId,
+                                         @RequestParam String locationNum) {
+        ticketInfoService.myRefund(userId, orderId, locationNum);
+        return ResponseEntity.ok().body("환불신청이 완료되었습니다.");
     }
 
 }

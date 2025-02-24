@@ -77,8 +77,11 @@ public class FestivalInfoServiceImpl implements FestivalInfoService {
 
     @Override
     public List<FestivalInfoDTO> rankingList() {
-        List<FestivalInfo> infoList = festivalInfoRepository.findByRanking();
-        return infoList.stream().map(this::entityToDTO).toList();
+        List<FestivalInfoDTO> infoList = festivalInfoRepository.findByRanking();
+        infoList.forEach(festival -> {
+            festival.setFestivalStateName(festival.getFestivalState().getDescription());
+        });
+        return infoList;
     }
 
     @Transactional(readOnly = true)

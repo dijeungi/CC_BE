@@ -76,11 +76,11 @@ public class AdminFestivalServiceImpl implements AdminFestivalService {
                 .toList();
     }
 
-    @Override
-    public List<FestivalInfoDTO> findFestivals(String keyword) {
-        List<FestivalInfo> infoList = festivalInfoRepository.findByFestivalKeyword(keyword);
-        return infoList.stream().map(festivalInfoService::entityToDTO).toList();
-    }
+//    @Override
+//    public List<FestivalInfoDTO> findFestivals(String keyword) {
+//        List<FestivalInfo> infoList = festivalInfoRepository.findByFestivalKeyword(keyword);
+//        return infoList.stream().map(festivalInfoService::entityToDTO).toList();
+//    }
 
     @Override
     public PageResponseDTO<FestivalInfoAccessDTO> applyList(PageRequestDTO requestDTO) {

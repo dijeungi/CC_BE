@@ -1,7 +1,10 @@
 package com.example.choiceculture.domain.festival.service;
 
 import com.example.choiceculture.domain.festival.dto.TicketInfoDTO;
+import com.example.choiceculture.domain.festival.dto.TicketResponseDTO;
 import com.example.choiceculture.domain.festival.dto.TicketSeatDTO;
+import com.example.choiceculture.dto.PageRequestDTO;
+import com.example.choiceculture.dto.PageResponseDTO;
 
 import java.util.List;
 
@@ -25,4 +28,7 @@ public interface TicketInfoService {
      */
     void delete(String ticketId);
 
+    PageResponseDTO<TicketResponseDTO> myTickets(PageRequestDTO requestDTO);
+
+    void myRefund(String userId, String orderId, String locationNum);
 }

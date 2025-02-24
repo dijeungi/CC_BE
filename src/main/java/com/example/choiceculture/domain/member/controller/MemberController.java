@@ -157,8 +157,8 @@ public class MemberController {
 
     // TEST용
     @GetMapping("/api/user")
-    public MemberTestDTO user(@RequestParam String email) {
-        return memberService.findUser(email);
+    public MemberTestDTO user(@RequestParam String userId) {
+        return memberService.findUser(userId);
     }
 
 

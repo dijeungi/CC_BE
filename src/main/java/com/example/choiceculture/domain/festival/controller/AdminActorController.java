@@ -37,9 +37,9 @@ public class AdminActorController {
         return ResponseEntity.ok().body("배우 삭제완료되었습니다.");
     }
 
-    @GetMapping("/search")
-    public ResponseEntity<List<ActorInfoDTO>> findActors(String keyword) {
-        List<ActorInfoDTO> dtoList = adminActorService.findActors(keyword);
-        return ResponseEntity.ok().body(dtoList);
-    }
+//    @GetMapping("/search")
+//    public ResponseEntity<List<ActorInfoDTO>> findActors(String keyword) {
+//        List<ActorInfoDTO> dtoList = adminActorService.findActors(keyword);
+//        return ResponseEntity.ok().body(dtoList);
+//    }
 }
