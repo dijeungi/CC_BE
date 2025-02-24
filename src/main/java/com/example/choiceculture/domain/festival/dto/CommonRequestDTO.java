@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Data
 @Builder
-public class CommonRequestDTO {
+public class  CommonRequestDTO {
     private String id;
     private String name;
 }

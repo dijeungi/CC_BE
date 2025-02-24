@@ -22,8 +22,8 @@ public interface FestivalInfoRepository extends JpaRepository<FestivalInfo, Inte
     @Query(value = "select f from FestivalInfo f where f.accessState='Y' order by f.ranking")
     List<FestivalInfo> findByRanking();
 
-    @Query(value = "select f from FestivalInfo f where f.accessState='Y' order by f.ranking limit 7")
-    List<FestivalInfo> findRankingLimit();
+    @Query(value = "select f from FestivalInfo f where f.accessState='Y' order by f.ranking limit :limit")
+    List<FestivalInfo> findRankingLimit(@Param("limit") int limit);
 
     @Query(value = "select f from FestivalInfo f where f.categoryId=:userFavorite1 and f.accessState='Y' order by f.ranking")
     List<FestivalInfo> findRankingByUserId(@Param("userFavorite1") String userFavorite1);

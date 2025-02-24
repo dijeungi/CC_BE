@@ -107,8 +107,8 @@ public class FestivalInfoServiceImpl implements FestivalInfoService {
 
     @Transactional(readOnly = true)
     @Override
-    public List<FestivalInfoDTO> LimitRanking() {
-        List<FestivalInfo> infoList = festivalInfoRepository.findRankingLimit();
+    public List<FestivalInfoDTO> LimitRanking(int limit) {
+        List<FestivalInfo> infoList = festivalInfoRepository.findRankingLimit(limit);
         if (infoList.isEmpty()) {
             throw new EntityNotFoundException("해당 장르에 대한 공연이 없습니다.");
         }

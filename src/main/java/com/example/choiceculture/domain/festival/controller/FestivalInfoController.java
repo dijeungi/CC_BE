@@ -60,8 +60,8 @@ public class FestivalInfoController {
         return ResponseEntity.ok().body(dtoList);
     }
     @GetMapping("/ranking/limit")
-    public ResponseEntity<List<FestivalInfoDTO>> rankingLimitList() {
-        List<FestivalInfoDTO> dtoList = festivalInfoService.LimitRanking();
+    public ResponseEntity<List<FestivalInfoDTO>> rankingLimitList(int limit) {
+        List<FestivalInfoDTO> dtoList = festivalInfoService.LimitRanking(limit);
         return ResponseEntity.ok().body(dtoList);
     }
 
