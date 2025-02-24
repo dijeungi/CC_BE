@@ -13,6 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 import java.util.List;
 
 import static com.example.choiceculture.domain.festival.entity.QCommonInfo.commonInfo;
+import static com.example.choiceculture.domain.festival.entity.QFestivalImage.festivalImage;
 import static com.example.choiceculture.domain.festival.entity.QFestivalInfo.festivalInfo;
 import static com.example.choiceculture.domain.festival.entity.QPlaceInfo.placeInfo;
 
@@ -43,10 +44,15 @@ public class FestivalInfoRepositoryImpl implements FestivalInfoRepositoryCustom 
                         festivalInfo.premier,
                         festivalInfo.age,
                         festivalInfo.ranking,
-                        festivalInfo.postImage))
+                        festivalInfo.postImage,
+                        festivalImage.imgSrc1,
+                        festivalImage.imgSrc2,
+                        festivalImage.imgSrc3))
                 .from(festivalInfo)
                 .leftJoin(commonInfo).on(festivalInfo.categoryId.eq(commonInfo.id))
                 .leftJoin(placeInfo).on(festivalInfo.id.eq(placeInfo.festival.id))
+                .leftJoin(festivalImage).on(festivalInfo.id.eq(festivalImage.festival.id))
+                .fetchJoin()
                 .where(festivalInfo.id.eq(festivalId))
                 .fetchOne();
     }

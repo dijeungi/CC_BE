@@ -59,10 +59,15 @@ public class FestivalInfoController {
         List<FestivalInfoDTO> dtoList = festivalInfoService.rankingList();
         return ResponseEntity.ok().body(dtoList);
     }
+    @GetMapping("/ranking/limit")
+    public ResponseEntity<List<FestivalInfoDTO>> rankingLimitList() {
+        List<FestivalInfoDTO> dtoList = festivalInfoService.LimitRanking();
+        return ResponseEntity.ok().body(dtoList);
+    }
 
     @GetMapping("/favorite-ranking")
-    public ResponseEntity<RankingResponseDTO> favoriteRanking(String userId) {
-        RankingResponseDTO dtoList = festivalInfoService.favoriteRanking(userId);
+    public ResponseEntity<List<FestivalInfoDTO>> favoriteRanking(String userId) {
+        List<FestivalInfoDTO> dtoList = festivalInfoService.favoriteRanking(userId);
         return ResponseEntity.ok().body(dtoList);
     }
 

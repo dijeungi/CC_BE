@@ -8,7 +8,10 @@ import com.example.choiceculture.entity.BaseEntity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.ColumnDefault;
 
@@ -43,6 +46,7 @@ public class FestivalInfo extends BaseEntity {
     @Column(name = "category_id", nullable = false, length = 4)
     private String categoryId;
 
+    @ColumnDefault("'N'")
     @Enumerated(EnumType.STRING)
     @Column(name = "access_state")
     private AccessState accessState;
@@ -81,18 +85,25 @@ public class FestivalInfo extends BaseEntity {
     @Column(name = "post_image")
     private String postImage;
 
+    @ColumnDefault("'N'")
     @Enumerated(EnumType.STRING)
     @Column(name = "md_pick")
     private MdPick mdPick;
 
+    @ColumnDefault("'N'")
     @Enumerated(EnumType.STRING)
     @Column(name = "premier")
     private Premier premier;
 
-
-
-
     @OneToMany(mappedBy = "festivalInfo", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<FestivalTime> festivalTimes = new ArrayList<>();
+
+    @PrePersist
+    @PreUpdate
+    public void prePersistAndUpdate() {
+        this.accessState = (this.accessState != null) ? this.accessState : AccessState.N;
+        this.mdPick = (this.mdPick != null) ? this.mdPick : MdPick.N;
+        this.premier = (this.premier != null) ? this.premier : Premier.N;
+    }
 
 }

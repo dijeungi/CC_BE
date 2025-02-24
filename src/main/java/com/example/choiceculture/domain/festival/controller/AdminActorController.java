@@ -2,8 +2,9 @@ package com.example.choiceculture.domain.festival.controller;
 
 import com.example.choiceculture.domain.festival.dto.ActorInfoDTO;
 import com.example.choiceculture.domain.festival.dto.ActorResponseDTO;
-import com.example.choiceculture.domain.festival.dto.FestivalInfoDTO;
 import com.example.choiceculture.domain.festival.service.AdminActorService;
+import com.example.choiceculture.dto.PageRequestDTO;
+import com.example.choiceculture.dto.PageResponseDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -19,9 +20,9 @@ public class AdminActorController {
     private final AdminActorService adminActorService;
 
     @GetMapping("/list")
-    public ResponseEntity<List<ActorResponseDTO>> getActors() {
-        List<ActorResponseDTO> dtoList = adminActorService.getActors();
-        return ResponseEntity.ok().body(dtoList);
+    public ResponseEntity<PageResponseDTO<ActorResponseDTO>> getActors(PageRequestDTO requestDTO) {
+        PageResponseDTO<ActorResponseDTO> responseDTO = adminActorService.getActors(requestDTO);
+        return ResponseEntity.ok(responseDTO);
     }
 
     @PostMapping("/add")

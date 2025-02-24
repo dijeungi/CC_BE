@@ -5,18 +5,13 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
-
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
 @Builder
-public class TicketInfoDTO {
-    private String orderId;
+public class FestivalInfoAccessDTO {
+    private Integer accessId;
+    private String festivalMediaLink;
     private Integer festivalId;
-    private String memberId;
-    private Integer dateId;
-    private String reFundStateName;
-    private List<String> locationNum;
-
+    private String festivalName;
 }

@@ -1,9 +1,10 @@
 package com.example.choiceculture.domain.festival.repository;
 
 import com.example.choiceculture.domain.festival.dto.FestivalProjection;
-import com.example.choiceculture.domain.festival.dto.FestivalResponseDTO;
 import com.example.choiceculture.domain.festival.entity.FestivalInfo;
 import com.example.choiceculture.domain.festival.repository.querydsl.FestivalInfoRepositoryCustom;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -21,8 +22,13 @@ public interface FestivalInfoRepository extends JpaRepository<FestivalInfo, Inte
     @Query(value = "select f from FestivalInfo f where f.accessState='Y' order by f.ranking")
     List<FestivalInfo> findByRanking();
 
+    @Query(value = "select f from FestivalInfo f where f.accessState='Y' order by f.ranking limit 7")
+    List<FestivalInfo> findRankingLimit();
+
     @Query(value = "select f from FestivalInfo f where f.categoryId=:userFavorite1 and f.accessState='Y' order by f.ranking")
     List<FestivalInfo> findRankingByUserId(@Param("userFavorite1") String userFavorite1);
+
+
 
     @Query(value = "select f from FestivalInfo f where f.categoryId=:userFavorite1 and f.accessState='Y' order by f.ranking limit 10")
     List<FestivalInfo> findByFavorite(@Param("userFavorite1") String userFavorite1);
@@ -32,4 +38,6 @@ public interface FestivalInfoRepository extends JpaRepository<FestivalInfo, Inte
 
     @Query("select f from FestivalInfo f where f.festivalName like concat('%', :keyword, '%') ")
     List<FestivalInfo> findByFestivalKeyword(@Param("keyword") String keyword);
+
+    Page<FestivalInfo> findByFestivalNameContainingIgnoreCase(String searchTerm, Pageable pageable);
 }

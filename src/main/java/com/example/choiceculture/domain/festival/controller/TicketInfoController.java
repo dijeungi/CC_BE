@@ -25,14 +25,15 @@ public class TicketInfoController {
     }
 
     @PostMapping("/add")
-    public ResponseEntity<String> add(TicketInfoDTO infoDTO) {
+    public ResponseEntity<String> add(@RequestBody TicketInfoDTO infoDTO) {
         ticketInfoService.add(infoDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body("좌석선택이 완료되었습니다.");
     }
 
     @DeleteMapping("/delete")
-    public ResponseEntity<String> delete(Integer ticketId) {
+    public ResponseEntity<String> delete(String ticketId) {
         ticketInfoService.delete(ticketId);
         return ResponseEntity.ok().body("좌석선택이 취소되었습니다.");
     }
+
 }

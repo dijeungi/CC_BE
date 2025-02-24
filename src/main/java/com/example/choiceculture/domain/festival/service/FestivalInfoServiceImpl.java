@@ -20,7 +20,6 @@ import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 
 @Slf4j
 @Transactional
@@ -93,19 +92,29 @@ public class FestivalInfoServiceImpl implements FestivalInfoService {
 
     @Transactional(readOnly = true)
     @Override
-    public RankingResponseDTO favoriteRanking(String userId) {
+    public List<FestivalInfoDTO> favoriteRanking(String userId) {
         Member member = memberRepository.findById(userId)
                 .orElseThrow(() -> new EntityNotFoundException("존재하지 않는 회원입니다."));
-        String userName = member.getUserName();
-        String userFavorite1 = member.getUserFavorite1();
 
-        List<FestivalInfo> infoList = festivalInfoRepository.findRankingByUserId(userFavorite1);
+        List<FestivalInfo> infoList = festivalInfoRepository.findRankingByUserId(member.getUserFavorite1());
         if (infoList.isEmpty()) {
             throw new EntityNotFoundException("해당 장르에 대한 공연이 없습니다.");
         }
 
         List<FestivalInfoDTO> dtoList = infoList.stream().map(this::entityToDTO).toList();
-        return new RankingResponseDTO(userName, dtoList);
+        return dtoList;
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public List<FestivalInfoDTO> LimitRanking() {
+        List<FestivalInfo> infoList = festivalInfoRepository.findRankingLimit();
+        if (infoList.isEmpty()) {
+            throw new EntityNotFoundException("해당 장르에 대한 공연이 없습니다.");
+        }
+
+        List<FestivalInfoDTO> dtoList = infoList.stream().map(this::entityToDTO).toList();
+        return dtoList;
     }
 
     @Override

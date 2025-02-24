@@ -32,4 +32,8 @@ public class FestivalInfoDTO {
     private Integer age;
     private Integer ranking;
     private String postImage;
+    private String imgSrc1;
+    private String imgSrc2;
+    private String imgSrc3;
+
 }
