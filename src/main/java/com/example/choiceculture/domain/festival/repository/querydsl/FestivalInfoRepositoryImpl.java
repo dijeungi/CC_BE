@@ -89,6 +89,7 @@ public class FestivalInfoRepositoryImpl implements FestivalInfoRepositoryCustom 
                 .where(festivalInfo.accessState.eq(AccessState.Y))
                 .orderBy(festivalInfo.ranking.intValue().asc())
                 .fetch();
+    }
       
     public List<FestivalInfo> findByDTOCategory(FestivalRequestDTO requestDTO) {
         return jpaQueryFactory

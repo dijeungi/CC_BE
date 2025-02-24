@@ -108,30 +108,30 @@ public class FestivalInfoServiceImpl implements FestivalInfoService {
         return dtoList;
     }
 
-    @Transactional(readOnly = true)
-    @Override
-    public List<FestivalInfoDTO> LimitRanking() {
-        List<FestivalInfo> infoList = festivalInfoRepository.findRankingLimit();
-        if (infoList.isEmpty()) {
-            throw new EntityNotFoundException("해당 장르에 대한 공연이 없습니다.");
-        }
+//    @Transactional(readOnly = true)
+//    @Override
+//    public List<FestivalInfoDTO> LimitRanking() {
+//        List<FestivalInfo> infoList = festivalInfoRepository.findRankingLimit();
+//        if (infoList.isEmpty()) {
+//            throw new EntityNotFoundException("해당 장르에 대한 공연이 없습니다.");
+//        }
+//
+//        List<FestivalInfoDTO> dtoList = infoList.stream().map(this::entityToDTO).toList();
+//        return dtoList;
+//    }
 
-        List<FestivalInfoDTO> dtoList = infoList.stream().map(this::entityToDTO).toList();
-        return dtoList;
-    }
-
-    @Override
-    public List<FestivalInfoDTO> favoriteLimit(String userId) {
-        Member member = memberRepository.findById(userId)
-                .orElseThrow(() -> new EntityNotFoundException("존재하지 않는 회원입니다."));
-
-        List<FestivalInfo> infoList = festivalInfoRepository.findByFavorite(member.getUserFavorite1());
-        if (infoList.isEmpty()) {
-            throw new EntityNotFoundException("해당 장르는 공연이 없습니다.");
-        }
-
-        return infoList.stream().map(this::entityToDTO).toList();
-    }
+//    @Override
+//    public List<FestivalInfoDTO> favoriteLimit(String userId) {
+//        Member member = memberRepository.findById(userId)
+//                .orElseThrow(() -> new EntityNotFoundException("존재하지 않는 회원입니다."));
+//
+//        List<FestivalInfo> infoList = festivalInfoRepository.findByFavorite(member.getUserFavorite1());
+//        if (infoList.isEmpty()) {
+//            throw new EntityNotFoundException("해당 장르는 공연이 없습니다.");
+//        }
+//
+//        return infoList.stream().map(this::entityToDTO).toList();
+//    }
 
     FestivalState nowState(LocalDate fromDate, LocalDate toDate) {
         FestivalState state;
