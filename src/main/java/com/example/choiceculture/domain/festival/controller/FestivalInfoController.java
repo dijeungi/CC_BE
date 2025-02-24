@@ -42,6 +42,12 @@ public class FestivalInfoController {
         return ResponseEntity.ok().body(dtoList);
     }
 
+    @GetMapping("/list/category")
+    public ResponseEntity<List<FestivalInfoDTO>> listCategory(FestivalRequestDTO requestDTO) {
+        List<FestivalInfoDTO> dtoList = festivalInfoService.listCategory(requestDTO);
+        return ResponseEntity.ok().body(dtoList);
+    }
+
     @GetMapping("/search")
     public ResponseEntity<SearchResponseDTO> search(String searchKeyword) {
         SearchResponseDTO dtoList = festivalInfoService.search(searchKeyword);

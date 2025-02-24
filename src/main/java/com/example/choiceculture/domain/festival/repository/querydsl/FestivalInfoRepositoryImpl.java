@@ -64,6 +64,19 @@ public class FestivalInfoRepositoryImpl implements FestivalInfoRepositoryCustom 
                 .fetch();
     }
 
+    @Override
+    public List<FestivalInfo> findByDTOCategory(FestivalRequestDTO requestDTO) {
+        return jpaQueryFactory
+                .selectFrom(festivalInfo)
+                .where(
+                        festivalInfo.categoryId.like(requestDTO.getCategoryId()+"%"),
+                        eqMdPick(requestDTO.getMdPick()),
+                        eqPremier(requestDTO.getPremier()),
+                        festivalInfo.accessState.eq(AccessState.Y)
+                )
+                .fetch();
+    }
+
     private BooleanExpression eqCategoryId(String categoryId) {
         if (categoryId == null) {
             return null;

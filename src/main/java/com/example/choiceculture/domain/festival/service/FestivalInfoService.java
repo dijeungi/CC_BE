@@ -24,6 +24,14 @@ public interface FestivalInfoService {
     List<FestivalInfoDTO> list(FestivalRequestDTO requestDTO);
 
     /**
+     * 모든 카테고리를 불러올 수 있는 기능 추가
+     *
+     * @param requestDTO (like(categoryId), mdpick, premier)
+     * @return 모든 카테고리, mdpick, 수상작 목록
+     */
+    List<FestivalInfoDTO> listCategory(FestivalRequestDTO requestDTO);
+
+    /**
      * 검색(공연명, 등장인물, 장소)
      *
      * @param searchKeyword 검색명

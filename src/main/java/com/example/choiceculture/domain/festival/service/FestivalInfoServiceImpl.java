@@ -60,6 +60,15 @@ public class FestivalInfoServiceImpl implements FestivalInfoService {
         return infoList.stream().map(this::entityToDTO).toList();
     }
 
+    @Override
+    public List<FestivalInfoDTO> listCategory(FestivalRequestDTO requestDTO) {
+        List<FestivalInfo> infoList = festivalInfoRepository.findByDTOCategory(requestDTO);
+        if (infoList.isEmpty()) {
+            throw new EntityNotFoundException("해당 공연 목록이 없습니다.");
+        }
+        return infoList.stream().map(this::entityToDTO).toList();
+    }
+
     @Transactional(readOnly = true)
     @Override
     public SearchResponseDTO search(String searchKeyword) {
