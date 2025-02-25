@@ -25,8 +25,8 @@ public class PlaceInfo {
     @Column(name = "place_location")
     private String placeLocation;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "festival_id")
+    @OneToOne
+    @JoinColumn(name = "festival_id", unique = true, nullable = false)
     private FestivalInfo festival;
 
 }
