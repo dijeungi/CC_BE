@@ -1,25 +1,39 @@
 package com.example.choiceculture.domain.festival.entity;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
+import lombok.*;
 
-@Setter
+import java.time.LocalDate;
+import java.time.LocalTime;
+
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @Getter
+@Setter
 @Entity
 @Table(name = "festival_time")
 public class FestivalTime {
-    @EmbeddedId
-    private FestivalTimeId id; // 복합 키
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", nullable = false)
+    private Integer id;
 
+    @Size(max = 4)
     @Column(name = "holiday_type", length = 4)
     private String holidayType;
 
-    @Column(name = "time")
-    private String time;
+    @Column(name = "date")
+    private LocalDate date;
 
-    @ManyToOne
-    @MapsId("festivalInfoId")
-    @JoinColumn(name = "festival_info_id", referencedColumnName = "id")
+    @Column(name = "time")
+    private LocalTime time;
+
+    @NotNull
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "festival_info_id", nullable = false)
     private FestivalInfo festivalInfo;
+
 }

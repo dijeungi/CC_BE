@@ -1,6 +1,8 @@
 package com.example.choiceculture.util.file;
 
+import com.amazonaws.HttpMethod;
 import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.model.GeneratePresignedUrlRequest;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -20,6 +22,7 @@ import java.net.URLConnection;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -36,8 +39,41 @@ public class AwsS3Util {
 
     private final AmazonS3 s3Client;
 
+    public String getPresignedUrl(String fileName) {
+        if (fileName == null || fileName.isEmpty()) {
+            return null;
+        }
+
+        try {
+            if (!s3Client.doesObjectExist(bucketName, fileName)) {
+                log.warn("File does not exist in S3: {}", fileName);
+                return null; // 파일이 존재하지 않으면 null 반환
+            }
+
+            // 만료 시간 (예: 1시간 후 만료)
+            Date expiration = new Date();
+            long expTimeMillis = expiration.getTime();
+            expTimeMillis += 3600000; // 1시간 (60분 * 60초 * 1000ms)
+            expiration.setTime(expTimeMillis);
+
+            // Presigned URL 생성
+            GeneratePresignedUrlRequest generatePresignedUrlRequest =
+                    new GeneratePresignedUrlRequest(bucketName, fileName)
+                            .withMethod(HttpMethod.GET)
+                            .withExpiration(expiration);
+
+            URL url = s3Client.generatePresignedUrl(generatePresignedUrlRequest);
+            return url.toString();
+
+        } catch (Exception e) {
+            log.error("Failed to generate presigned URL for file: {}", fileName, e);
+            return null;
+        }
+    }
+
     /**
      * S3에 파일 업로드
+     *
      * @param files 파일 리스트
      * @return 업로드된 파일 URL 리스트
      */
@@ -130,6 +166,7 @@ public class AwsS3Util {
 
     /**
      * S3에 파일 삭제
+     *
      * @param fileNames 파일 이름 리스트
      */
     public void deleteFiles(List<String> fileNames) {
@@ -145,7 +182,8 @@ public class AwsS3Util {
 
     /**
      * S3에 파일 삭제
-     * @param fileName  파일 이름
+     *
+     * @param fileName 파일 이름
      */
     public void deleteFile(String fileName) {
         s3Client.deleteObject(bucketName, fileName);
@@ -153,6 +191,7 @@ public class AwsS3Util {
 
     /**
      * S3에 있는 파일 URL 가져오기
+     *
      * @param fileName 파일 이름
      * @return 파일 URL
      */

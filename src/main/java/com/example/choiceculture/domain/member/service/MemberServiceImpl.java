@@ -8,6 +8,7 @@ import com.example.choiceculture.domain.member.dto.MemberRequestDTO;
 import com.example.choiceculture.domain.member.dto.MemberTestDTO;
 import com.example.choiceculture.domain.member.dto.PasswordRequestDTO;
 import com.example.choiceculture.domain.member.entity.Member;
+import com.example.choiceculture.domain.member.enums.UserEmailAlarm;
 import com.example.choiceculture.domain.member.repository.MemberRepository;
 import com.example.choiceculture.props.JwtProps;
 import com.example.choiceculture.security.MemberDTO;
@@ -22,6 +23,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Map;
+import java.util.Objects;
 
 @Slf4j
 @Transactional
@@ -43,16 +45,18 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public void join(JoinRequestDTO request) {
-        memberRepository.findByEmail(request.getEmail())
+        memberRepository.findById(request.getId())
                 .ifPresent(member -> {
                     throw new IllegalArgumentException("이미 존재하는 회원입니다!");
                 });
 
         Member member = Member.builder()
+                .id(request.getId())
                 .email(request.getEmail())
                 .userName(request.getName())
                 .userPassword(passwordEncoder.encode(request.getPassword()))
                 .userPhone(request.getPhone())
+                .userEmailAlarm(UserEmailAlarm.valueOf(request.getMailYn()))
                 .build();
 
         member.addRole(request.getRole()); // 회원가입시, USER 권한을 부여
@@ -62,14 +66,14 @@ public class MemberServiceImpl implements MemberService {
 
 
     @Override
-    public Map<String, Object> login(String email, String password) {
-        Member member = getMember(email);
+    public Map<String, Object> login(String id, String password) {
+        Member member = getMember(id);
 
         if (!passwordEncoder.matches(password, member.getUserPassword())) {
             throw new IllegalArgumentException("password not found");
         }
 
-        MemberDTO memberDTO = new MemberDTO(member.getEmail(), member.getUserPassword(), member.getUserName(),
+        MemberDTO memberDTO = new MemberDTO(member.getId(), member.getEmail(), member.getUserPassword(), member.getUserName(),
                 member.getMemberRoleList().stream().map(Enum::name).toList());
 
         log.info("memberService login memberDTO: {}", memberDTO);
@@ -90,7 +94,7 @@ public class MemberServiceImpl implements MemberService {
         Member member = memberRepository.findById(requestDTO.getUserId())
                 .orElseThrow(() -> new EntityNotFoundException("존재하지 않는 회원입니다."));
 
-        if (passwordEncoder.matches(requestDTO.getPassword(), member.getUserPassword())) {
+        if (passwordEncoder.matches(requestDTO.getBeforePassword(), member.getUserPassword())) {
             throw new IllegalArgumentException("이전에 사용했던 비밀번호입니다.");
         }
 
@@ -104,9 +108,15 @@ public class MemberServiceImpl implements MemberService {
         Member member = memberRepository.findById(requestDTO.getUserId())
                 .orElseThrow(() -> new EntityNotFoundException("존재하지 않는 회원입니다."));
 
-        member.setUserName(requestDTO.getUserName());
-        member.setUserPhone(requestDTO.getUserPhone());
-        member.setEmail(requestDTO.getEmail());
+        member.setUserName(Objects.requireNonNullElse(requestDTO.getUserName(), member.getUserName()));
+        member.setUserPhone(Objects.requireNonNullElse(requestDTO.getUserPhone(), member.getUserPhone()));
+        member.setEmail(Objects.requireNonNullElse(requestDTO.getEmail(), member.getEmail()));
+        member.setUserBirth(Objects.requireNonNullElse(requestDTO.getUserBirth(), member.getUserBirth()));
+        member.setUserEmailAlarm(Objects.requireNonNullElse(requestDTO.getEmailAlarm(), member.getUserEmailAlarm()));
+        member.setUserFavorite1(Objects.requireNonNullElse(requestDTO.getUserFavorite1(), member.getUserFavorite1()));
+        member.setUserFavorite2(Objects.requireNonNullElse(requestDTO.getUserFavorite2(), member.getUserFavorite2()));
+        member.setUserFavorite3(Objects.requireNonNullElse(requestDTO.getUserFavorite3(), member.getUserFavorite3()));
+
         memberRepository.save(member);
     }
 
@@ -149,15 +159,16 @@ public class MemberServiceImpl implements MemberService {
     /**
      * email로 회원을 찾는다.
      *
-     * @param email 이메일
+     * @param id 이메일
      * @return 회원
      */
     @Transactional(readOnly = true)
     @Override
-    public Member getMember(String email) {
-        return memberRepository.findByEmail(email)
+    public Member getMember(String id) {
+        return memberRepository.findById(id)
                 .orElseThrow(() -> new UsernameNotFoundException("해당 사용자를 찾을 수 없습니다."));
     }
+
 
     @Transactional(readOnly = true)
     public Member getMemberByPhoneNumber(String phoneNumber) {

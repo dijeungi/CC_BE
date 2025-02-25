@@ -1,18 +1,22 @@
 package com.example.choiceculture.domain.festival.service;
 
 import com.example.choiceculture.domain.festival.dto.*;
-import com.example.choiceculture.domain.festival.entity.ActorInfo;
-import com.example.choiceculture.domain.festival.entity.FestivalInfo;
-import com.example.choiceculture.domain.festival.repository.ActorInfoRepository;
-import com.example.choiceculture.domain.festival.repository.FestivalInfoRepository;
+import com.example.choiceculture.domain.festival.entity.*;
+import com.example.choiceculture.domain.festival.enums.AccessState;
+import com.example.choiceculture.domain.festival.enums.FestivalState;
+import com.example.choiceculture.domain.festival.repository.*;
 import com.example.choiceculture.domain.member.entity.Member;
 import com.example.choiceculture.domain.member.repository.MemberRepository;
+import com.example.choiceculture.util.file.AwsS3Util;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.DayOfWeek;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Slf4j
@@ -24,6 +28,11 @@ public class FestivalInfoServiceImpl implements FestivalInfoService {
     private final ActorInfoRepository actorInfoRepository;
     private final ActorInfoService actorInfoService;
     private final MemberRepository memberRepository;
+    private final FestivalTimeRepository festivalTimeRepository;
+    private final FestivalImageRepository festivalImageRepository;
+    private final PlaceInfoRepository placeInfoRepository;
+    private final FestivalInfoAccessRepository festivalInfoAccessRepository;
+    private final AwsS3Util awsS3Util;
 
     @Override
     public List<FestivalInfoDTO> openTicket() {
@@ -36,16 +45,25 @@ public class FestivalInfoServiceImpl implements FestivalInfoService {
 
     @Override
     public FestivalInfoDTO getOne(Integer festivalId) {
-        FestivalInfoDTO dtoList = festivalInfoRepository.findByFestivalId(festivalId);
-        if (dtoList == null) {
+        FestivalInfoDTO dto  = festivalInfoRepository.findByFestivalId(festivalId);
+        if (dto  == null) {
             throw new EntityNotFoundException("해당 공연이 없습니다.");
         }
-        return dtoList;
+        return dto ;
     }
 
     @Override
     public List<FestivalInfoDTO> list(FestivalRequestDTO requestDTO) {
         List<FestivalInfo> infoList = festivalInfoRepository.findByDTO(requestDTO);
+        if (infoList.isEmpty()) {
+            throw new EntityNotFoundException("해당 공연 목록이 없습니다.");
+        }
+        return infoList.stream().map(this::entityToDTO).toList();
+    }
+
+    @Override
+    public List<FestivalInfoDTO> listCategory(FestivalRequestDTO requestDTO) {
+        List<FestivalInfo> infoList = festivalInfoRepository.findByDTOCategory(requestDTO);
         if (infoList.isEmpty()) {
             throw new EntityNotFoundException("해당 공연 목록이 없습니다.");
         }
@@ -70,25 +88,35 @@ public class FestivalInfoServiceImpl implements FestivalInfoService {
 
     @Override
     public List<FestivalInfoDTO> rankingList() {
-        List<FestivalInfo> infoList = festivalInfoRepository.findByRanking();
-        return infoList.stream().map(this::entityToDTO).toList();
+        List<FestivalInfoDTO> infoList = festivalInfoRepository.findByRanking();
+        return infoList;
     }
 
     @Transactional(readOnly = true)
     @Override
-    public RankingResponseDTO favoriteRanking(String userId) {
+    public List<FestivalInfoDTO> favoriteRanking(String userId) {
         Member member = memberRepository.findById(userId)
                 .orElseThrow(() -> new EntityNotFoundException("존재하지 않는 회원입니다."));
-        String userName = member.getUserName();
-        String userFavorite1 = member.getUserFavorite1();
 
-        List<FestivalInfo> infoList = festivalInfoRepository.findRankingByUserId(userFavorite1);
+        List<FestivalInfo> infoList = festivalInfoRepository.findRankingByUserId(member.getUserFavorite1());
         if (infoList.isEmpty()) {
             throw new EntityNotFoundException("해당 장르에 대한 공연이 없습니다.");
         }
 
         List<FestivalInfoDTO> dtoList = infoList.stream().map(this::entityToDTO).toList();
-        return new RankingResponseDTO(userName, dtoList);
+        return dtoList;
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public List<FestivalInfoDTO> LimitRanking(int limit) {
+        List<FestivalInfo> infoList = festivalInfoRepository.findRankingLimit(limit);
+        if (infoList.isEmpty()) {
+            throw new EntityNotFoundException("해당 장르에 대한 공연이 없습니다.");
+        }
+
+        List<FestivalInfoDTO> dtoList = infoList.stream().map(this::entityToDTO).toList();
+        return dtoList;
     }
 
     @Override
@@ -102,6 +130,160 @@ public class FestivalInfoServiceImpl implements FestivalInfoService {
         }
 
         return infoList.stream().map(this::entityToDTO).toList();
+    }
+
+    FestivalState nowState(LocalDate fromDate, LocalDate toDate) {
+        FestivalState state;
+
+        LocalDate today = LocalDate.now();
+
+        if (toDate.isBefore(today)) {
+            state = FestivalState.END;
+        } else if (fromDate.isAfter(today)) {
+            state = FestivalState.YET;
+        } else {
+            state = FestivalState.NOW;
+        }
+
+        return state;
+    }
+
+    void time(Integer festivalId) {
+        List<FestivalTime> timeList = festivalTimeRepository.findByFestivalId(festivalId);
+        if (!timeList.isEmpty()) {
+            timeList.forEach(time -> {
+                festivalTimeRepository.deleteByFestivalId(time.getFestivalInfo().getId());
+            });
+        }
+    }
+
+    @Transactional
+    @Override
+    public void addFestival(FestivalAddDTO addDTO) {
+        FestivalInfo info = (addDTO.getFestivalId() != null)
+                ? festivalInfoRepository.findById(addDTO.getFestivalId()).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 공연입니다."))
+                : FestivalInfo.builder()
+                .regDate(LocalDateTime.now())
+                .ranking(festivalInfoRepository.festivalCount() + 1)
+                .build();
+
+        log.info("addDTO: {}", addDTO);
+
+        info.setFestivalName(addDTO.getFestivalName());
+        info.setPlaceName(addDTO.getPlaceId());
+        info.setCategoryId(addDTO.getCategoryId());
+        info.setFromDate(addDTO.getFromDate());
+        info.setToDate(addDTO.getToDate());
+        info.setSalePercent(addDTO.getSalePercent());
+        info.setFestivalPrice(addDTO.getFestivalPrice());
+        info.setSalePrice(Math.max(0, Math.round(addDTO.getFestivalPrice() * (1 - (float) (addDTO.getSalePercent() != null ? addDTO.getSalePercent() : 0) / 100))));
+        info.setRunningTime(addDTO.getRunningTime());
+        info.setAge(addDTO.getAge());
+        info.setUpDate(LocalDateTime.now());
+
+        if (addDTO.getPostImage() != null && !addDTO.getPostImage().isEmpty()) {
+            String s3PostImageUrl = awsS3Util.uploadFile(addDTO.getPostImage());
+            info.setPostImage(s3PostImageUrl);
+        }
+
+        FestivalState state = nowState(info.getFromDate(), info.getToDate());
+        info.setFestivalState(state);
+
+        FestivalInfo saved = festivalInfoRepository.save(info);
+
+        time(info.getId());
+
+        addDTO.getTimeDTOS().forEach(time -> {
+            LocalDate startDate = saved.getFromDate();
+            LocalDate endDate = saved.getToDate();
+            LocalDate maxEndDate = startDate.plusMonths(1).minusDays(1);
+
+            if (endDate.isAfter(maxEndDate)) {
+                endDate = maxEndDate;
+            }
+
+            LocalDate currentDate = startDate;
+            while (!currentDate.isAfter(endDate)) {
+                boolean shouldSave = switch (time.getHolidayType()) {
+                    case "HDO1" -> true;
+                    case "HDO2" -> isWeekday(currentDate);
+                    case "HDO3" -> isSaturday(currentDate);
+                    case "HDO4" -> isSunday(currentDate);
+                    default -> {
+                        log.info("holiday type error: {}", time.getHolidayType());
+                        yield false;
+                    }
+                };
+
+                if (shouldSave) {
+                    FestivalTime festivalTime = FestivalTime.builder()
+                            .holidayType(time.getHolidayType())
+                            .date(currentDate)
+                            .time(time.getTime())
+                            .festivalInfo(saved)
+                            .build();
+
+                    festivalTimeRepository.save(festivalTime);
+                }
+
+                currentDate = currentDate.plusDays(1);
+            }
+        });
+
+        FestivalImage imgByFestivalId = festivalImageRepository.findByFestivalId(saved.getId());
+        if (imgByFestivalId != null) {
+            festivalImageRepository.deleteById(imgByFestivalId.getId());
+        }
+
+        FestivalImage.FestivalImageBuilder imgBuilder = FestivalImage.builder().festival(info);
+
+        if (addDTO.getImgSrc1() != null && !addDTO.getImgSrc1().isEmpty()) {
+            imgBuilder.imgSrc1(awsS3Util.uploadFile(addDTO.getImgSrc1()));
+        }
+        if (addDTO.getImgSrc2() != null && !addDTO.getImgSrc2().isEmpty()) {
+            imgBuilder.imgSrc2(awsS3Util.uploadFile(addDTO.getImgSrc2()));
+        }
+        if (addDTO.getImgSrc3() != null && !addDTO.getImgSrc3().isEmpty()) {
+            imgBuilder.imgSrc3(awsS3Util.uploadFile(addDTO.getImgSrc3()));
+        }
+
+        festivalImageRepository.save(imgBuilder.build());
+
+        PlaceInfo placeByFestivalId = placeInfoRepository.findByFestivalId(saved.getId());
+        if (placeByFestivalId != null) {
+            placeInfoRepository.deleteById(placeByFestivalId.getId());
+        }
+
+        PlaceInfo place = PlaceInfo.builder()
+                .festival(saved)
+                .placeName(addDTO.getPlaceName())
+                .placeLocation(addDTO.getPlaceLocation())
+                .build();
+
+        placeInfoRepository.save(place);
+
+        FestivalInfoAccess infoAccess = festivalInfoAccessRepository.findByFestivalId(saved.getId());
+
+        if (saved.getAccessState().equals(AccessState.N) && infoAccess == null) {
+            FestivalInfoAccess access = FestivalInfoAccess.builder()
+                    .festivalMediaLink(addDTO.getMediaLink())
+                    .festival(saved)
+                    .build();
+        }
+
+    }
+
+    private boolean isWeekday(LocalDate date) {
+        DayOfWeek day = date.getDayOfWeek();
+        return day != DayOfWeek.SATURDAY && day != DayOfWeek.SUNDAY;
+    }
+
+    private boolean isSaturday(LocalDate date) {
+        return date.getDayOfWeek() == DayOfWeek.SATURDAY;
+    }
+
+    private boolean isSunday(LocalDate date) {
+        return date.getDayOfWeek() == DayOfWeek.SUNDAY;
     }
 
 }

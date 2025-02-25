@@ -17,9 +17,10 @@ public interface MemberService {
 
     Member getMember(String email);
 
+
     void join(JoinRequestDTO request);
 
-    Map<String, Object> login(String email, String password);
+    Map<String, Object> login(String id, String password);
 
     void changePassword(PasswordRequestDTO requestDTO);
 
@@ -75,6 +76,7 @@ public interface MemberService {
     default MemberDTO entityToDTO(Member member) {
 
         return new MemberDTO(
+                member.getId(),
                 member.getEmail(),
                 member.getUserPassword(),
                 member.getUserName(),

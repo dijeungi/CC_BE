@@ -6,9 +6,7 @@ import com.example.choiceculture.domain.festival.service.FestivalInfoService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -44,6 +42,12 @@ public class FestivalInfoController {
         return ResponseEntity.ok().body(dtoList);
     }
 
+    @GetMapping("/list/category")
+    public ResponseEntity<List<FestivalInfoDTO>> listCategory(FestivalRequestDTO requestDTO) {
+        List<FestivalInfoDTO> dtoList = festivalInfoService.listCategory(requestDTO);
+        return ResponseEntity.ok().body(dtoList);
+    }
+
     @GetMapping("/search")
     public ResponseEntity<SearchResponseDTO> search(String searchKeyword) {
         SearchResponseDTO dtoList = festivalInfoService.search(searchKeyword);
@@ -55,10 +59,15 @@ public class FestivalInfoController {
         List<FestivalInfoDTO> dtoList = festivalInfoService.rankingList();
         return ResponseEntity.ok().body(dtoList);
     }
+    @GetMapping("/ranking/limit")
+    public ResponseEntity<List<FestivalInfoDTO>> rankingLimitList(int limit) {
+        List<FestivalInfoDTO> dtoList = festivalInfoService.LimitRanking(limit);
+        return ResponseEntity.ok().body(dtoList);
+    }
 
     @GetMapping("/favorite-ranking")
-    public ResponseEntity<RankingResponseDTO> favoriteRanking(String userId) {
-        RankingResponseDTO dtoList = festivalInfoService.favoriteRanking(userId);
+    public ResponseEntity<List<FestivalInfoDTO>> favoriteRanking(String userId) {
+        List<FestivalInfoDTO> dtoList = festivalInfoService.favoriteRanking(userId);
         return ResponseEntity.ok().body(dtoList);
     }
 
@@ -66,5 +75,11 @@ public class FestivalInfoController {
     public ResponseEntity<List<FestivalInfoDTO>> favoriteLimit(String userId) {
         List<FestivalInfoDTO> dtoList = festivalInfoService.favoriteLimit(userId);
         return ResponseEntity.ok().body(dtoList);
+    }
+
+    @PostMapping(value = "/add", consumes = "multipart/form-data")
+    public ResponseEntity<String> addFestival(FestivalAddDTO infoDTO) {
+        festivalInfoService.addFestival(infoDTO);
+        return ResponseEntity.ok().body("공연 추가완료되었습니다.");
     }
 }

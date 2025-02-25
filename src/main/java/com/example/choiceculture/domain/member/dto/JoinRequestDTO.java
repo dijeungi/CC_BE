@@ -16,6 +16,8 @@ public class JoinRequestDTO {
 
     @NotBlank(message = "유저이름은 필수 입력 값입니다.")
     private String name;
+    @NotBlank(message = "유저이름은 필수 입력 값입니다.")
+    private String id;
     @NotBlank(message = "이메일은 필수 입력 값입니다.")
     @Pattern(regexp = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,6}$", message = "이메일 형식이 올바르지 않습니다.")
     private String email;
@@ -23,6 +25,7 @@ public class JoinRequestDTO {
     private String password;
     @NotBlank(message = "전화번호는 필수 입력 값입니다.")
     private String phone;
+    private String mailYn;
 
     private MemberRole role;
 }

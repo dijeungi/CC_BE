@@ -1,24 +1,34 @@
 package com.example.choiceculture.domain.festival.entity;
 
+import com.example.choiceculture.domain.festival.enums.AccessState;
+import com.example.choiceculture.domain.festival.enums.FestivalState;
+import com.example.choiceculture.domain.festival.enums.MdPick;
+import com.example.choiceculture.domain.festival.enums.Premier;
 import com.example.choiceculture.entity.BaseEntity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.ColumnDefault;
 
-import java.time.Instant;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+@AllArgsConstructor
+@NoArgsConstructor
+@SuperBuilder
 @Getter
 @Setter
 @Entity
 @Table(name = "festival_info")
 public class FestivalInfo extends BaseEntity {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Integer id;
 
@@ -36,15 +46,20 @@ public class FestivalInfo extends BaseEntity {
     @Column(name = "category_id", nullable = false, length = 4)
     private String categoryId;
 
+    @ColumnDefault("'N'")
+    @Enumerated(EnumType.STRING)
+    @Column(name = "access_state")
+    private AccessState accessState;
+
     @Column(name = "from_date")
     private LocalDate fromDate;
 
     @Column(name = "to_date")
     private LocalDate toDate;
 
-    @Lob
+    @Enumerated(EnumType.STRING)
     @Column(name = "festival_state")
-    private String festivalState;
+    private FestivalState festivalState;
 
     @ColumnDefault("0")
     @Column(name = "sale_percent")
@@ -70,16 +85,28 @@ public class FestivalInfo extends BaseEntity {
     @Column(name = "post_image")
     private String postImage;
 
-    @Lob
+    @ColumnDefault("'N'")
+    @Enumerated(EnumType.STRING)
     @Column(name = "md_pick")
-    private String mdPick;
+    private MdPick mdPick;
 
-    @Lob
+    @ColumnDefault("'N'")
+    @Enumerated(EnumType.STRING)
     @Column(name = "premier")
-    private String premier;
-
+    private Premier premier;
 
     @OneToMany(mappedBy = "festivalInfo", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<FestivalTime> festivalTimes = new ArrayList<>();
+
+    @OneToOne(mappedBy = "festival", cascade = CascadeType.ALL, orphanRemoval = true)
+    private PlaceInfo placeInfo;
+
+    @PrePersist
+    @PreUpdate
+    public void prePersistAndUpdate() {
+        this.accessState = (this.accessState != null) ? this.accessState : AccessState.N;
+        this.mdPick = (this.mdPick != null) ? this.mdPick : MdPick.N;
+        this.premier = (this.premier != null) ? this.premier : Premier.N;
+    }
 
 }

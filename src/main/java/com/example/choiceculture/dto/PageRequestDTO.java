@@ -22,9 +22,15 @@ public class PageRequestDTO {
 
     private String searchTerm;
 
-    private String best;
+    private String searchFestivalName;
 
-    private Long categoryId;
+    private String refundState;
 
-    private Long divisionId;
+    private String userId;
+
+//    private String best;
+
+//    private Long categoryId;
+
+//    private Long divisionId;
 }

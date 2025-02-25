@@ -15,6 +15,7 @@ import java.util.List;
 @Getter
 @Builder
 public class MemberResDTO {
+    private String Id;
     private String email;
     private String name;
     private String phone;

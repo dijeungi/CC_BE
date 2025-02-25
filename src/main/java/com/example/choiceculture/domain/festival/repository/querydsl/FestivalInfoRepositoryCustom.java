@@ -10,4 +10,9 @@ public interface FestivalInfoRepositoryCustom {
     FestivalInfoDTO findByFestivalId(Integer festivalId);
 
     List<FestivalInfo> findByDTO(FestivalRequestDTO requestDTO);
+
+    List<FestivalInfoDTO> findByRanking();
+  
+    List<FestivalInfo> findByDTOCategory(FestivalRequestDTO requestDTO);
+  
 }

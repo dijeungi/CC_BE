@@ -1,6 +1,6 @@
 package com.example.choiceculture.domain.festival.service;
 
-import com.example.choiceculture.domain.festival.dto.CommonInfoDTO;
+import com.example.choiceculture.domain.festival.dto.CommonRequestDTO;
 import com.example.choiceculture.domain.festival.entity.CommonInfo;
 
 import java.util.List;
@@ -11,11 +11,13 @@ public interface CommonInfoService {
      * @param id 카테고리ID 앞 두글자
      * @return 카테고리 목록
      */
-    List<CommonInfoDTO> list(String id);
+    List<CommonRequestDTO> list(String id);
+
+    List<CommonRequestDTO> listCategory(String id);
 
     // entity -> dto 변환
-    default CommonInfoDTO entityToDTO(CommonInfo info) {
-        return CommonInfoDTO.builder()
+    default CommonRequestDTO entityToDTO(CommonInfo info) {
+        return CommonRequestDTO.builder()
                 .id(info.getId())
                 .name(info.getName())
                 .build();

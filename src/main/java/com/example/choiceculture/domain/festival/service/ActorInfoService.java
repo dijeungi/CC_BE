@@ -1,5 +1,7 @@
 package com.example.choiceculture.domain.festival.service;
 
+import com.example.choiceculture.domain.festival.dto.ActorRequestDTO;
+import com.example.choiceculture.domain.festival.dto.ActorResponseDTO;
 import com.example.choiceculture.domain.festival.dto.ActorInfoDTO;
 import com.example.choiceculture.domain.festival.entity.ActorInfo;
 
@@ -19,6 +21,15 @@ public interface ActorInfoService {
                 .id(info.getId())
                 .actorCharacter(info.getActorCharacter())
                 .actorName(info.getActorName())
+                .build();
+    }
+
+    // dto -> entity 변환
+    default ActorInfo dtoToEntity(ActorResponseDTO infoDTO) {
+        return ActorInfo.builder()
+                .festivalId(infoDTO.getFestivalId())
+                .actorCharacter(infoDTO.getActorCharacter())
+                .actorName(infoDTO.getActorName())
                 .build();
     }
 }
