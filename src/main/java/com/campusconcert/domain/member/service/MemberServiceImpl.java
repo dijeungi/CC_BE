@@ -1,8 +1,5 @@
 package com.campusconcert.domain.member.service;
 
-
-//import com.example.choiceculture.domain.heart.service.HeartService;
-
 import com.campusconcert.domain.member.dto.JoinRequestDTO;
 import com.campusconcert.domain.member.dto.MemberRequestDTO;
 import com.campusconcert.domain.member.dto.MemberTestDTO;
@@ -22,6 +19,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.Map;
 import java.util.Objects;
 
@@ -53,10 +51,15 @@ public class MemberServiceImpl implements MemberService {
         Member member = Member.builder()
                 .id(request.getId())
                 .email(request.getEmail())
-                .userName(request.getName())
+                .userName(request.getUserName())
                 .userPassword(passwordEncoder.encode(request.getPassword()))
                 .userPhone(request.getPhone())
+                .userBirth(request.getUserBirth())
+                .userFavorite1(request.getFavorite1())
+                .userFavorite2(request.getFavorite2())
+                .userFavorite3(request.getFavorite3())
                 .userEmailAlarm(UserEmailAlarm.valueOf(request.getMailYn()))
+                .regDate(LocalDateTime.now())
                 .build();
 
         member.addRole(request.getRole()); // 회원가입시, USER 권한을 부여
@@ -116,6 +119,7 @@ public class MemberServiceImpl implements MemberService {
         member.setUserFavorite1(Objects.requireNonNullElse(requestDTO.getUserFavorite1(), member.getUserFavorite1()));
         member.setUserFavorite2(Objects.requireNonNullElse(requestDTO.getUserFavorite2(), member.getUserFavorite2()));
         member.setUserFavorite3(Objects.requireNonNullElse(requestDTO.getUserFavorite3(), member.getUserFavorite3()));
+        member.setUpDate(LocalDateTime.now());
 
         memberRepository.save(member);
     }
