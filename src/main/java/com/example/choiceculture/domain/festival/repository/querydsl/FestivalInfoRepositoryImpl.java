@@ -65,16 +65,16 @@ public class FestivalInfoRepositoryImpl implements FestivalInfoRepositoryCustom 
 
         // S3 Presigned URL 생성 및 설정
         String postImageUrl = awsS3Util.getPresignedUrl(dto.getPostImage());
-        dto.setPostImageUrl(postImageUrl != null ? postImageUrl : dto.getPostImage());
+        dto.setPostImage(postImageUrl != null ? postImageUrl : dto.getPostImage());
 
         String imgSrc1Url = awsS3Util.getPresignedUrl(dto.getImgSrc1());
-        dto.setImgSrc1Url(imgSrc1Url != null ? imgSrc1Url : dto.getImgSrc1());
+        dto.setImgSrc1(imgSrc1Url != null ? imgSrc1Url : dto.getImgSrc1());
 
         String imgSrc2Url = awsS3Util.getPresignedUrl(dto.getImgSrc2());
-        dto.setImgSrc2Url(imgSrc2Url != null ? imgSrc2Url : dto.getImgSrc2());
+        dto.setImgSrc2(imgSrc2Url != null ? imgSrc2Url : dto.getImgSrc2());
 
         String imgSrc3Url = awsS3Util.getPresignedUrl(dto.getImgSrc3());
-        dto.setImgSrc3Url(imgSrc3Url != null ? imgSrc3Url : dto.getImgSrc3());
+        dto.setImgSrc3(imgSrc3Url != null ? imgSrc3Url : dto.getImgSrc3());
 
         return dto;
     }

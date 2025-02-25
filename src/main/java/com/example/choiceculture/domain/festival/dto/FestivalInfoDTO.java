@@ -32,16 +32,9 @@ public class FestivalInfoDTO {
     private Integer age;
     private Integer ranking;
 
-    // 원본 파일명
     private String postImage;
     private String imgSrc1;
     private String imgSrc2;
     private String imgSrc3;
-
-    // Presigned URL
-    private String postImageUrl;
-    private String imgSrc1Url;
-    private String imgSrc2Url;
-    private String imgSrc3Url;
 
 }

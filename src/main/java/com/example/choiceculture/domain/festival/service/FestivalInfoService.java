@@ -66,6 +66,8 @@ public interface FestivalInfoService {
                 .id(info.getId())
                 .festivalName(info.getFestivalName())
                 .placeName(info.getPlaceName())
+                .placeDetailName(info.getPlaceInfo().getPlaceName())
+                .placeLocation(info.getPlaceInfo().getPlaceLocation())
                 .categoryId(info.getCategoryId())
                 .fromDate(info.getFromDate())
                 .toDate(info.getToDate())

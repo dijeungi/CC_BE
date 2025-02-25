@@ -98,6 +98,9 @@ public class FestivalInfo extends BaseEntity {
     @OneToMany(mappedBy = "festivalInfo", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<FestivalTime> festivalTimes = new ArrayList<>();
 
+    @OneToOne(mappedBy = "festival", cascade = CascadeType.ALL, orphanRemoval = true)
+    private PlaceInfo placeInfo;
+
     @PrePersist
     @PreUpdate
     public void prePersistAndUpdate() {
