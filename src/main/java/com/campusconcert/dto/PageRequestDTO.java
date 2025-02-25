@@ -1,0 +1,36 @@
+package com.campusconcert.dto;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
+
+@Data
+@SuperBuilder
+@AllArgsConstructor
+@NoArgsConstructor
+public class PageRequestDTO {
+
+    @Builder.Default
+    private int page = 1;
+
+    @Builder.Default
+    private int size = 10;
+
+    private String sort;
+
+    private String searchTerm;
+
+    private String searchFestivalName;
+
+    private String refundState;
+
+    private String userId;
+
+//    private String best;
+
+//    private Long categoryId;
+
+//    private Long divisionId;
+}

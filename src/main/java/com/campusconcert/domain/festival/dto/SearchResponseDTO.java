@@ -1,0 +1,13 @@
+package com.campusconcert.domain.festival.dto;
+
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+
+import java.util.List;
+
+@Getter
+@AllArgsConstructor
+public class SearchResponseDTO {
+    private List<FestivalInfoDTO> festivalResults;
+    private List<ActorInfoDTO> actorResults;
+}
