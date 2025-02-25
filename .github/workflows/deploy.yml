@@ -3,7 +3,7 @@ name: Build and Push Docker Images
 on:
   push:
     branches:
-      - backend # backend 브랜치에 푸시될 때 실행
+      - yeon # backend 브랜치에 푸시될 때 실행
 jobs:
   build_and_push: 
     runs-on: ubuntu-latest
@@ -40,10 +40,10 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           script: | #fi = 여기가 if의 끝이다
             if [ "$(sudo docker ps -a -q -f name=cc-backend)" ]; then
-              sudo docker rm -f dockerbackend
+              sudo docker rm -f cc-backend
             fi
             if [ "$(sudo docker images -q ${{ secrets.DOCKERHUB_USERNAME }}/cc-backend)" ]; then
               sudo docker rmi -f ${{ secrets.DOCKERHUB_USERNAME }}/cc-backend
             fi
             sudo docker pull ${{ secrets.DOCKERHUB_USERNAME }}/cc-backend
-            sudo docker run -d -p 8080:8080 --name cc-backend --add-host=host.docker.internal:172.17.0.1 ${{ secrets.DOCKERHUB_USERNAME }}/cc-backend
+            sudo docker run -d -p 8080:8080 --name cc-backend --add-host=host.docker.internal:172.17.0.1 --env-file /home/ubuntu/.env ${{ secrets.DOCKERHUB_USERNAME }}/cc-backend
