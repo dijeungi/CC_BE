@@ -56,6 +56,10 @@ public class TicketInfoRepositoryImpl implements TicketInfoRepositoryCustom {
                 .groupBy(orderIdPrefix,
                         ticketInfo.member.userName,
                         festivalInfo.festivalName,
+                        festivalInfo.postImage,
+                        festivalTime.date,
+                        festivalTime.time,
+                        festivalInfo.salePrice,
                         ticketInfo.paymentDate,
                         ticketInfo.refundState)
                 .offset(pageable.getOffset())
@@ -74,6 +78,10 @@ public class TicketInfoRepositoryImpl implements TicketInfoRepositoryCustom {
                 .groupBy(orderIdPrefix,
                         ticketInfo.member.userName,
                         festivalInfo.festivalName,
+                        festivalInfo.postImage,
+                        festivalTime.date,
+                        festivalTime.time,
+                        festivalInfo.salePrice,
                         ticketInfo.paymentDate,
                         ticketInfo.refundState)
                 .fetch().size();
