@@ -58,8 +58,6 @@ public class SecurityConfig {
                         .requestMatchers(new AntPathRequestMatcher("/api/favorite/**")).permitAll()
                         .requestMatchers(new AntPathRequestMatcher("/api/test/**")).permitAll()
                         .requestMatchers(new AntPathRequestMatcher("/member/**")).permitAll()
-                        .requestMatchers(new AntPathRequestMatcher("/get-member-by-phone")).permitAll() // 추가
-                        .requestMatchers(new AntPathRequestMatcher("/get-member-by-id")).permitAll()
                         // /api/admin/join, /api/admin/login,logout 모두 접근 가능
                         .requestMatchers(new AntPathRequestMatcher("/api/admin/member/join")).permitAll()
                         .requestMatchers(new AntPathRequestMatcher("/api/admin/member/login")).permitAll()
