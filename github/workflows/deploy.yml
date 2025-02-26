@@ -1,0 +1,39 @@
+name: Build and Run Docker Locally
+
+on:
+  push:
+    branches:
+      - yeon  # 특정 브랜치에서 실행
+
+jobs:
+  build_and_run:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 저장소 체크아웃
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      # serviceAccountKey.json` 파일 생성
+      - name: Create serviceAccountKey.json
+        run: |
+          echo '${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}' > serviceAccountKey.json
+
+      # Docker 이미지 빌드
+      - name: Build Docker Image
+        run: |
+          docker build --build-arg GOOGLE_APPLICATION_CREDENTIALS=serviceAccountKey.json -t cc-backend .
+
+      # Docker 컨테이너 실행
+      - name: Run Docker Container
+        run: |
+          docker run -d -p 8080:8080 \
+            --name cc-backend \
+            --env-file .env \
+            -v $(pwd)/serviceAccountKey.json:/app/serviceAccountKey.json \
+            -e GOOGLE_APPLICATION_CREDENTIALS=/app/serviceAccountKey.json \
+            cc-backend
+
+      # 실행된 컨테이너 확인
+      - name: Check Running Containers
+        run: docker ps
