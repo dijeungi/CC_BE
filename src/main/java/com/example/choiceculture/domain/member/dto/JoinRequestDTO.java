@@ -14,11 +14,16 @@ import lombok.*;
 @ToString
 public class JoinRequestDTO {
 
-    @NotBlank(message = "유저이름은 필수 입력 값입니다.")
+//    @NotBlank(message = "유저이름은 필수 입력 값입니다.")
     private String name;
-    @NotBlank(message = "유저이름은 필수 입력 값입니다.")
+    @NotBlank(message = "유저아이디는 필수 입력 값입니다.")
     private String id;
-    @NotBlank(message = "이메일은 필수 입력 값입니다.")
+//    @NotBlank(message = "이메일은 필수 입력 값입니다.")
+//    private String user;
+//    @NotBlank(message = "이메일은 필수 입력 값입니다.")
+    @NotBlank(message = "생년월일은 필수 입력 값입니다.")
+    private String birth;
+
     @Pattern(regexp = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,6}$", message = "이메일 형식이 올바르지 않습니다.")
     private String email;
     @NotBlank(message = "비밀번호는 필수 입력 값입니다.")

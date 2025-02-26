@@ -81,6 +81,7 @@ public class SocialService {
     public MemberDTO getKakaoMember(String accessToken) {
         log.info("getKakaoMember start...");
         String email = this.getEmailFromKakaoAccessToken(accessToken);
+        String username = this.getUserNameFromKakaoAccessToken(accessToken);
 
         log.info("getKakaoMember email: {}", email);
 
@@ -93,7 +94,7 @@ public class SocialService {
         }
 
         // 회원이 아니었다면 닉네임은 '소셜 회원'으로 패스워드는 임의로 생성
-        Member socialMember = this.makeSocialMember(email);
+        Member socialMember = this.makeSocialMember(username,email);
         memberRepository.save(socialMember);
         return memberService.entityToDTO(socialMember);
     }
@@ -246,6 +247,40 @@ public class SocialService {
 
         return kakaoAccount.get("email");
     }
+    private String getUserNameFromKakaoAccessToken(String accessToken) {
+        userId = "";
+        log.info("getEmailFromKakaoAccessToken start...");
+        String kakaoGetUserURL = socialProps.getKakao().getUserInfoUri();
+
+        if (accessToken == null) {
+            throw new RuntimeException("Access Token is null");
+        }
+
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Authorization", "Bearer " + accessToken);
+        headers.add("Content-Type", "application/x-www-form-urlencoded");
+
+        HttpEntity<String> entity = new HttpEntity<>(headers);
+
+        UriComponents uriBuilder = UriComponentsBuilder.fromHttpUrl(kakaoGetUserURL).build();
+
+        ResponseEntity<LinkedHashMap> response
+                = restTemplate.exchange(uriBuilder.toString(), HttpMethod.GET, entity, LinkedHashMap.class);
+        userId = response.getBody().get("id").toString();
+
+        log.info("response: {}", response);
+
+        LinkedHashMap<String, LinkedHashMap> bodyMap = response.getBody();
+        log.info("bodyMap: {}", bodyMap);
+
+        LinkedHashMap<String, Object> kakaoAccount = bodyMap.get("kakao_account");
+        log.info("kakaoAccount: {}", kakaoAccount);
+        LinkedHashMap<String, Object> profile = (LinkedHashMap<String, Object>) kakaoAccount.get("profile");
+        String nickname = profile.get("nickname").toString();
+        return nickname;
+    }
+
 
     private String getEmailFromGoogleAccessToken(String accessToken) {
         log.info("getEmailFromGoogleAccessToken start...");
@@ -328,6 +363,19 @@ public class SocialService {
                 .email(email)
                 .userPassword(passwordEncoder.encode(tempPassword))
                 .userName("소셜회원")
+                .build();
+        member.addRole(MemberRole.USER);
+        return member;
+    }
+
+    public Member makeSocialMember(String username,String email) {
+        String tempPassword = memberService.makeTempPassword();
+
+        Member member = Member.builder()
+                .id(userId)
+                .email(email)
+                .userPassword(passwordEncoder.encode(tempPassword))
+                .userName(username)
                 .build();
         member.addRole(MemberRole.USER);
         return member;
