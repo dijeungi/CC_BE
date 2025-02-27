@@ -18,7 +18,12 @@ import java.time.LocalDate;
 @Entity
 @Table(name = "ticket_info")
 public class TicketInfo {
+
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY) // ✅ 자동 증가 ID 추가
+    @Column(name = "id", nullable = false, updatable = false)
+    private Long id;
+
     @Size(max = 50)
     @Column(name = "order_id", nullable = false, length = 50)
     private String orderId;

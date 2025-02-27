@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.util.HashSet;
 import java.util.List;
 
 @Slf4j
@@ -44,16 +45,26 @@ public class TicketInfoServiceImpl implements TicketInfoService {
         Member member = memberRepository.findById(infoDTO.getMemberId())
                 .orElseThrow(() -> new EntityNotFoundException("존재하지 않는 회원입니다."));
 
+
         infoDTO.getLocationNum().forEach(s -> {
-            TicketInfo ticketInfo = TicketInfo.builder()
-                    .orderId(infoDTO.getOrderId() + "-" + s)
-                    .festivalId(infoDTO.getFestivalId())
-                    .member(member)
-                    .dateId(infoDTO.getDateId())
-                    .paymentDate(LocalDate.now())
-                    .locationNum(s)
-                    .build();
-            ticketInfoRepository.save(ticketInfo);
+            if(!ticketInfoRepository.existsByLocationNumAndOrderId(s,infoDTO.getOrderId())) {
+                TicketInfo ticketInfo = TicketInfo.builder()
+                        .orderId(infoDTO.getOrderId()+"-"+s)
+                        .festivalId(1) //NumbinfoDTO.getFestivalId()
+                        .member(member)
+                        .dateId(27) //infoDTO.getDateId()
+                        .paymentDate(LocalDate.now())
+                        .locationNum(s)
+                        .build();
+                if(infoDTO.getOrderId().length() < 10)
+                    ticketInfoRepository.saveAndFlush(ticketInfo); // ✅ 강제 플러시
+
+            }
+            else {
+                System.out.println("🚨 이미 존재하는 티켓입니다: " + s);
+            }
+
+
         });
     }
 

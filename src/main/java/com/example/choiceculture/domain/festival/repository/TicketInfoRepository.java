@@ -14,6 +14,11 @@ public interface TicketInfoRepository extends JpaRepository<TicketInfo, String>,
     @Query(value = "select t.locationNum from TicketInfo t where t.festivalId=:festivalId and t.dateId=:dateId and t.refundState='YET'")
     List<String> findByFestivalIdAndDateId(@Param("festivalId") Integer festivalId, @Param("dateId") Integer dateId);
 
+
+        boolean existsByLocationNumAndOrderId(String locationNum, String orderId);
+
+
+
     @Query(value = "select t from TicketInfo t where t.orderId=:orderId and t.member.id=:userId")
     Optional<TicketInfo> findByOrderIdAndUserId(@Param("orderId") String orderId, @Param("userId") String userId);
 }
