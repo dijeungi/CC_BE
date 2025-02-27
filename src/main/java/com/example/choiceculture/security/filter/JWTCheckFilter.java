@@ -85,7 +85,7 @@ public class JWTCheckFilter extends OncePerRequestFilter {
 
         String autHeaderStr = request.getHeader("Authorization");
 
-        if (autHeaderStr == null
+        if (autHeaderStr == null || !autHeaderStr.startsWith("Bearer ")
                 || request.getServletPath().startsWith("/api/festival/ticket-open")
                 || request.getServletPath().startsWith("/api/festival/detail")
                 || request.getServletPath().startsWith("/api/festival/casting-list")
