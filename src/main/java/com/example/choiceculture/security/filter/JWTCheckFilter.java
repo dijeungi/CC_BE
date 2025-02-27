@@ -93,9 +93,9 @@ public class JWTCheckFilter extends OncePerRequestFilter {
                 || request.getServletPath().startsWith("/api/festival/list/category")
                 || request.getServletPath().startsWith("/api/festival/search")
                 || request.getServletPath().startsWith("/api/festival/ranking")
-                || request.getServletPath().startsWith("/api/festival/ranking/limit")
+                || request.getServletPath().startsWith("/api/festival/ranking-limit")
                 || request.getServletPath().startsWith("/api/festival/favorite-ranking")
-                || request.getServletPath().startsWith("/api/festival/favorite-ranking-limit")
+                || request.getServletPath().startsWith("/api/festival/favorite/ranking-limit")
 
         ) {
             filterChain.doFilter(request, response);
