@@ -1,9 +1,9 @@
 package com.example.choiceculture.security.filter;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.example.choiceculture.security.MemberDTO;
-import com.example.choiceculture.util.CookieUtil;
 import com.example.choiceculture.util.JWTUtil;
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.MalformedJwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -16,7 +16,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.List;
 import java.util.Map;
 
@@ -106,7 +105,7 @@ public class JWTCheckFilter extends OncePerRequestFilter {
 
         try {
             // Bearer accessToken 형태로 전달되므로 Bearer 제거
-            String accessToken = autHeaderStr.substring(7);// Bearer 제거
+            String accessToken = autHeaderStr.substring(7).trim();// Bearer 제거
             // 쿠키로 가져와
 //            String accessToken = CookieUtil.getTokenFromCookie(request, "accessToken");
             log.info("JWTCheckFilter accessToken: {}", accessToken);
@@ -121,7 +120,7 @@ public class JWTCheckFilter extends OncePerRequestFilter {
             String name = (String) claims.get("name");
             List<String> roleNames = (List<String>) claims.get("roleNames");
 
-            MemberDTO memberDTO = new MemberDTO(id,email, password, name, roleNames);
+            MemberDTO memberDTO = new MemberDTO(id, email, password, name, roleNames);
 
             log.info("memberDTO: {}", memberDTO);
             log.info("memberDto.getAuthorities(): {}", memberDTO.getAuthorities());
@@ -134,18 +133,18 @@ public class JWTCheckFilter extends OncePerRequestFilter {
 
             // 다음 필터로 이동
             filterChain.doFilter(request, response);
-        } catch (Exception e) {
-            log.error("JWT Check Error...........");
-            log.error("e.getMessage(): {}", e.getMessage());
-
-            ObjectMapper objectMapper = new ObjectMapper();
-            String msg = objectMapper.writeValueAsString(Map.of("error", "ERROR_ACCESS_TOKEN"));
-
-            response.setContentType("application/json;charset=UTF-8");
+        } catch (MalformedJwtException e) {
+            log.error("Malformed JWT: {}", e.getMessage());
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-            PrintWriter printWriter = response.getWriter();
-            printWriter.println(msg);
-            printWriter.close();
+            response.getWriter().write("{\"error\": \"INVALID_TOKEN_FORMAT\"}");
+        } catch (ExpiredJwtException e) {
+            log.error("JWT Expired: {}", e.getMessage());
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            response.getWriter().write("{\"error\": \"TOKEN_EXPIRED\"}");
+        } catch (Exception e) {
+            log.error("JWT Check Error: {}", e.getMessage());
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            response.getWriter().write("{\"error\": \"ERROR_ACCESS_TOKEN\"}");
         }
 
 
