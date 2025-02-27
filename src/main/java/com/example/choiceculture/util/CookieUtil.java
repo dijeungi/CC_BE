@@ -25,7 +25,7 @@ public class CookieUtil {
         ResponseCookie cookie = ResponseCookie.from(token, "")
                 .path("/")
                 .httpOnly(false)
-                .secure(true)
+//                .secure(true)
                 .sameSite("None")
                 .maxAge(0L)
                 .build();
@@ -47,7 +47,7 @@ public class CookieUtil {
         ResponseCookie cookie = ResponseCookie.from(refreshToken, newRefreshToken)
                 .path("/")
                 .httpOnly(true)
-                .secure(true)
+//                .secure(true)
                 .sameSite("None")
                 .maxAge(24 * 60 * 60) // 1day
                 .build();
