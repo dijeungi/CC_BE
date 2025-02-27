@@ -54,15 +54,10 @@ public class MemberServiceImpl implements MemberService {
         Member member = Member.builder()
                 .id(request.getId())
                 .email(request.getEmail())
-                .userName(request.getUserName())
+                .userName(request.getName())
                 .userPassword(passwordEncoder.encode(request.getPassword()))
                 .userPhone(request.getPhone())
-                .userBirth(request.getUserBirth())
-                .userFavorite1(request.getFavorite1())
-                .userFavorite2(request.getFavorite2())
-                .userFavorite3(request.getFavorite3())
                 .userEmailAlarm(UserEmailAlarm.valueOf(request.getMailYn()))
-                .regDate(LocalDateTime.now())
                 .build();
 
         member.addRole(request.getRole()); // 회원가입시, USER 권한을 부여
