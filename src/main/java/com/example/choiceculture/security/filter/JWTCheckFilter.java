@@ -86,12 +86,16 @@ public class JWTCheckFilter extends OncePerRequestFilter {
         String autHeaderStr = request.getHeader("Authorization");
 
         if (autHeaderStr == null
-                || request.getServletPath().startsWith("/api/product/list")
-                || request.getServletPath().startsWith("/api/product/new")
-                || request.getServletPath().startsWith("/api/product/detail")
-                || request.getServletPath().startsWith("/api/content/list")
-                || request.getServletPath().startsWith("/api/content/detail")
-                || request.getServletPath().startsWith("/api/content/search")
+                || request.getServletPath().startsWith("/api/festival/ticket-open")
+                || request.getServletPath().startsWith("/api/festival/detail")
+                || request.getServletPath().startsWith("/api/festival/casting-list")
+                || request.getServletPath().startsWith("/api/festival/list")
+                || request.getServletPath().startsWith("/api/festival/list/category")
+                || request.getServletPath().startsWith("/api/festival/search")
+                || request.getServletPath().startsWith("/api/festival/ranking")
+                || request.getServletPath().startsWith("/api/festival/ranking/limit")
+                || request.getServletPath().startsWith("/api/festival/favorite-ranking")
+                || request.getServletPath().startsWith("/api/festival/favorite-ranking-limit")
 
         ) {
             filterChain.doFilter(request, response);
