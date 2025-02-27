@@ -22,6 +22,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.Map;
 import java.util.Objects;
 
@@ -116,6 +117,7 @@ public class MemberServiceImpl implements MemberService {
         member.setUserFavorite1(Objects.requireNonNullElse(requestDTO.getUserFavorite1(), member.getUserFavorite1()));
         member.setUserFavorite2(Objects.requireNonNullElse(requestDTO.getUserFavorite2(), member.getUserFavorite2()));
         member.setUserFavorite3(Objects.requireNonNullElse(requestDTO.getUserFavorite3(), member.getUserFavorite3()));
+        member.setUpDate(LocalDateTime.now());
 
         memberRepository.save(member);
     }
@@ -182,6 +184,5 @@ public class MemberServiceImpl implements MemberService {
         return memberRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("해당 ID로 가입된 사용자가 없습니다."));
     }
-
 
 }

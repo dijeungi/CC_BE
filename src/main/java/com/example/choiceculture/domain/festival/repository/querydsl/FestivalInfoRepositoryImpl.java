@@ -29,7 +29,7 @@ public class FestivalInfoRepositoryImpl implements FestivalInfoRepositoryCustom 
     public FestivalInfoDTO findByFestivalId(Integer festivalId) {
         FestivalInfoDTO dto = jpaQueryFactory
                 .select(Projections.fields(FestivalInfoDTO.class,
-                        festivalInfo.id.as("festivalId"),
+                        festivalInfo.id,
                         festivalInfo.festivalName,
                         festivalInfo.placeName,
                         placeInfo.placeName.as("placeDetailName"),
