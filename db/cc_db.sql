@@ -7199,7 +7199,8 @@ CREATE TABLE IF NOT EXISTS `member` (
 -- 테이블 데이터 cc.member:~3 rows (대략적) 내보내기
 DELETE FROM `member`;
 INSERT INTO `member` (`id`, `email`, `user_password`, `user_name`, `user_phone`, `user_birth`, `user_email_alarm`, `user_favorite_1`, `user_favorite_2`, `user_favorite_3`, `reg_date`, `up_date`) VALUES
-                                                                                                                                                                                                       ('3918381954', 'abgh012347@gmail.com', '$2a$10$7G30mZwzA8ZOxCPt4v.pZud8/MDY1aRXox4hsmpw5lw3scJn3XE5q', '범석', NULL, NULL, NULL, 'CT', NULL, NULL, NULL, NULL),
+                                                                                                                                                                                                       ('abgh012347', 'abgh012347@gmail.com', '$2a$10$MYW34UNf9AI7Eqr8QcQuNuZjtFqSswVSYtbj.kLzdilb2e.MxuH5S', '희연안', '01027536532', '20010101', 'N', '코믹', '드라마', '기타', NULL, NULL),
+                                                                                                                                                                                                       ('aqeZMAaxO6OHJK0QkWTMB6i3fLOpLV2qo3Ge3eK9IIY', 'sjspdjaj@naver.com', '$2a$10$gLHAbGC.sQfX/V6CzJph/eOOU7KRuXjoy2h16CGD1tBiNs1RgVjDm', '소셜회원', NULL, NULL, NULL, 'CT', NULL, NULL, NULL, NULL),
                                                                                                                                                                                                        ('test@test.com', 'test@test.com', '$2a$10$msMk.XTfGoZzbtH/6CVeXeRqanb9/IDc75vBR19FDjJCDMCKdthoC', 'test', '01012345678', NULL, NULL, 'CT', NULL, NULL, NULL, NULL);
 
 -- 테이블 cc.member_role_list 구조 내보내기
@@ -7211,11 +7212,12 @@ CREATE TABLE IF NOT EXISTS `member_role_list` (
     CONSTRAINT `FK45oxtc2ryc07238t4o0cyhdh4` FOREIGN KEY (`id`) REFERENCES `member` (`id`)
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- 테이블 데이터 cc.member_role_list:~3 rows (대략적) 내보내기
+-- 테이블 데이터 cc.member_role_list:~2 rows (대략적) 내보내기
 DELETE FROM `member_role_list`;
 INSERT INTO `member_role_list` (`id`, `role`) VALUES
                                                   ('test@test.com', 2),
-                                                  ('3918381954', 0);
+                                                  ('aqeZMAaxO6OHJK0QkWTMB6i3fLOpLV2qo3Ge3eK9IIY', 0),
+                                                  ('abgh012347', 0);
 
 -- 테이블 cc.place_info 구조 내보내기
 DROP TABLE IF EXISTS `place_info`;
@@ -7353,10 +7355,27 @@ CREATE TABLE IF NOT EXISTS `ticket_info` (
     PRIMARY KEY (`id`),
     KEY `FK_ticket_info_member` (`member_id`),
     CONSTRAINT `FK_ticket_info_member` FOREIGN KEY (`member_id`) REFERENCES `member` (`id`)
-    ) ENGINE=InnoDB AUTO_INCREMENT=521 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+    ) ENGINE=InnoDB AUTO_INCREMENT=573 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- 테이블 데이터 cc.ticket_info:~0 rows (대략적) 내보내기
+-- 테이블 데이터 cc.ticket_info:~16 rows (대략적) 내보내기
 DELETE FROM `ticket_info`;
+INSERT INTO `ticket_info` (`id`, `order_id`, `festival_id`, `member_id`, `date_id`, `payment_date`, `refund_state`, `location_num`) VALUES
+                                                                                                                                        (557, 'tid-1-27-A05', 1, 'aqeZMAaxO6OHJK0QkWTMB6i3fLOpLV2qo3Ge3eK9IIY', 27, '2025-02-28', 'YET', 'A05'),
+                                                                                                                                        (558, 'tid-1-27-A06', 1, 'aqeZMAaxO6OHJK0QkWTMB6i3fLOpLV2qo3Ge3eK9IIY', 27, '2025-02-28', 'YET', 'A06'),
+                                                                                                                                        (559, 'tid-1-27-B07', 1, 'aqeZMAaxO6OHJK0QkWTMB6i3fLOpLV2qo3Ge3eK9IIY', 27, '2025-02-28', 'YET', 'B07'),
+                                                                                                                                        (560, 'tid-1-27-C08', 1, 'aqeZMAaxO6OHJK0QkWTMB6i3fLOpLV2qo3Ge3eK9IIY', 27, '2025-02-28', 'YET', 'C08'),
+                                                                                                                                        (561, 'tid-1-27-D08', 1, 'aqeZMAaxO6OHJK0QkWTMB6i3fLOpLV2qo3Ge3eK9IIY', 27, '2025-02-28', 'YET', 'D08'),
+                                                                                                                                        (562, 'tid-1-27-E07', 1, 'aqeZMAaxO6OHJK0QkWTMB6i3fLOpLV2qo3Ge3eK9IIY', 27, '2025-02-28', 'YET', 'E07'),
+                                                                                                                                        (563, 'tid-1-27-F06', 1, 'aqeZMAaxO6OHJK0QkWTMB6i3fLOpLV2qo3Ge3eK9IIY', 27, '2025-02-28', 'YET', 'F06'),
+                                                                                                                                        (564, 'tid-1-27-F05', 1, 'aqeZMAaxO6OHJK0QkWTMB6i3fLOpLV2qo3Ge3eK9IIY', 27, '2025-02-28', 'YET', 'F05'),
+                                                                                                                                        (565, 'tid-1-27-E04', 1, 'aqeZMAaxO6OHJK0QkWTMB6i3fLOpLV2qo3Ge3eK9IIY', 27, '2025-02-28', 'YET', 'E04'),
+                                                                                                                                        (566, 'tid-1-27-D03', 1, 'aqeZMAaxO6OHJK0QkWTMB6i3fLOpLV2qo3Ge3eK9IIY', 27, '2025-02-28', 'YET', 'D03'),
+                                                                                                                                        (567, 'tid-1-27-C03', 1, 'aqeZMAaxO6OHJK0QkWTMB6i3fLOpLV2qo3Ge3eK9IIY', 27, '2025-02-28', 'YET', 'C03'),
+                                                                                                                                        (568, 'tid-1-27-B04', 1, 'aqeZMAaxO6OHJK0QkWTMB6i3fLOpLV2qo3Ge3eK9IIY', 27, '2025-02-28', 'YET', 'B04'),
+                                                                                                                                        (569, 'tid-1-27-C05', 1, 'aqeZMAaxO6OHJK0QkWTMB6i3fLOpLV2qo3Ge3eK9IIY', 27, '2025-02-28', 'YET', 'C05'),
+                                                                                                                                        (570, 'tid-1-27-D05', 1, 'aqeZMAaxO6OHJK0QkWTMB6i3fLOpLV2qo3Ge3eK9IIY', 27, '2025-02-28', 'YET', 'D05'),
+                                                                                                                                        (571, 'tid-1-27-D06', 1, 'aqeZMAaxO6OHJK0QkWTMB6i3fLOpLV2qo3Ge3eK9IIY', 27, '2025-02-28', 'YET', 'D06'),
+                                                                                                                                        (572, 'tid-1-27-C06', 1, 'aqeZMAaxO6OHJK0QkWTMB6i3fLOpLV2qo3Ge3eK9IIY', 27, '2025-02-28', 'YET', 'C06');
 
 -- 테이블 cc.token 구조 내보내기
 DROP TABLE IF EXISTS `token`;
