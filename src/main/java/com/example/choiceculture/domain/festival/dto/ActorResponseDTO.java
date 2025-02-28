@@ -12,4 +12,5 @@ public class ActorResponseDTO {
     private String festivalName;
     private String actorCharacter;
     private String actorName;
+    private String actorImageUrl;
 }

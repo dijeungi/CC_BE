@@ -45,6 +45,7 @@ public class NotProd {
                     .userName("test")
                     .userPassword(passwordEncoder.encode("1234"))
                     .userPhone("01012345678")
+                    .userFavorite1("CT")
                     .build();
       //      Member savedMember = memberRepository.save(member);
             member.addRole(MemberRole.ADMIN);

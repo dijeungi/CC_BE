@@ -12,4 +12,5 @@ public class ActorInfoDTO {
     private Integer id;
     private String actorCharacter;
     private String actorName;
+    private String profileImage;
 }

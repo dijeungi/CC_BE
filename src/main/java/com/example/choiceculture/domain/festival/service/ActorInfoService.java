@@ -21,6 +21,7 @@ public interface ActorInfoService {
                 .id(info.getId())
                 .actorCharacter(info.getActorCharacter())
                 .actorName(info.getActorName())
+                .profileImage(info.getActorImageUrl())
                 .build();
     }
 
@@ -30,6 +31,7 @@ public interface ActorInfoService {
                 .festivalId(infoDTO.getFestivalId())
                 .actorCharacter(infoDTO.getActorCharacter())
                 .actorName(infoDTO.getActorName())
+                .actorImageUrl(infoDTO.getActorImageUrl())
                 .build();
     }
 }
