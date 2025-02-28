@@ -76,13 +76,14 @@ public class SocialController {
         MemberDTO memberDTO = socialService.getGoogleMember(accessToken);
         Map<String, Object> loginClaims = memberService.getSocialClaims(memberDTO);
 
+        CookieUtil.setTokenCookie(response, "accessToken", (String) loginClaims.get("accessToken"), jwtProps.getAccessTokenExpirationPeriod());
         CookieUtil.setTokenCookie(response, "refreshToken", (String) loginClaims.get("refreshToken"), jwtProps.getRefreshTokenExpirationPeriod());
 
         MemberController.LoginResponseDTO loginResponseDTO = MemberController.LoginResponseDTO.builder()
                 .id(loginClaims.get("id").toString())
                 .name(loginClaims.get("name").toString())
                 .roles((List<String>) loginClaims.get("roleNames"))
-                .accessToken(accessToken)
+                .accessToken((String) loginClaims.get("accessToken"))
                 .build();
 
         log.info("loginResponseDTO: {}", loginResponseDTO);
@@ -110,13 +111,14 @@ public class SocialController {
         MemberDTO memberDTO = socialService.getNaverMember(accessToken);
         Map<String, Object> loginClaims = memberService.getSocialClaims(memberDTO);
 
+        CookieUtil.setTokenCookie(response, "accessToken", (String) loginClaims.get("accessToken"), jwtProps.getAccessTokenExpirationPeriod());
         CookieUtil.setTokenCookie(response, "refreshToken", (String) loginClaims.get("refreshToken"), jwtProps.getRefreshTokenExpirationPeriod());
 
         MemberController.LoginResponseDTO loginResponseDTO = MemberController.LoginResponseDTO.builder()
                 .id(loginClaims.get("id").toString())
                 .name(loginClaims.get("name").toString())
                 .roles((List<String>) loginClaims.get("roleNames"))
-                .accessToken(accessToken)
+                .accessToken((String) loginClaims.get("accessToken"))
                 .build();
 
         log.info("loginResponseDTO: {}", loginResponseDTO);
