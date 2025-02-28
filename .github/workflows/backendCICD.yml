@@ -63,6 +63,11 @@ jobs:
             if [ "$(sudo docker images -q ${{ secrets.DOCKERHUB_USERNAME }}/cc-backend)" ]; then
               sudo docker rmi -f ${{ secrets.DOCKERHUB_USERNAME }}/cc-backend
             fi
+            # 기존 db 볼륨 삭제
+            if [ "$(sudo docker volume ls -q -f name=db_volume)" ]; then
+              sudo docker volume rm db_volume
+            fi
+            
             sudo docker pull ${{ secrets.DOCKERHUB_USERNAME }}/cc-db
             sudo docker run -d -p 3308:3306 --name cc-db -v db_volume:/var/lib/mysql ${{ secrets.DOCKERHUB_USERNAME }}/cc-db
             sudo docker pull ${{ secrets.DOCKERHUB_USERNAME }}/cc-backend
