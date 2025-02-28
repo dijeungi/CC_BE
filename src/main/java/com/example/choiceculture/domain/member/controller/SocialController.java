@@ -27,7 +27,7 @@ public class SocialController {
     private final JwtProps jwtProps;
 
 
-//     카카오 access token 받기
+    //     카카오 access token 받기
     @GetMapping("/api/member/kakao/token")
     public String getKakaoAccessToken(@RequestParam("code") String code) {
         log.info("getKakaoAccessToken code: {}", code);
@@ -43,13 +43,14 @@ public class SocialController {
         MemberDTO memberDTO = socialService.getKakaoMember(accessToken);
         Map<String, Object> loginClaims = memberService.getSocialClaims(memberDTO);
 
+        CookieUtil.setTokenCookie(response, "accessToken", (String) loginClaims.get("accessToken"), jwtProps.getAccessTokenExpirationPeriod());
         CookieUtil.setTokenCookie(response, "refreshToken", (String) loginClaims.get("refreshToken"), jwtProps.getRefreshTokenExpirationPeriod());
 
         MemberController.LoginResponseDTO loginResponseDTO = MemberController.LoginResponseDTO.builder()
                 .id(loginClaims.get("id").toString())
                 .name(loginClaims.get("name").toString())
                 .roles((List<String>) loginClaims.get("roleNames"))
-                .accessToken(accessToken)
+                .accessToken((String) loginClaims.get("accessToken"))
                 .build();
 
         log.info("loginResponseDTO: {}", loginResponseDTO);
@@ -91,7 +92,6 @@ public class SocialController {
     }
 
 
-
     // 네이버 access token 받기
     @GetMapping("/api/member/naver/token")
     String getNaverAccessToken(String code, String state) {
@@ -124,7 +124,6 @@ public class SocialController {
         return ResponseEntity.ok(loginResponseDTO);
 
     }
-
 
 
 }
