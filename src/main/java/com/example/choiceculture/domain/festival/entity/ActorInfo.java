@@ -30,4 +30,8 @@ public class ActorInfo {
     @Column(name = "actor_name", length = 10)
     private String actorName;
 
+    @Size(max = 255)
+    @Column(name = "actor_image_url")
+    private String actorImageUrl;
+
 }

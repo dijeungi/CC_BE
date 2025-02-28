@@ -30,8 +30,8 @@ public interface FestivalInfoRepository extends JpaRepository<FestivalInfo, Inte
     List<FestivalInfo> findRankingByUserId(@Param("userFavorite1") String userFavorite1);
 
 
-
-    @Query(value = "select f from FestivalInfo f where f.categoryId=:userFavorite1 and f.accessState='Y' order by f.ranking limit 10")
+//f.categoryId=:userFavorite1
+    @Query(value = "select f from FestivalInfo f where f.categoryId like concat('%',:userFavorite1,'%') and f.accessState='Y' order by f.ranking limit 10")
     List<FestivalInfo> findByFavorite(@Param("userFavorite1") String userFavorite1);
 
     @Query(value = "select f.id as festivalId, f.festivalName as festivalName from FestivalInfo f")

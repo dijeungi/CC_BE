@@ -52,7 +52,7 @@ public class TicketInfoRepositoryImpl implements TicketInfoRepositoryCustom {
                         containsFestivalName(requestDTO.getSearchFestivalName()),
                         eqRefundState(requestDTO.getRefundState()))
                 .leftJoin(festivalInfo).on(ticketInfo.festivalId.eq(festivalInfo.id))
-                .leftJoin(festivalTime).on(ticketInfo.festivalId.eq(festivalTime.id)).fetchJoin()
+                .leftJoin(festivalTime).on(ticketInfo.dateId.eq(festivalTime.id)).fetchJoin()
                 .groupBy(orderIdPrefix,
                         ticketInfo.member.userName,
                         festivalInfo.festivalName,

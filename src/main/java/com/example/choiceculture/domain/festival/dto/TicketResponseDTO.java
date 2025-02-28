@@ -22,5 +22,6 @@ public class TicketResponseDTO {
     private ReFundState refundState;
     private String refundStateName;
     private Integer totalPrice;
+    private String postImage;
 
 }
