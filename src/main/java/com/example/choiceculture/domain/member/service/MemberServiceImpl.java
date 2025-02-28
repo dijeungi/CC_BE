@@ -58,6 +58,10 @@ public class MemberServiceImpl implements MemberService {
                 .userPassword(passwordEncoder.encode(request.getPassword()))
                 .userPhone(request.getPhone())
                 .userEmailAlarm(UserEmailAlarm.valueOf(request.getMailYn()))
+                .userFavorite1(request.getFavorite1())
+                .userFavorite2(request.getFavorite2())
+                .userFavorite3(request.getFavorite3())
+                .userBirth(request.getBirth())
                 .build();
 
         member.addRole(request.getRole()); // 회원가입시, USER 권한을 부여

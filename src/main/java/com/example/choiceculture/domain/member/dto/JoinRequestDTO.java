@@ -31,6 +31,9 @@ public class JoinRequestDTO {
     @NotBlank(message = "전화번호는 필수 입력 값입니다.")
     private String phone;
     private String mailYn;
+    private String favorite1;
+    private String favorite2;
+    private String favorite3;
 
     private MemberRole role;
 }

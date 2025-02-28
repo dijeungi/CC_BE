@@ -363,6 +363,7 @@ public class SocialService {
                 .email(email)
                 .userPassword(passwordEncoder.encode(tempPassword))
                 .userName("소셜회원")
+                .userFavorite1("CT")
                 .build();
         member.addRole(MemberRole.USER);
         return member;
