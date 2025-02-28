@@ -50,9 +50,9 @@ public class TicketInfoServiceImpl implements TicketInfoService {
             if(!ticketInfoRepository.existsByLocationNumAndOrderId(s,infoDTO.getOrderId())) {
                 TicketInfo ticketInfo = TicketInfo.builder()
                         .orderId(infoDTO.getOrderId()+"-"+s)
-                        .festivalId(1) //NumbinfoDTO.getFestivalId()
+                        .festivalId(infoDTO.getFestivalId())
                         .member(member)
-                        .dateId(27) //infoDTO.getDateId()
+                        .dateId(infoDTO.getDateId())
                         .paymentDate(LocalDate.now())
                         .locationNum(s)
                         .build();
