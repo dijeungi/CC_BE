@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @Data
 @Builder
 public class ReviewInfoDTO {
-    private String id;
+    private Integer id;
     private Integer festivalId;
     private String memberId;
     private String title;

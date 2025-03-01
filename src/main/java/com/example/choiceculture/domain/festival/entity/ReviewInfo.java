@@ -15,9 +15,9 @@ import org.hibernate.annotations.ColumnDefault;
 @Table(name = "review_info")
 public class ReviewInfo extends BaseEntity {
     @Id
-    @Size(max = 20)
-    @Column(name = "id", nullable = false, length = 20)
-    private String id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", nullable = false)
+    private Integer id;
 
     @NotNull
     @Column(name = "festival_id", nullable = false)

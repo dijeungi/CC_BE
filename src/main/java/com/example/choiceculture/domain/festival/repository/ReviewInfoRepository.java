@@ -8,7 +8,7 @@ import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
-public interface ReviewInfoRepository extends JpaRepository<ReviewInfo, String> {
+public interface ReviewInfoRepository extends JpaRepository<ReviewInfo, Integer> {
     List<ReviewInfo> findByType(ReviewType type);
 
     @Query(value = "select r from ReviewInfo r where r.memberId=:userId and r.type=:type")
