@@ -39,7 +39,6 @@ public class SecurityConfig {
     }
 
 
-
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         log.info("security config...............");
@@ -74,7 +73,6 @@ public class SecurityConfig {
                         .requestMatchers(new AntPathRequestMatcher("/api/admin/**")).hasRole("ADMIN")
                         .anyRequest().authenticated()
         );
-
 
 
         http.cors(httpSecurityCorsConfigurer -> {
@@ -137,7 +135,7 @@ public class SecurityConfig {
 //        configuration.setAllowedOriginPatterns(Arrays.asList("*"));  // localhost:3000 -> 허용
         configuration.setAllowedOrigins(Arrays.asList("http://localhost:3000", "http://localhost:3001",
                 "http://127.0.0.1:3000",
-                "http://43.201.3.134",
+                "http://43.201.3.134", "http://43.201.3.134:81",
                 "https://openapi.map.naver.com",
                 "campusconcert.store"
         ));
