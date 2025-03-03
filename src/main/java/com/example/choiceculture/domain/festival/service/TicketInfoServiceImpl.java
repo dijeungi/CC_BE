@@ -45,28 +45,40 @@ public class TicketInfoServiceImpl implements TicketInfoService {
         Member member = memberRepository.findById(infoDTO.getMemberId())
                 .orElseThrow(() -> new EntityNotFoundException("존재하지 않는 회원입니다."));
 
+        log.info("🟢 add() 실행: orderId={}, memberId={}, festivalId={}",
+                infoDTO.getOrderId(), infoDTO.getMemberId(), infoDTO.getFestivalId());
 
         infoDTO.getLocationNum().forEach(s -> {
-            if(!ticketInfoRepository.existsByLocationNumAndOrderId(s,infoDTO.getOrderId())) {
+            log.info("🔵 좌석 검사: locationNum={}, orderId={}", s, infoDTO.getOrderId());
+
+            boolean exists = ticketInfoRepository.existsByLocationNumAndOrderId(s, infoDTO.getOrderId());
+            log.info("🟠 존재 여부: {}", exists);
+
+            if (!exists) {
+                String modifiedOrderId = infoDTO.getOrderId() + "-" + s; // ✅ orderId 변형 확인
                 TicketInfo ticketInfo = TicketInfo.builder()
-                        .orderId(infoDTO.getOrderId()+"-"+s)
+                        .orderId(modifiedOrderId)
                         .festivalId(infoDTO.getFestivalId())
                         .member(member)
                         .dateId(infoDTO.getDateId())
                         .paymentDate(LocalDate.now())
                         .locationNum(s)
                         .build();
-                if(infoDTO.getOrderId().length() < 10)
-                    ticketInfoRepository.saveAndFlush(ticketInfo); // ✅ 강제 플러시
 
+                log.info("🟢 저장 시도: orderId={}, locationNum={}", modifiedOrderId, s);
+
+                try {
+                    ticketInfoRepository.saveAndFlush(ticketInfo);
+                    log.info("✅ 저장 성공: {}", modifiedOrderId);
+                } catch (Exception e) {
+                    log.error("❌ 저장 실패: {}", modifiedOrderId, e);
+                }
+            } else {
+                log.warn("🚨 이미 존재하는 티켓: {}", s);
             }
-            else {
-                System.out.println("🚨 이미 존재하는 티켓입니다: " + s);
-            }
-
-
         });
     }
+
 
     @Override
     public void delete(String ticketId) {
