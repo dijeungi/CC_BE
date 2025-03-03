@@ -2275,7 +2275,7 @@ CREATE TABLE IF NOT EXISTS `member_role_list` (
                                                   `id` varchar(255) NOT NULL,
     `role` int(11) DEFAULT NULL COMMENT '권한이래요',
     KEY `FK45oxtc2ryc07238t4o0cyhdh4` (`id`),
-    CONSTRAINT `FK45oxtc2ryc07238t4o0cyhdh4` FOREIGN KEY (`id`) REFERENCES `member` (`id`)
+    CONSTRAINT `FK45oxtc2ryc07238t4o0cyhdh4` FOREIGN KEY (`id`) REFERENCES `member` (`id`) ON DELETE CASCADE
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- 테이블 데이터 cc.member_role_list:~3 rows (대략적) 내보내기
