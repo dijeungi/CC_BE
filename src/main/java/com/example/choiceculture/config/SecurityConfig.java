@@ -137,7 +137,7 @@ public class SecurityConfig {
                 "http://127.0.0.1:3000",
                 "http://43.201.3.134", "http://43.201.3.134:81",
                 "https://openapi.map.naver.com",
-                "campusconcert.store"
+                "http://campusconcert.store", "https://campusconcert.store"
         ));
         // 허용할 메서드 설정
         configuration.setAllowedMethods(Arrays.asList("HEAD", "GET", "POST", "PUT", "DELETE", "OPTIONS"));
