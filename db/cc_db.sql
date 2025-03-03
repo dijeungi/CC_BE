@@ -2242,7 +2242,7 @@ CREATE TABLE IF NOT EXISTS `like_info` (
     `up_date` datetime DEFAULT NULL,
     PRIMARY KEY (`id`),
     KEY `FK_like_info_member` (`member_id`),
-    CONSTRAINT `FK_like_info_member` FOREIGN KEY (`member_id`) REFERENCES `member` (`id`)
+    CONSTRAINT `FK_like_info_member` FOREIGN KEY (`member_id`) REFERENCES `member` (`id`) ON DELETE NO ACTION
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- 테이블 데이터 cc.like_info:~0 rows (대략적) 내보내기
@@ -2380,7 +2380,7 @@ CREATE TABLE IF NOT EXISTS `review_info` (
     `type` enum('HOPE','QA','REVIEW') DEFAULT NULL,
     PRIMARY KEY (`id`),
     KEY `FK_review_info_member` (`member_id`),
-    CONSTRAINT `FK_review_info_member` FOREIGN KEY (`member_id`) REFERENCES `member` (`id`)
+    CONSTRAINT `FK_review_info_member` FOREIGN KEY (`member_id`) REFERENCES `member` (`id`) ON DELETE NO ACTION
     ) ENGINE=InnoDB AUTO_INCREMENT=1361 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- 테이블 데이터 cc.review_info:~1,360 rows (대략적) 내보내기
@@ -3773,7 +3773,7 @@ CREATE TABLE IF NOT EXISTS `ticket_info` (
     `location_num` varchar(5) DEFAULT NULL,
     PRIMARY KEY (`id`),
     KEY `FK_ticket_info_member` (`member_id`),
-    CONSTRAINT `FK_ticket_info_member` FOREIGN KEY (`member_id`) REFERENCES `member` (`id`)
+    CONSTRAINT `FK_ticket_info_member` FOREIGN KEY (`member_id`) REFERENCES `member` (`id`) ON DELETE NO ACTION
     ) ENGINE=InnoDB AUTO_INCREMENT=573 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- 테이블 데이터 cc.ticket_info:~16 rows (대략적) 내보내기
@@ -3805,7 +3805,7 @@ CREATE TABLE IF NOT EXISTS `token` (
     `member_id` varchar(255) DEFAULT NULL,
     PRIMARY KEY (`id`),
     KEY `FK8a0sdl451qcw4ishfaxpdog0p` (`member_id`),
-    CONSTRAINT `FK8a0sdl451qcw4ishfaxpdog0p` FOREIGN KEY (`member_id`) REFERENCES `member` (`id`)
+    CONSTRAINT `FK8a0sdl451qcw4ishfaxpdog0p` FOREIGN KEY (`member_id`) REFERENCES `member` (`id`) ON DELETE CASCADE
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- 테이블 데이터 cc.token:~0 rows (대략적) 내보내기
