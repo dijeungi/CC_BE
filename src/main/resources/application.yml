@@ -123,13 +123,13 @@ logging:
     org.hibernate.orm.jdbc.bind: trace # Hibernate SQL 바인딩 로그 레벨
     org.springframework.transaction.interceptor: trace # Spring 트랜잭션 인터셉터 로그 레벨
 
-server:
-  port: 8443
-  ssl:
-    key-store: /app/keystore.p12
-    key-store-password: ccapi
-    key-store-type: PKCS12
-    key-alias: cc-api
+#server:
+#  port: 8443
+#  ssl:
+#    key-store: /app/keystore.p12
+#    key-store-password: ccapi
+#    key-store-type: PKCS12
+#    key-alias: cc-api
 
 ---
 
